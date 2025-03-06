@@ -27,12 +27,18 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		nullptr, nullptr, hInstance, nullptr
 	);
 
+	CGraphics* graphics = new CGraphics(hWnd);
+
 	MSG msg = {};
 	while (msg.message != WM_QUIT) {
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
+		graphics->RenderBegin();
+
+		graphics->RenderEnd();
 	}
+	delete graphics;
 	return 0;
 }

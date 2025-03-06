@@ -13,15 +13,54 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="소스 파일\Framework">
+      <UniqueIdentifier>{9a213b19-89bf-4f9e-a27f-b66f5da68763}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Framework\DirectXWrapper">
+      <UniqueIdentifier>{63833def-b160-4f3c-83ea-709b42e1f1e7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="CGraphics.cpp">
+      <Filter>소스 파일\Framework\DirectXWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CBuffer.cpp">
+      <Filter>소스 파일\Framework\DirectXWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="CInputLayout.cpp">
+      <Filter>소스 파일\Framework\DirectXWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="CShader.cpp">
+      <Filter>소스 파일\Framework\DirectXWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="CState.cpp">
+      <Filter>소스 파일\Framework\DirectXWrapper</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
       <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CGraphics.h">
+      <Filter>소스 파일\Framework\DirectXWrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="CBuffer.h">
+      <Filter>소스 파일\Framework\DirectXWrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="CInputLayout.h">
+      <Filter>소스 파일\Framework\DirectXWrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="CShader.h">
+      <Filter>소스 파일\Framework\DirectXWrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="CState.h">
+      <Filter>소스 파일\Framework\DirectXWrapper</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -11,5 +11,18 @@
 
 #include <vector>
 #include <list>
+#include <string>
 template <typename T> using TArray = std::vector<T>;
 template <typename T> using TLinkeList = std::list<T>;
+using int32 = int;
+using uint32 = unsigned int;
+using FString = std::string;
+
+template <typename T> void SafeRelease(T** ppT) {
+	if (*ppT) {
+		(*ppT)->Release();
+		*ppT = nullptr;
+	}
+}
+
+#include "CGraphics.h"

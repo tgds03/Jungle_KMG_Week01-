@@ -104,6 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -127,9 +128,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CBuffer.cpp" />
+    <ClCompile Include="CGraphics.cpp" />
+    <ClCompile Include="CInputLayout.cpp" />
+    <ClCompile Include="CShader.cpp" />
+    <ClCompile Include="CState.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CBuffer.h" />
+    <ClInclude Include="CGraphics.h" />
+    <ClInclude Include="CInputLayout.h" />
+    <ClInclude Include="CShader.h" />
+    <ClInclude Include="CState.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
