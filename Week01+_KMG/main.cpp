@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "CRenderer.h"
 
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
 	switch (message) {
@@ -27,18 +28,17 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		nullptr, nullptr, hInstance, nullptr
 	);
 
-	CGraphics* graphics = new CGraphics(hWnd);
 
+	CRenderer::Instance()->Init(hWnd);
 	MSG msg = {};
 	while (msg.message != WM_QUIT) {
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
-		graphics->RenderBegin();
+		CRenderer::Instance()->GetGraphics()->RenderBegin();
 
-		graphics->RenderEnd();
+		CRenderer::Instance()->GetGraphics()->RenderEnd();
 	}
-	delete graphics;
 	return 0;
 }

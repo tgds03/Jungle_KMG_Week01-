@@ -17,6 +17,7 @@ template <typename T> using TLinkeList = std::list<T>;
 using int32 = int;
 using uint32 = unsigned int;
 using FString = std::string;
+using FWString = std::wstring;
 
 template <typename T> void SafeRelease(T** ppT) {
 	if (*ppT) {
@@ -24,5 +25,3 @@ template <typename T> void SafeRelease(T** ppT) {
 		*ppT = nullptr;
 	}
 }
-
-#include "CGraphics.h"

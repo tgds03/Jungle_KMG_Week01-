@@ -137,6 +137,7 @@
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="CRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CBuffer.h" />
@@ -145,6 +146,7 @@
     <ClInclude Include="CShader.h" />
     <ClInclude Include="CState.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="CRenderer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

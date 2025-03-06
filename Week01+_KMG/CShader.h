@@ -1,9 +1,7 @@
 #pragma once
-using FWString = std::wstring;
-
 class CShader {
 public:
-	CShader(ID3D11Device* device) : _device(device) {};
+	CShader(ID3D11Device* device) : _device(device), _blob(nullptr) {};
 	virtual ~CShader() {
 		SafeRelease(&_blob);
 	};

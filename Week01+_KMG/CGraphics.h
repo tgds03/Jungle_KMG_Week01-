@@ -6,6 +6,7 @@ public:
 
 	void RenderBegin();
 	void RenderEnd();
+	void Release();
 
 	ID3D11Device* GetDevice() { return _device; }
 	ID3D11DeviceContext* GetDeviceContext() { return _deviceContext; }

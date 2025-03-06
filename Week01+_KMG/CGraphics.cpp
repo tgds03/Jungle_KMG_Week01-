@@ -7,8 +7,7 @@ CGraphics::CGraphics(HWND hWnd): _hWnd(hWnd) {
 }
 
 CGraphics::~CGraphics() {
-	ReleaseRenderTargetView();
-	ReleaseDeviceAndSwapChain();
+	Release();
 }
 
 void CGraphics::RenderBegin() {
@@ -18,6 +17,11 @@ void CGraphics::RenderBegin() {
 
 void CGraphics::RenderEnd() {
 	_swapChain->Present(1, 0);
+}
+
+void CGraphics::Release() {
+	ReleaseRenderTargetView();
+	ReleaseDeviceAndSwapChain();
 }
 
 void CGraphics::CreateDeviceAndSwapChain() {
