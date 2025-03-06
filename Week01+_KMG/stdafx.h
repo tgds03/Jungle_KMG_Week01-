@@ -13,7 +13,7 @@
 #include <list>
 #include <string>
 template <typename T> using TArray = std::vector<T>;
-template <typename T> using TLinkeList = std::list<T>;
+template <typename T> using TLinkedList = std::list<T>;
 using int32 = int;
 using uint32 = unsigned int;
 using FString = std::string;

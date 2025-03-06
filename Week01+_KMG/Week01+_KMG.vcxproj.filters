@@ -45,6 +45,15 @@
     <ClCompile Include="CRenderer.cpp">
       <Filter>소스 파일\Framework</Filter>
     </ClCompile>
+    <ClCompile Include="CEngineStatics.cpp">
+      <Filter>소스 파일\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="UObject.cpp">
+      <Filter>소스 파일\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="CObjectMeta.cpp">
+      <Filter>소스 파일\Framework</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -66,6 +75,15 @@
       <Filter>소스 파일\Framework\DirectXWrapper</Filter>
     </ClInclude>
     <ClInclude Include="CRenderer.h">
+      <Filter>소스 파일\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="CEngineStatics.h">
+      <Filter>소스 파일\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="UObject.h">
+      <Filter>소스 파일\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="CObjectMeta.h">
       <Filter>소스 파일\Framework</Filter>
     </ClInclude>
   </ItemGroup>
