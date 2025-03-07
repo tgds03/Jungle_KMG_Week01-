@@ -12,6 +12,7 @@
 #include <vector>
 #include <list>
 #include <string>
+#include <algorithm>
 template <typename T> using TArray = std::vector<T>;
 template <typename T> using TLinkedList = std::list<T>;
 using int32 = int;
@@ -28,3 +29,5 @@ template <typename T> void SafeRelease(T** ppT) {
 		*ppT = nullptr;
 	}
 }
+
+#define UE_LOG OutputDebugString
