@@ -7,6 +7,7 @@ class UPrimitiveComponent :
     public USceneComponent
 {
 public:
+    UPrimitiveComponent() {}
     virtual void Update();
     virtual void Render();
 

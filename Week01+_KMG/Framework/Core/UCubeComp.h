@@ -4,6 +4,7 @@ class UCubeComp :
     public UPrimitiveComponent
 {
 public:
+    UCubeComp() {}
     virtual void Update();
     virtual void Render();
 

@@ -5,6 +5,7 @@
 
 class USceneComponent :public UActorComponent {
 public:
+	USceneComponent() {}
 	virtual void Update();
 	//virtual void Render();
 
