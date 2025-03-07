@@ -1,6 +1,6 @@
 #pragma once
-#include "CEngineStatics.h"
-#include "CObjectMeta.h"
+#include "Framework/Core/CEngineStatics.h"
+#include "Framework/Core/CObjectMeta.h"
 
 class UObject {
 private:
