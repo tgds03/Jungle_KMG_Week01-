@@ -115,9 +115,9 @@ FMatrix FMatrix::Scale(float sx, float sy, float sz) {
 FMatrix FMatrix::RotateX(float rx) {
 	return FMatrix({
 		1.f, 0.f, 0.f, 0.f,
-		0.f, 1.f, 0.f, 0.f,
 		0.f, cos(rx), -sin(rx), 0.f,
-		0.f, sin(rx), cos(rx), 1.f
+		0.f, sin(rx), cos(rx), 0.f,
+		0.f, 0.f, 0.f, 1.f
 	});
 }
 

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "CRenderer.h"
-
+#include "FVector.h"
+#include "FMatrix.h"
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
 	switch (message) {
 	case WM_DESTROY:
@@ -36,7 +37,10 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			DispatchMessage(&msg);
 		}
 		CRenderer::Instance()->GetGraphics()->RenderBegin();
-
+		float f4 = 1.f;
+		FVector f5 = FVector::One;
+		
+		
 		CRenderer::Instance()->GetGraphics()->RenderEnd();
 	}
 	return 0;

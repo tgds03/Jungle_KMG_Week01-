@@ -14,7 +14,11 @@ public:
 	FMatrix operator-(const FMatrix& rhs) const;
 	FMatrix operator*(const float& rhs) const;
 	FMatrix operator*(const FMatrix& rhs) const;
-	//FVector4 operator*(const FVector4& rhs) const;
+	FVector4 operator[](int row){
+		return FVector4(m[row][0], m[row][1], m[row][2], m[row][3]);
+	}
+	
+//FVector4 operator*(const FVector4& rhs) const;
 
 	FVector4 r1() const;
 	FVector4 r2() const;
@@ -27,6 +31,7 @@ public:
 	FVector4 c4() const;
 
 	FMatrix Transpose() const;
+	friend FVector4 operator*(const FVector4& lhs, const FMatrix& rhs);
 
 public:
 	static const FMatrix Identity;
@@ -36,5 +41,3 @@ public:
 	static FMatrix RotateZ(float rz);
 	static FMatrix Translate(float tx, float ty, float tz);
 };
-
-FVector4 operator*(const FVector4& lhs, const FMatrix& rhs);

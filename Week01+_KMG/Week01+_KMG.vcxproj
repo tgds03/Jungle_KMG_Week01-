@@ -137,6 +137,7 @@
     <ClCompile Include="CShader.cpp" />
     <ClCompile Include="CState.cpp" />
     <ClCompile Include="FMatrix.cpp" />
+    <ClCompile Include="FVector.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
