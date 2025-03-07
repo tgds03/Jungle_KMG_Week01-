@@ -1,20 +1,15 @@
 #include "stdafx.h"
 #include "USceneComponent.h"
 
-void USceneComponent::setVisible(const bool bValue)
-{
-	bVisible = bValue;
-}
-
-void USceneComponent::Update()
-{
-	UActorComponent::Update();
-}
-
-void USceneComponent::Render()
-{
-	UActorComponent::Render();
-}
+//void USceneComponent::Update()
+//{
+//	UActorComponent::Update();
+//}
+//
+//void USceneComponent::Render()
+//{
+//	UActorComponent::Render();
+//}
 
 FVector USceneComponent::GetRelativeLocation() const
 {

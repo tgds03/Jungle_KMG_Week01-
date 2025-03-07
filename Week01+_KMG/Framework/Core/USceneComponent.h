@@ -5,17 +5,11 @@
 
 class USceneComponent :public UActorComponent {
 public:
-	virtual void Update();
-	virtual void Render();
-
-	// 렌더링 관련
-private:
-	bool bVisible = true;
-public:
-	void setVisible(const bool bValue);
+	//virtual void Update();
+	//virtual void Render();
 
 // 물리, 변환 관련
-private:
+protected:
 	// 동기화 어떻게 시키지
 	FVector RelativeLocation;
 	FVector RelativeRotation;
@@ -50,7 +44,7 @@ public:
 	//void UpdateComponentVelocity();
 
 // 상속 관련
-private:
+protected:
 	USceneComponent* AttachParent = nullptr;
 	TArray<USceneComponent*> AttachChildern;
 
