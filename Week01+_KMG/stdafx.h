@@ -19,6 +19,9 @@ using uint32 = unsigned int;
 using FString = std::string;
 using FWString = std::wstring;
 
+#include "FVector.h"
+#include "FMatrix.h"
+
 template <typename T> void SafeRelease(T** ppT) {
 	if (*ppT) {
 		(*ppT)->Release();

@@ -19,6 +19,9 @@
     <Filter Include="소스 파일\Framework\DirectXWrapper">
       <UniqueIdentifier>{63833def-b160-4f3c-83ea-709b42e1f1e7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Framework\Core">
+      <UniqueIdentifier>{704f9afa-8f0c-40b0-b10b-674ee84d0cf9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -45,14 +48,20 @@
     <ClCompile Include="CRenderer.cpp">
       <Filter>소스 파일\Framework</Filter>
     </ClCompile>
-    <ClCompile Include="CEngineStatics.cpp">
-      <Filter>소스 파일\Framework</Filter>
-    </ClCompile>
     <ClCompile Include="UObject.cpp">
-      <Filter>소스 파일\Framework</Filter>
+      <Filter>소스 파일\Framework\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="CEngineStatics.cpp">
+      <Filter>소스 파일\Framework\Core</Filter>
     </ClCompile>
     <ClCompile Include="CObjectMeta.cpp">
-      <Filter>소스 파일\Framework</Filter>
+      <Filter>소스 파일\Framework\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="AActor.cpp">
+      <Filter>소스 파일\Framework\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="UActorComponent.cpp">
+      <Filter>소스 파일\Framework\Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -77,14 +86,20 @@
     <ClInclude Include="CRenderer.h">
       <Filter>소스 파일\Framework</Filter>
     </ClInclude>
-    <ClInclude Include="CEngineStatics.h">
-      <Filter>소스 파일\Framework</Filter>
-    </ClInclude>
     <ClInclude Include="UObject.h">
-      <Filter>소스 파일\Framework</Filter>
+      <Filter>소스 파일\Framework\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="CEngineStatics.h">
+      <Filter>소스 파일\Framework\Core</Filter>
     </ClInclude>
     <ClInclude Include="CObjectMeta.h">
-      <Filter>소스 파일\Framework</Filter>
+      <Filter>소스 파일\Framework\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="AActor.h">
+      <Filter>소스 파일\Framework\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="UActorComponent.h">
+      <Filter>소스 파일\Framework\Core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

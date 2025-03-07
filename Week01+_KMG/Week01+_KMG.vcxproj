@@ -128,6 +128,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AActor.cpp" />
     <ClCompile Include="CBuffer.cpp" />
     <ClCompile Include="CEngineStatics.cpp" />
     <ClCompile Include="CGraphics.cpp" />
@@ -140,9 +141,11 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="CRenderer.cpp" />
+    <ClCompile Include="UActorComponent.cpp" />
     <ClCompile Include="UObject.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AActor.h" />
     <ClInclude Include="CBuffer.h" />
     <ClInclude Include="CEngineStatics.h" />
     <ClInclude Include="CGraphics.h" />
@@ -152,6 +155,7 @@
     <ClInclude Include="CState.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="CRenderer.h" />
+    <ClInclude Include="UActorComponent.h" />
     <ClInclude Include="UObject.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
