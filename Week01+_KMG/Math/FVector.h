@@ -22,7 +22,7 @@ struct FVector {
 		return FVector(x + rhs.x, y + rhs.y, z + rhs.z);
 	}
 	FVector operator/(float scalar) const {
-		if ( scalar == 0 ) return FVector();
+		if ( scalar == 0 ) return FVector::Zero;
 		return FVector(x / scalar, y / scalar, z / scalar);
 	}
 	FVector& operator*=(float scalar) {
@@ -41,6 +41,12 @@ struct FVector {
 		x -= rhs.x;
 		y -= rhs.y;
 		z -= rhs.z;
+		return *this;
+	}
+	FVector& operator/=(float scalar) {
+		x /= scalar;
+		y /= scalar;
+		z /= scalar;
 		return *this;
 	}
 	float Dot(const FVector& rhs) {
