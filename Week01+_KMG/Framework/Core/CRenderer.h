@@ -1,6 +1,5 @@
 #pragma once
-#include "CGraphics.h"
-
+#include "Framework\DirectXWrapper\CGraphics.h"
 class CRenderer {
 private:
 	CRenderer() {};

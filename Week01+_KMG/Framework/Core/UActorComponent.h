@@ -1,5 +1,5 @@
 #pragma once
-#include "UObject.h"
+#include "Framework/Core/UObject.h"
 class UActorComponent :public UObject {
 
 public:

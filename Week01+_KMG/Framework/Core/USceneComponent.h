@@ -1,5 +1,5 @@
 #pragma once
-#include "UActorComponent.h"
+#include "Framework/Core/UActorComponent.h"
 class USceneComponent :public UActorComponent {
 public:
 	FVector4 RelativeLocation;

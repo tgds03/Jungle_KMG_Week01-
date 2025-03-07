@@ -1,7 +1,8 @@
 #include "stdafx.h"
-#include "CRenderer.h"
-#include "FVector.h"
-#include "FMatrix.h"
+#include "Framework/Core/CRenderer.h"
+#include "Math\FVector.h"
+#include "Math\FMatrix.h"
+
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
 	switch (message) {
 	case WM_DESTROY:

@@ -1,6 +1,6 @@
 #pragma once
-#include "UObject.h"
-#include "UActorComponent.h"
+#include "Framework/Core/UObject.h"
+#include "Framework/Core/UActorComponent.h"
 
 class AActor : public UObject {
 private:
