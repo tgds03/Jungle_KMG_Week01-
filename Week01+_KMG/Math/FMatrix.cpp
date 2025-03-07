@@ -7,8 +7,24 @@ const FMatrix FMatrix::Identity = FMatrix({
 	0.f, 0.f, 0.f, 1.f,
 });
 
+const FMatrix FMatrix::Empty = FMatrix({
+	0.f, 0.f, 0.f, 0.f,
+	0.f, 0.f, 0.f, 0.f,
+	0.f, 0.f, 0.f, 0.f,
+	0.f, 0.f, 0.f, 0.f
+});
+
+
 FMatrix::FMatrix(float m[4][4]) {
 	memcpy(this->m, m, sizeof(float) * 4 * 4);
+}
+
+FMatrix::FMatrix(FVector4 r0, FVector4 r1, FVector4 r2, FVector4 r3)
+{
+	this->m[0][0] = r0.x; this->m[0][1] = r0.y; this->m[0][2] = r0.z; this->m[0][3] = r0.w;
+	this->m[1][0] = r1.x; this->m[1][1] = r1.y; this->m[1][2] = r1.z; this->m[1][3] = r1.w;
+	this->m[2][0] = r2.x; this->m[2][1] = r2.y; this->m[2][2] = r2.z; this->m[2][3] = r2.w;
+	this->m[3][0] = r3.x; this->m[3][1] = r3.y; this->m[3][2] = r3.z; this->m[3][3] = r3.w;
 }
 
 FMatrix::FMatrix(FVector4 r[4]) {
@@ -20,13 +36,13 @@ FMatrix::FMatrix(FVector4 r[4]) {
 }
 
 FMatrix::FMatrix(const std::initializer_list<float>& m) {
-	if ( m.size() != 16 ) {
+	if (m.size() != 16) {
 		assert(0);
 		return;
 	}
 	int i = 0;
-	for (auto f: m) {
-		this->m[i/4][i%4] = f;
+	for (auto f : m) {
+		this->m[i / 4][i % 4] = f;
 		++i;
 	}
 }
@@ -67,7 +83,7 @@ FMatrix FMatrix::operator*(const FMatrix& rhs) const {
 		r2().Dot(rhs.c1()), r2().Dot(rhs.c2()), r2().Dot(rhs.c3()), r2().Dot(rhs.c4()),
 		r3().Dot(rhs.c1()), r3().Dot(rhs.c2()), r3().Dot(rhs.c3()), r3().Dot(rhs.c4()),
 		r4().Dot(rhs.c1()), r4().Dot(rhs.c2()), r4().Dot(rhs.c3()), r4().Dot(rhs.c4()),
-	});
+		});
 }
 
 //FVector4 FMatrix::operator*(const FVector4& rhs) const {
@@ -100,8 +116,49 @@ FMatrix FMatrix::Transpose() const {
 		m[0][1], m[1][1], m[2][1], m[3][1],
 		m[0][2], m[1][2], m[2][2], m[3][2],
 		m[0][3], m[1][3], m[2][3], m[3][3],
-	});
+		});
 }
+
+FMatrix FMatrix::Inverse() const
+{
+	// gauss jordan
+	FMatrix A = *this;
+	FMatrix inv = FMatrix::Identity;
+	// 가우스-조던 소거법
+	for (int i = 0; i < 4; i++) {
+		// 피벗이 0이면 행 교환
+		if (A[i][i] == 0) {
+			int swapRow = i + 1;
+			while (swapRow < 4 && A.m[swapRow][i] == 0) swapRow++;
+			if (swapRow == 4)
+			{
+				UE_LOG(L"역행렬이 존재하지 않습니다.");
+				return FMatrix::Empty; // 역행렬 없음
+			}
+			A = A.Swap(i, swapRow);
+			inv = inv.Swap(i, swapRow);
+		}
+
+		// 피벗을 1로 만들기
+		float pivot = A.m[i][i];
+		for (int j = 0; j < 4; j++) {
+			A.m[i][j] /= pivot;
+			inv.m[i][j] /= pivot;
+		}
+
+		// 다른 행의 i열을 0으로 만들기
+		for (int k = 0; k < 4; k++) {
+			if (i == k) continue;
+			float factor = A.m[k][i];
+			for (int j = 0; j < 4; j++) {
+				A.m[k][j] -= factor * A.m[i][j];
+				inv.m[k][j] -= factor * inv.m[i][j];
+			}
+		}
+	}
+	return inv;
+}
+
 
 FMatrix FMatrix::Scale(float sx, float sy, float sz) {
 	return FMatrix({
@@ -110,6 +167,11 @@ FMatrix FMatrix::Scale(float sx, float sy, float sz) {
 		0.f, 0.f, sz, 0.f,
 		0.f, 0.f, 0.f, 1.f
 	});
+}
+
+FMatrix FMatrix::Scale(FVector xyz)
+{
+	return Scale(xyz.x, xyz.y, xyz.z);
 }
 
 FMatrix FMatrix::RotateX(float rx) {
@@ -146,4 +208,28 @@ FMatrix FMatrix::Translate(float tx, float ty, float tz) {
 		0.f, 0.f, 1.f, 0.f,
 		tx, ty, tz, 1.f
 	});
+}
+
+FMatrix FMatrix::Translate(FVector xyz)
+{
+	return Translate(xyz.x, xyz.y, xyz.z);
+}
+
+FMatrix FMatrix::Swap(UINT r1, UINT r2)
+{
+	if (r1 > 4 || r2 > 4) return FMatrix::Empty;
+
+	FMatrix swapped = *this;
+	float tempRow[4] = { m[r1][0], m[r1][1], m[r1][2], m[r1][3] };
+	swapped.m[r1][0] = m[r2][0];
+	swapped.m[r1][1] = m[r2][1];
+	swapped.m[r1][2] = m[r2][2];
+	swapped.m[r1][3] = m[r2][3];
+
+	swapped.m[r1][0] = tempRow[0];
+	swapped.m[r1][1] = tempRow[1];
+	swapped.m[r1][2] = tempRow[2];
+	swapped.m[r1][3] = tempRow[3];
+
+	return swapped;
 }

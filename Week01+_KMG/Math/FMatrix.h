@@ -7,6 +7,7 @@ struct FMatrix {
 public:
 	float m[4][4];
 	FMatrix(float[4][4]);
+	FMatrix(FVector4 r0, FVector4 r1, FVector4 r2, FVector4 r3);
 	FMatrix(FVector4 r[4]);
 	FMatrix(const std::initializer_list<float>& m);
 
@@ -31,13 +32,20 @@ public:
 	FVector4 c4() const;
 
 	FMatrix Transpose() const;
+	FMatrix Inverse() const;
 	friend FVector4 operator*(const FVector4& lhs, const FMatrix& rhs);
 
 public:
 	static const FMatrix Identity;
+	static const FMatrix Empty;
 	static FMatrix Scale(float sx, float sy, float sz);
+	static FMatrix Scale(FVector xyz);
 	static FMatrix RotateX(float rx);
 	static FMatrix RotateY(float ry);
 	static FMatrix RotateZ(float rz);
 	static FMatrix Translate(float tx, float ty, float tz);
+	static FMatrix Translate(FVector xyz);
+
+private:
+	FMatrix Swap(const UINT r1, const UINT r2);
 };
