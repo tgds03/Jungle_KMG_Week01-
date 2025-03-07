@@ -20,8 +20,10 @@ FMatrix::FMatrix(FVector4 r[4]) {
 }
 
 FMatrix::FMatrix(const std::initializer_list<float>& m) {
-	if ( m.size() != 16 ) 
+	if ( m.size() != 16 ) {
+		assert(0);
 		return;
+	}
 	int i = 0;
 	for (auto f: m) {
 		this->m[i/4][i%4] = f;
@@ -68,9 +70,13 @@ FMatrix FMatrix::operator*(const FMatrix& rhs) const {
 	});
 }
 
-FVector4 FMatrix::operator*(const FVector4& rhs) const {
-	return FVector4(rhs.Dot(c1()), rhs.Dot(c2()), rhs.Dot(c3()), rhs.Dot(c4()));
-}
+//FVector4 FMatrix::operator*(const FVector4& rhs) const {
+//	return FVector4(rhs.Dot(c1()), rhs.Dot(c2()), rhs.Dot(c3()), rhs.Dot(c4()));
+//}
+
+FVector4 operator*(const FVector4& lhs, const FMatrix& rhs) {
+	return FVector4(lhs.Dot(rhs.c1()), lhs.Dot(rhs.c2()), lhs.Dot(rhs.c3()), lhs.Dot(rhs.c4()));
+};
 
 FVector4 FMatrix::r1() const { return FVector4(m[0][0], m[0][1], m[0][2], m[0][3]); }
 
@@ -87,6 +93,15 @@ FVector4 FMatrix::c2() const { return FVector4(m[0][1], m[1][1], m[2][1], m[3][1
 FVector4 FMatrix::c3() const { return FVector4(m[0][2], m[1][2], m[2][2], m[3][2]); }
 
 FVector4 FMatrix::c4() const { return FVector4(m[0][3], m[1][3], m[2][3], m[3][3]); }
+
+FMatrix FMatrix::Transpose() const {
+	return FMatrix({
+		m[0][0], m[1][0], m[2][0], m[3][0],
+		m[0][1], m[1][1], m[2][1], m[3][1],
+		m[0][2], m[1][2], m[2][2], m[3][2],
+		m[0][3], m[1][3], m[2][3], m[3][3],
+	});
+}
 
 FMatrix FMatrix::Scale(float sx, float sy, float sz) {
 	return FMatrix({
