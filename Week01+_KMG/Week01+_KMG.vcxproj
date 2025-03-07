@@ -128,7 +128,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AActor.cpp" />
+    <ClCompile Include="AActor.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="CBuffer.cpp" />
     <ClCompile Include="CEngineStatics.cpp" />
     <ClCompile Include="CGraphics.cpp" />
@@ -148,7 +150,9 @@
     <ClCompile Include="USceneComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AActor.h" />
+    <ClInclude Include="AActor.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="CBuffer.h" />
     <ClInclude Include="CEngineStatics.h" />
     <ClInclude Include="CGraphics.h" />
