@@ -22,99 +22,117 @@
     <Filter Include="소스 파일\Framework\Core">
       <UniqueIdentifier>{704f9afa-8f0c-40b0-b10b-674ee84d0cf9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Math">
+      <UniqueIdentifier>{a581bc30-355f-4a47-ba81-59380652d813}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Framework">
+      <UniqueIdentifier>{e735941c-f4a2-47be-96c0-aa66cdac2d53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Framework\Core">
+      <UniqueIdentifier>{3eac0fe0-da59-46fb-877f-bc406903fe44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Framework\DirectXWrapper">
+      <UniqueIdentifier>{c869ec1b-46f8-472c-8282-98511315bd12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Math">
+      <UniqueIdentifier>{706658a1-ca8e-496f-ac6c-e44f88a26aff}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="CGraphics.cpp">
-      <Filter>소스 파일\Framework\DirectXWrapper</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="CBuffer.cpp">
+    <ClCompile Include="Framework\DirectXWrapper\CBuffer.cpp">
       <Filter>소스 파일\Framework\DirectXWrapper</Filter>
     </ClCompile>
-    <ClCompile Include="CInputLayout.cpp">
+    <ClCompile Include="Framework\DirectXWrapper\CGraphics.cpp">
       <Filter>소스 파일\Framework\DirectXWrapper</Filter>
     </ClCompile>
-    <ClCompile Include="CShader.cpp">
+    <ClCompile Include="Framework\DirectXWrapper\CInputLayout.cpp">
       <Filter>소스 파일\Framework\DirectXWrapper</Filter>
     </ClCompile>
-    <ClCompile Include="CState.cpp">
+    <ClCompile Include="Framework\DirectXWrapper\CShader.cpp">
       <Filter>소스 파일\Framework\DirectXWrapper</Filter>
     </ClCompile>
-    <ClCompile Include="CRenderer.cpp">
-      <Filter>소스 파일\Framework</Filter>
+    <ClCompile Include="Framework\DirectXWrapper\CState.cpp">
+      <Filter>소스 파일\Framework\DirectXWrapper</Filter>
     </ClCompile>
-    <ClCompile Include="UObject.cpp">
+    <ClCompile Include="Framework\Core\AActor.cpp">
       <Filter>소스 파일\Framework\Core</Filter>
     </ClCompile>
-    <ClCompile Include="CEngineStatics.cpp">
+    <ClCompile Include="Framework\Core\CEngineStatics.cpp">
       <Filter>소스 파일\Framework\Core</Filter>
     </ClCompile>
-    <ClCompile Include="CObjectMeta.cpp">
+    <ClCompile Include="Framework\Core\CObjectMeta.cpp">
       <Filter>소스 파일\Framework\Core</Filter>
     </ClCompile>
-    <ClCompile Include="AActor.cpp">
+    <ClCompile Include="Framework\Core\CRenderer.cpp">
       <Filter>소스 파일\Framework\Core</Filter>
     </ClCompile>
-    <ClCompile Include="UActorComponent.cpp">
+    <ClCompile Include="Framework\Core\UActorComponent.cpp">
       <Filter>소스 파일\Framework\Core</Filter>
     </ClCompile>
-    <ClCompile Include="FMatrix.cpp">
-      <Filter>소스 파일\Framework</Filter>
+    <ClCompile Include="Framework\Core\UObject.cpp">
+      <Filter>소스 파일\Framework\Core</Filter>
     </ClCompile>
-    <ClCompile Include="USceneComponent.cpp">
-      <Filter>소스 파일\Framework</Filter>
+    <ClCompile Include="Framework\Core\USceneComponent.cpp">
+      <Filter>소스 파일\Framework\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\FMatrix.cpp">
+      <Filter>소스 파일\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\FVector.cpp">
+      <Filter>소스 파일\Math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="CGraphics.h">
-      <Filter>소스 파일\Framework\DirectXWrapper</Filter>
+    <ClInclude Include="Framework\DirectXWrapper\CBuffer.h">
+      <Filter>헤더 파일\Framework\DirectXWrapper</Filter>
     </ClInclude>
-    <ClInclude Include="CBuffer.h">
-      <Filter>소스 파일\Framework\DirectXWrapper</Filter>
+    <ClInclude Include="Framework\DirectXWrapper\CGraphics.h">
+      <Filter>헤더 파일\Framework\DirectXWrapper</Filter>
     </ClInclude>
-    <ClInclude Include="CInputLayout.h">
-      <Filter>소스 파일\Framework\DirectXWrapper</Filter>
+    <ClInclude Include="Framework\DirectXWrapper\CInputLayout.h">
+      <Filter>헤더 파일\Framework\DirectXWrapper</Filter>
     </ClInclude>
-    <ClInclude Include="CShader.h">
-      <Filter>소스 파일\Framework\DirectXWrapper</Filter>
+    <ClInclude Include="Framework\DirectXWrapper\CShader.h">
+      <Filter>헤더 파일\Framework\DirectXWrapper</Filter>
     </ClInclude>
-    <ClInclude Include="CState.h">
-      <Filter>소스 파일\Framework\DirectXWrapper</Filter>
+    <ClInclude Include="Framework\DirectXWrapper\CState.h">
+      <Filter>헤더 파일\Framework\DirectXWrapper</Filter>
     </ClInclude>
-    <ClInclude Include="CRenderer.h">
-      <Filter>소스 파일\Framework</Filter>
+    <ClInclude Include="Framework\Core\AActor.h">
+      <Filter>헤더 파일\Framework\Core</Filter>
     </ClInclude>
-    <ClInclude Include="UObject.h">
-      <Filter>소스 파일\Framework\Core</Filter>
+    <ClInclude Include="Framework\Core\CEngineStatics.h">
+      <Filter>헤더 파일\Framework\Core</Filter>
     </ClInclude>
-    <ClInclude Include="CEngineStatics.h">
-      <Filter>소스 파일\Framework\Core</Filter>
+    <ClInclude Include="Framework\Core\CObjectMeta.h">
+      <Filter>헤더 파일\Framework\Core</Filter>
     </ClInclude>
-    <ClInclude Include="CObjectMeta.h">
-      <Filter>소스 파일\Framework\Core</Filter>
+    <ClInclude Include="Framework\Core\CRenderer.h">
+      <Filter>헤더 파일\Framework\Core</Filter>
     </ClInclude>
-    <ClInclude Include="AActor.h">
-      <Filter>소스 파일\Framework\Core</Filter>
+    <ClInclude Include="Framework\Core\UActorComponent.h">
+      <Filter>헤더 파일\Framework\Core</Filter>
     </ClInclude>
-    <ClInclude Include="UActorComponent.h">
-      <Filter>소스 파일\Framework\Core</Filter>
+    <ClInclude Include="Framework\Core\UObject.h">
+      <Filter>헤더 파일\Framework\Core</Filter>
     </ClInclude>
-    <ClInclude Include="FMatrix.h">
-      <Filter>소스 파일\Framework</Filter>
+    <ClInclude Include="Framework\Core\USceneComponent.h">
+      <Filter>헤더 파일\Framework\Core</Filter>
     </ClInclude>
-    <ClInclude Include="FVector.h">
-      <Filter>소스 파일\Framework</Filter>
+    <ClInclude Include="Math\FMatrix.h">
+      <Filter>헤더 파일\Math</Filter>
     </ClInclude>
-    <ClInclude Include="USceneComponent.h">
-      <Filter>소스 파일\Framework</Filter>
+    <ClInclude Include="Math\FVector.h">
+      <Filter>헤더 파일\Math</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
