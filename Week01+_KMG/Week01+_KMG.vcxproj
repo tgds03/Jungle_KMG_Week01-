@@ -136,8 +136,11 @@
     <ClCompile Include="Framework\Core\CEngineStatics.cpp" />
     <ClCompile Include="Framework\Core\CObjectMeta.cpp" />
     <ClCompile Include="Framework\Core\CRenderer.cpp" />
+    <ClCompile Include="Framework\Core\FVertexSimple.cpp" />
     <ClCompile Include="Framework\Core\UActorComponent.cpp" />
+    <ClCompile Include="Framework\Core\UCubeComp.cpp" />
     <ClCompile Include="Framework\Core\UObject.cpp" />
+    <ClCompile Include="Framework\Core\UPrimitiveComponent.cpp" />
     <ClCompile Include="Framework\Core\USceneComponent.cpp" />
     <ClCompile Include="Framework\DirectXWrapper\CBuffer.cpp" />
     <ClCompile Include="Framework\DirectXWrapper\CGraphics.cpp" />
@@ -150,14 +153,18 @@
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Framework\Core\UStaticMesh.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\Core\AActor.h" />
     <ClInclude Include="Framework\Core\CEngineStatics.h" />
     <ClInclude Include="Framework\Core\CObjectMeta.h" />
     <ClInclude Include="Framework\Core\CRenderer.h" />
+    <ClInclude Include="Framework\Core\FVertexSimple.h" />
     <ClInclude Include="Framework\Core\UActorComponent.h" />
+    <ClInclude Include="Framework\Core\UCubeComp.h" />
     <ClInclude Include="Framework\Core\UObject.h" />
+    <ClInclude Include="Framework\Core\UPrimitiveComponent.h" />
     <ClInclude Include="Framework\Core\USceneComponent.h" />
     <ClInclude Include="Framework\DirectXWrapper\CBuffer.h" />
     <ClInclude Include="Framework\DirectXWrapper\CGraphics.h" />
@@ -167,6 +174,7 @@
     <ClInclude Include="Math\FMatrix.h" />
     <ClInclude Include="Math\FVector.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Framework\Core\UStaticMesh.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
