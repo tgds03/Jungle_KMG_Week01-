@@ -1,24 +1,47 @@
 #pragma once
 #include "Framework/Core/UActorComponent.h"
-class USceneComponent :public UActorComponent {
 
+// 참고 : 함수이름에 Component가 있으면 재귀적으로 계산/호출함
+
+class USceneComponent :public UActorComponent {
 // 물리, 변환 관련
+public:
+	virtual void Update();
+	virtual void Render();
+
 private:
+	// 동기화 어떻게 시키져
 	FVector RelativeLocation;
-	FVector RelatvieRotation;
+	FVector RelativeRotation;
 	FVector RelativeScale3D;
-	FVector ComponentVelocity;
+	//FVector ComponentVelocity;
+	FMatrix ComponentToWorld;
 
 public:
 	FVector GetRelativeLocation() const;
+	FVector4 GetRelativeLocation4() const;
 	FVector GetRelativeRotation() const;
 	FVector GetRelativeScale3D() const; 
-	FVector GetComponentVelocity() const;
+	FMatrix GetRelativeTransform() const;
 
-	void SetRelativeLocation(_In_ FVector Location);
-	void SetRelativeRotation(_In_ FVector Rotation);
-	void SetRelativeScale3D(_In_ FVector Scale3D);
-	void SetComponentVelocity(_In_ FVector Velocity);
+	FVector GetComponentLocation() const;
+	//FVector GetComponentRotation() const;
+	//FVector GetComponentScale() const;
+	FMatrix GetComponentTransform() const;
+	//FVector GetComponentVelocity() const;
+
+	void SetRelativeLocation(_In_ const FVector NewLocation);
+	void SetRelativeRotation(_In_ const FVector NewRotation);
+	void SetRelativeScale3D(_In_ const FVector NewScale3D);
+	//void SetComponentVelocity(_In_ const FVector NewVelocity);
+
+	void SetWorldLocation(_In_ const FVector NewWorldLocation);
+	void SetWorldRotation(_In_ const FVector NewWorldRotation);
+	void SetWorldLocationAndRotation(_In_ const FVector NewWorldLocation);
+	//void SetWorldScale3D(_In_ const FVector NewWorldScale3D);
+	//void SetWorldVelocity(_In_ const FVector NewWorldVelocity);
+
+	//void UpdateComponentVelocity();
 
 // 상속 관련
 private:
