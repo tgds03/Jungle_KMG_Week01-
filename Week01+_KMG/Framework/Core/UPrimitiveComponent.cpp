@@ -9,6 +9,7 @@ void UPrimitiveComponent::Render() {
 	uint32 offset = _vertexBuffer->GetOffset();
 	graphics->GetDeviceContext()->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
 	graphics->GetDeviceContext()->IASetIndexBuffer(_indexBuffer->Get(), DXGI_FORMAT_R32_UINT, 0);
-
+	FMatrix m = Transformation();
+	CRenderer::Instance()->SetConstantBuffer(m);
 	graphics->GetDeviceContext()->DrawIndexed(indices.size(), 0, 0);
 }

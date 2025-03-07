@@ -3,6 +3,7 @@
 #include "Framework\DirectXWrapper\CInputLayout.h"
 #include "Framework\DirectXWrapper\CGraphics.h"
 #include "Framework/DirectXWrapper/CState.h"
+#include "Framework\DirectXWrapper\CBuffer.h"
 
 class CRenderer {
 private:
@@ -27,11 +28,13 @@ public:
 	void SetPixelShader(const FWString filename, FString funcname, FString version);
 	void ResetPixelShader();
 	void SetRasterzierState();
+	void SetConstantBuffer(FMatrix matrix);
 private:
 	CGraphics* _graphics = nullptr;
 	CVertexShader* _vertexShader = nullptr;
 	CPixelShader* _pixelShader = nullptr;
 	CInputLayout* _inputLayout = nullptr;
 	CRasterzierState* _rasterizerState = nullptr;
+	CConstantBuffer<FMatrix>* _constantBuffer = nullptr;
 };
 

@@ -3,6 +3,8 @@
 
 void CRenderer::Init(HWND hWnd) {
 	_graphics = new CGraphics(hWnd);
+	_constantBuffer = new CConstantBuffer<FMatrix>(_graphics->GetDevice(), _graphics->GetDeviceContext());
+	_constantBuffer->Create();
 	SetVertexShader(L"Shader.hlsl", "VS", "vs_5_0");
 	SetPixelShader(L"Shader.hlsl", "PS", "ps_5_0");
 	SetRasterzierState();
@@ -50,7 +52,14 @@ void CRenderer::ResetPixelShader() {
 
 void CRenderer::SetRasterzierState() {
 	_rasterizerState = new CRasterzierState(_graphics->GetDevice());
+	_rasterizerState->Create();
 	_graphics->GetDeviceContext()->RSSetState(_rasterizerState->Get());
+}
+
+void CRenderer::SetConstantBuffer(FMatrix matrix) {
+	_constantBuffer->CopyData(matrix);
+	ID3D11Buffer* constantBuffer = _constantBuffer->Get();
+	_graphics->GetDeviceContext()->VSSetConstantBuffers(0, 1, &constantBuffer);
 }
 
 

@@ -1,23 +1,35 @@
-// ShaderW0.hlsl
+cbuffer TransformBuffer : register(b0)
+{
+    matrix WorldMatrix; // 4x4 변환 행렬
+};
+
 struct VS_INPUT
 {
-    float4 position : POSITION; // Input position from vertex buffer
-    float4 color : COLOR; // Input color from vertex buffer
+    float3 Position : POSITION;
+    float4 Color : COLOR;
 };
-struct PS_INPUT
+
+struct VS_OUTPUT
 {
-    float4 position : SV_POSITION; // Transformed position to pass to the pixel shader
-    float4 color : COLOR; // Color to pass to the pixel shader
+    float4 Position : SV_POSITION;
+    float4 Color : COLOR;
 };
-PS_INPUT VS(VS_INPUT input)
+
+VS_OUTPUT VS(VS_INPUT input)
 {
-    PS_INPUT output;
-    output.position = input.position;
-    output.color = input.color;
+    VS_OUTPUT output;
+    
+    // 정점 좌표를 4D 벡터로 변환 후 행렬 곱
+    output.Position = mul(float4(input.Position, 1.0f), WorldMatrix);
+    //output.Position = float4(input.Position, 1.0f);
+    
+    // 정점 색상을 그대로 전달
+    output.Color = input.Color;
+    
     return output;
 }
-float4 PS(PS_INPUT input) : SV_TARGET
+
+float4 PS(VS_OUTPUT input) : SV_TARGET
 {
-    // Output the color directly
-    return input.color;
+    return input.Color; // 컬러 출력
 }
