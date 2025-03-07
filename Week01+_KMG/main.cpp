@@ -28,7 +28,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		nullptr, nullptr, hInstance, nullptr
 	);
 
-
 	CRenderer::Instance()->Init(hWnd);
 	MSG msg = {};
 	while (msg.message != WM_QUIT) {
