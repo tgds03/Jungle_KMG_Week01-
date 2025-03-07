@@ -2,6 +2,8 @@
 #include "Framework/Core/CRenderer.h"
 #include "Math\FVector.h"
 #include "Math\FMatrix.h"
+#include "Framework/Core/AActor.h"
+#include "Framework/Core/UCubeComp.h"
 
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
 	switch (message) {
@@ -41,6 +43,15 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		float f4 = 1.f;
 		FVector f5 = FVector::One;
 		
+		AActor* A = new AActor();
+		USceneComponent* S = new USceneComponent;
+		UPrimitiveComponent* P = new UPrimitiveComponent;
+		UCubeComp* C = new UCubeComp;
+
+		A->OnRegister(S);
+		A->OnRegister(P);
+		A->OnRegister(C);
+		A->Render();
 		
 		CRenderer::Instance()->GetGraphics()->RenderEnd();
 	}
