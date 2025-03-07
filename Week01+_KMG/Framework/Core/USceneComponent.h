@@ -4,21 +4,21 @@ class USceneComponent :public UActorComponent {
 
 // 물리, 변환 관련
 private:
-	FVector4 RelativeLocation;
-	FVector4 RelatvieRotation;
-	FVector4 RelativeScale3D;
-	FVector4 ComponentVelocity;
+	FVector RelativeLocation;
+	FVector RelatvieRotation;
+	FVector RelativeScale3D;
+	FVector ComponentVelocity;
 
 public:
-	FVector4 GetRelativeLocation() const;
-	FVector4 GetRelativeRotation() const;
-	FVector4 GetRelativeScale3D() const; 
-	FVector4 GetComponentVelocity() const;
+	FVector GetRelativeLocation() const;
+	FVector GetRelativeRotation() const;
+	FVector GetRelativeScale3D() const; 
+	FVector GetComponentVelocity() const;
 
-	void SetRelativeLocation(_In_ FVector4 Location);
-	void SetRelativeRotation(_In_ FVector4 Rotation);
-	void SetRelativeScale3D(_In_ FVector4 Scale3D);
-	void SetComponentVelocity(_In_ FVector4 Velocity);
+	void SetRelativeLocation(_In_ FVector Location);
+	void SetRelativeRotation(_In_ FVector Rotation);
+	void SetRelativeScale3D(_In_ FVector Scale3D);
+	void SetComponentVelocity(_In_ FVector Velocity);
 
 // 상속 관련
 private:

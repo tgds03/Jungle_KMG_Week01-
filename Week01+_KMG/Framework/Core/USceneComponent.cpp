@@ -1,42 +1,42 @@
 #include "stdafx.h"
 #include "USceneComponent.h"
 
-FVector4 USceneComponent::GetRelativeLocation() const
+FVector USceneComponent::GetRelativeLocation() const
 {
 	return RelativeLocation;
 }
 
-FVector4 USceneComponent::GetRelativeRotation() const
+FVector USceneComponent::GetRelativeRotation() const
 {
 	return RelatvieRotation;
 }
 
-FVector4 USceneComponent::GetRelativeScale3D() const
+FVector USceneComponent::GetRelativeScale3D() const
 {
 	return RelativeScale3D;
 }
 
-FVector4 USceneComponent::GetComponentVelocity() const
+FVector USceneComponent::GetComponentVelocity() const
 {
 	return ComponentVelocity;
 }
 
-void USceneComponent::SetRelativeLocation(_In_ FVector4 Location)
+void USceneComponent::SetRelativeLocation(_In_ FVector Location)
 {
 	RelativeLocation = Location;
 }
 
-void USceneComponent::SetRelativeRotation(_In_ FVector4 Rotation)
+void USceneComponent::SetRelativeRotation(_In_ FVector Rotation)
 {
 	RelatvieRotation = Rotation;
 }
 
-void USceneComponent::SetRelativeScale3D(_In_ FVector4 Scale3D)
+void USceneComponent::SetRelativeScale3D(_In_ FVector Scale3D)
 {
 	RelativeScale3D = Scale3D;
 }
 
-void USceneComponent::SetComponentVelocity(_In_ FVector4 Velocity)
+void USceneComponent::SetComponentVelocity(_In_ FVector Velocity)
 {
 	ComponentVelocity = Velocity;
 }
