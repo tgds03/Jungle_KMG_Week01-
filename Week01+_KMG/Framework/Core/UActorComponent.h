@@ -5,7 +5,7 @@ class UActorComponent :public UObject {
 public:
 	UActorComponent() {};
 
-	//virtual void Update();
+	virtual void Update();
 	//virtual void Render();
 };
 

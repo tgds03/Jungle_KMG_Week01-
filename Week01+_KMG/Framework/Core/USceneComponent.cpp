@@ -1,11 +1,11 @@
 #include "stdafx.h"
 #include "USceneComponent.h"
 
-//void USceneComponent::Update()
-//{
-//	UActorComponent::Update();
-//}
-//
+void USceneComponent::Update()
+{
+	UActorComponent::Update();
+}
+
 //void USceneComponent::Render()
 //{
 //	UActorComponent::Render();

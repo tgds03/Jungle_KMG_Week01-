@@ -5,7 +5,7 @@
 
 class USceneComponent :public UActorComponent {
 public:
-	//virtual void Update();
+	virtual void Update();
 	//virtual void Render();
 
 // 물리, 변환 관련
