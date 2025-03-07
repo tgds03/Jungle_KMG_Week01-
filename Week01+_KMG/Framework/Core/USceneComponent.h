@@ -30,7 +30,7 @@ public:
 	void GetChildrenComponents(_Out_ TArray<USceneComponent*>& Children) const; // 재귀로 아래의 모든 children 반환
 	USceneComponent* GetAttachParent() const;
 	void GetParentComponents(_Out_ TArray<USceneComponent*>& Parents) const; // 재귀로 root까지 반환
-
+	
 	void SetupAttachment(_In_ TArray<USceneComponent*>& Children); // 자식 설정 실패 가능
 
 	// 부모자식 관계를 실제로 정하는 이 함수 뿐임
@@ -40,3 +40,18 @@ public:
 	//void AttachChildren(_In_ USceneComponent* Child);
 	//void SetAttachParent(_In_ USceneComponent* Parent);
 };
+
+// 테스트용 코드
+//USceneComponent* s1, * s2, * s3, * s4, * s5;
+//s1 = new USceneComponent;
+//s2 = new USceneComponent;
+//s3 = new USceneComponent;
+//s4 = new USceneComponent;
+//s5 = new USceneComponent;
+//
+//s5->AttachToComponent(s4);
+//s4->AttachToComponent(s2);
+//s3->AttachToComponent(s2);
+//s2->AttachToComponent(s1);
+//
+//int res = s5->AttachToComponent(s3);

@@ -21,22 +21,22 @@ FVector4 USceneComponent::GetComponentVelocity() const
 	return ComponentVelocity;
 }
 
-void USceneComponent::SetRelativeLocation(FVector4 Location)
+void USceneComponent::SetRelativeLocation(_In_ FVector4 Location)
 {
 	RelativeLocation = Location;
 }
 
-void USceneComponent::SetRelativeRotation(FVector4 Rotation)
+void USceneComponent::SetRelativeRotation(_In_ FVector4 Rotation)
 {
 	RelatvieRotation = Rotation;
 }
 
-void USceneComponent::SetRelativeScale3D(FVector4 Scale3D)
+void USceneComponent::SetRelativeScale3D(_In_ FVector4 Scale3D)
 {
 	RelativeScale3D = Scale3D;
 }
 
-void USceneComponent::SetComponentVelocity(FVector4 Velocity)
+void USceneComponent::SetComponentVelocity(_In_ FVector4 Velocity)
 {
 	ComponentVelocity = Velocity;
 }
@@ -49,7 +49,7 @@ const TArray<USceneComponent*>& USceneComponent::GetAttachChildren() const
 	return AttachChildern;
 }
 
-void USceneComponent::GetChildrenComponents(TArray<USceneComponent*>& Children) const
+void USceneComponent::GetChildrenComponents(_Out_ TArray<USceneComponent*>& Children) const
 {
 	Children.clear();
 	for (auto& child : Children)
@@ -65,7 +65,7 @@ USceneComponent* USceneComponent::GetAttachParent() const
 	return AttachParent;
 }
 
-void USceneComponent::GetParentComponents(TArray<USceneComponent*>& Parents) const
+void USceneComponent::GetParentComponents(_Out_ TArray<USceneComponent*>& Parents) const
 {
 	Parents.clear();
 
@@ -79,7 +79,7 @@ void USceneComponent::GetParentComponents(TArray<USceneComponent*>& Parents) con
 }
 
 // pass by reference로 메모리 절약
-void USceneComponent::SetupAttachment(TArray<USceneComponent*>& Children)
+void USceneComponent::SetupAttachment(_In_ TArray<USceneComponent*>& Children)
 {
 	AttachChildern.clear();
 
@@ -111,7 +111,7 @@ void USceneComponent::SetupAttachment(TArray<USceneComponent*>& Children)
 //	AttachChildern.push_back(Child);
 //}
 
-bool USceneComponent::AttachToComponent(USceneComponent* Parent)
+bool USceneComponent::AttachToComponent(_In_ USceneComponent* Parent)
 {
 	if (Parent == this)
 	{
@@ -120,15 +120,16 @@ bool USceneComponent::AttachToComponent(USceneComponent* Parent)
 	}
 
 	// parent로 하려는 컴포넌트의 조상에 *this가 있는지 확인
-	TArray<USceneComponent*> parentsOfParent;
-	GetParentComponents(parentsOfParent);
-	if (parentsOfParent.end() != std::find(parentsOfParent.begin(), parentsOfParent.end(), this))
+	TArray<USceneComponent*> parentsOfInput;
+	Parent->GetParentComponents(parentsOfInput);
+	if (parentsOfInput.end() != std::find(parentsOfInput.begin(), parentsOfInput.end(), this))
 	{
 		UE_LOG(L"USceneComponent::AttachToComponent::Descendent를 Parent로 할 수 없습니다.");
 		return false;
 	}
 
 	Parent->AttachChildern.push_back(Parent);
+	AttachParent = Parent;
 	return true;
 
 	//TArray<USceneComponent*> children;
