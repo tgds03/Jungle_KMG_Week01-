@@ -63,6 +63,12 @@
     <ClCompile Include="UActorComponent.cpp">
       <Filter>소스 파일\Framework\Core</Filter>
     </ClCompile>
+    <ClCompile Include="FMatrix.cpp">
+      <Filter>소스 파일\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="USceneComponent.cpp">
+      <Filter>소스 파일\Framework</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -100,6 +106,15 @@
     </ClInclude>
     <ClInclude Include="UActorComponent.h">
       <Filter>소스 파일\Framework\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="FMatrix.h">
+      <Filter>소스 파일\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="FVector.h">
+      <Filter>소스 파일\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="USceneComponent.h">
+      <Filter>소스 파일\Framework</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
