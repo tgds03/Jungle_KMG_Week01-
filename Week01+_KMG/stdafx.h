@@ -7,6 +7,7 @@
 #include <d3d11.h>
 #include <d3dcompiler.h>
 #include <assert.h>
+#include "comdef.h"
 #include <Windows.h>
 
 #include <vector>

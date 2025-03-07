@@ -5,6 +5,7 @@ public:
 	virtual ~CShader() {
 		SafeRelease(&_blob);
 	};
+	void Release();
 
 	virtual void Create(const FWString& path, const FString& name, const FString& version) abstract;
 	ID3DBlob* GetBlob() { return _blob; }

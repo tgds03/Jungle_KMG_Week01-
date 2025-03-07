@@ -4,6 +4,7 @@
 CGraphics::CGraphics(HWND hWnd): _hWnd(hWnd) {
 	CreateDeviceAndSwapChain();
 	CreateRenderTargetView();
+	SetViewport(800.f, 600.f);
 }
 
 CGraphics::~CGraphics() {
@@ -13,6 +14,7 @@ CGraphics::~CGraphics() {
 void CGraphics::RenderBegin() {
 	_deviceContext->OMSetRenderTargets(1, &_renderTargetView, nullptr);
 	_deviceContext->ClearRenderTargetView(_renderTargetView, _clearColor);
+	_deviceContext->RSSetViewports(1, &_viewPort);
 }
 
 void CGraphics::RenderEnd() {
@@ -84,4 +86,13 @@ void CGraphics::CreateRenderTargetView() {
 void CGraphics::ReleaseRenderTargetView() {
 	SafeRelease(&_backBuffer);
 	SafeRelease(&_renderTargetView);
+}
+
+void CGraphics::SetViewport(float width, float height) {
+	_viewPort.TopLeftX = 0;
+	_viewPort.TopLeftY = 0;
+	_viewPort.Width = width;
+	_viewPort.Height = height;
+	_viewPort.MinDepth = 0.f;
+	_viewPort.MaxDepth = 1.f;
 }

@@ -2,6 +2,7 @@
 #include "Framework/Core/CRenderer.h"
 #include "Math\FVector.h"
 #include "Math\FMatrix.h"
+#include "UCubeComponent.h"
 
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
 	switch (message) {
@@ -31,6 +32,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	);
 
 	CRenderer::Instance()->Init(hWnd);
+	UCubeComponent* obj = new UCubeComponent();
 	MSG msg = {};
 	while (msg.message != WM_QUIT) {
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
@@ -38,10 +40,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			DispatchMessage(&msg);
 		}
 		CRenderer::Instance()->GetGraphics()->RenderBegin();
-		float f4 = 1.f;
-		FVector f5 = FVector::One;
-		
-		
+		UActorComponent::RenderAll();
 		CRenderer::Instance()->GetGraphics()->RenderEnd();
 	}
 	return 0;

@@ -15,7 +15,6 @@ public:
 		//CEngineStatics::TotalAllocationBytes += size;
 		return ::operator new(size);
 	}
-
 	void operator delete(void* p) {
 		--CEngineStatics::TotalAllocationCount;
 		//CEngineStatics::TotalAllocationBytes -= size; // ???
