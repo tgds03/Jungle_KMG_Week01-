@@ -73,6 +73,10 @@ struct FVector {
 
 		return FVector();
 	}
+	FVector ProjectOn(FVector vec) const {
+		FVector unit = vec.Normalized();
+		return unit * unit.Dot(*this);
+	}
 };
 
 struct FVector4 {
