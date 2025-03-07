@@ -76,6 +76,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -90,6 +91,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -105,6 +107,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
+      <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -119,6 +122,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -128,45 +132,42 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AActor.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="CBuffer.cpp" />
-    <ClCompile Include="CEngineStatics.cpp" />
-    <ClCompile Include="CGraphics.cpp" />
-    <ClCompile Include="CInputLayout.cpp" />
-    <ClCompile Include="CObjectMeta.cpp" />
-    <ClCompile Include="CShader.cpp" />
-    <ClCompile Include="CState.cpp" />
-    <ClCompile Include="FMatrix.cpp" />
-    <ClCompile Include="FVector.cpp" />
+    <ClCompile Include="Framework\Core\AActor.cpp" />
+    <ClCompile Include="Framework\Core\CEngineStatics.cpp" />
+    <ClCompile Include="Framework\Core\CObjectMeta.cpp" />
+    <ClCompile Include="Framework\Core\CRenderer.cpp" />
+    <ClCompile Include="Framework\Core\UActorComponent.cpp" />
+    <ClCompile Include="Framework\Core\UObject.cpp" />
+    <ClCompile Include="Framework\Core\USceneComponent.cpp" />
+    <ClCompile Include="Framework\DirectXWrapper\CBuffer.cpp" />
+    <ClCompile Include="Framework\DirectXWrapper\CGraphics.cpp" />
+    <ClCompile Include="Framework\DirectXWrapper\CInputLayout.cpp" />
+    <ClCompile Include="Framework\DirectXWrapper\CShader.cpp" />
+    <ClCompile Include="Framework\DirectXWrapper\CState.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Math\FMatrix.cpp" />
+    <ClCompile Include="Math\FVector.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="CRenderer.cpp" />
-    <ClCompile Include="UActorComponent.cpp" />
-    <ClCompile Include="UObject.cpp" />
-    <ClCompile Include="USceneComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AActor.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="CBuffer.h" />
-    <ClInclude Include="CEngineStatics.h" />
-    <ClInclude Include="CGraphics.h" />
-    <ClInclude Include="CInputLayout.h" />
-    <ClInclude Include="CObjectMeta.h" />
-    <ClInclude Include="CShader.h" />
-    <ClInclude Include="CState.h" />
-    <ClInclude Include="FMatrix.h" />
-    <ClInclude Include="FVector.h" />
+    <ClInclude Include="AActor.h" />
+    <ClInclude Include="Framework\Core\AActor.h" />
+    <ClInclude Include="Framework\Core\CEngineStatics.h" />
+    <ClInclude Include="Framework\Core\CObjectMeta.h" />
+    <ClInclude Include="Framework\Core\CRenderer.h" />
+    <ClInclude Include="Framework\Core\UActorComponent.h" />
+    <ClInclude Include="Framework\Core\UObject.h" />
+    <ClInclude Include="Framework\Core\USceneComponent.h" />
+    <ClInclude Include="Framework\DirectXWrapper\CBuffer.h" />
+    <ClInclude Include="Framework\DirectXWrapper\CGraphics.h" />
+    <ClInclude Include="Framework\DirectXWrapper\CInputLayout.h" />
+    <ClInclude Include="Framework\DirectXWrapper\CShader.h" />
+    <ClInclude Include="Framework\DirectXWrapper\CState.h" />
+    <ClInclude Include="Math\FMatrix.h" />
+    <ClInclude Include="Math\FVector.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="CRenderer.h" />
-    <ClInclude Include="UActorComponent.h" />
-    <ClInclude Include="UObject.h" />
-    <ClInclude Include="USceneComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
