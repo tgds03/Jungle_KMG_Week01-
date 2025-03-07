@@ -13,7 +13,7 @@ public:
 	UINT32 GetOffset() { return _offset; }
 	UINT32 GetCount() { return _count; }
 
-	virtual void Create(const std::vector<T>&) abstract;
+	virtual void Create(const TArray<T>&) abstract;
 
 protected:
 	ID3D11Device* _device;
@@ -32,11 +32,11 @@ public:
 	CVertexBuffer(ID3D11Device* device) : Super(device) {};
 	~CVertexBuffer() {};
 
-	void Create(const std::vector<T>& vertices) override;
+	void Create(const TArray<T>& vertices) override;
 };
 
 template <typename T>
-inline void CVertexBuffer<T>::Create(const std::vector<T>& vertices) {
+inline void CVertexBuffer<T>::Create(const TArray<T>& vertices) {
 	this->_stride = sizeof(T);
 	this->_count = static_cast<UINT32>(vertices.size());
 
@@ -58,10 +58,10 @@ public:
 	using Super = CBuffer<UINT32>;
 	CIndexBuffer(ID3D11Device* device) : Super(device) {};
 	~CIndexBuffer() {};
-	void Create(const std::vector<UINT32>& indices) override;
+	void Create(const TArray<UINT32>& indices) override;
 };
 
-inline void CIndexBuffer::Create(const std::vector<UINT32>& indices) {
+inline void CIndexBuffer::Create(const TArray<UINT32>& indices) {
 	this->_stride = sizeof(UINT32);
 	this->_offset = 0;
 	this->_count = static_cast<UINT32>(indices.size());
@@ -85,7 +85,7 @@ public:
 	CConstantBuffer(ID3D11Device* device, ID3D11DeviceContext* deviceContext) : Super(device), _deviceContext(deviceContext) {};
 	~CConstantBuffer() {};
 
-	void Create(const std::vector<T>&);
+	void Create(const TArray<T>&);
 	void Create();
 	void CopyData(const T& data);
 
@@ -94,7 +94,7 @@ protected:
 };
 
 template<typename T>
-inline void CConstantBuffer<T>::Create(const std::vector<T>&) {
+inline void CConstantBuffer<T>::Create(const TArray<T>&) {
 	this->_stride = sizeof(T);
 	this->_offset = 0;
 	this->_count = 0;

@@ -8,7 +8,7 @@ public:
 
 	ID3D11InputLayout* Get() { return _inputLayout; }
 
-	void Create(const std::vector<D3D11_INPUT_ELEMENT_DESC>& descs, ID3DBlob* vsblob);
+	void Create(const TArray<D3D11_INPUT_ELEMENT_DESC>& descs, ID3DBlob* vsblob);
 
 private:
 	ID3D11Device* _device;
