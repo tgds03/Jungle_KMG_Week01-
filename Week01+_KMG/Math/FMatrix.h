@@ -10,6 +10,8 @@ public:
 	FMatrix(FVector4 r0, FVector4 r1, FVector4 r2, FVector4 r3);
 	FMatrix(FVector4 r[4]);
 	FMatrix(const std::initializer_list<float>& m);
+	FMatrix() { *this = FMatrix::Empty; }
+	//FMatrix() { FMatrix({0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,}) }
 
 	FMatrix operator+(const FMatrix& rhs) const;
 	FMatrix operator-(const FMatrix& rhs) const;
