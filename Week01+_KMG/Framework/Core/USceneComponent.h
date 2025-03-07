@@ -4,13 +4,19 @@
 // 참고 : 함수이름에 Component가 있으면 재귀적으로 계산/호출함
 
 class USceneComponent :public UActorComponent {
-// 물리, 변환 관련
 public:
 	virtual void Update();
 	virtual void Render();
 
+	// 렌더링 관련
 private:
-	// 동기화 어떻게 시키져
+	bool bVisible = true;
+public:
+	void setVisible(const bool bValue);
+
+// 물리, 변환 관련
+private:
+	// 동기화 어떻게 시키지
 	FVector RelativeLocation;
 	FVector RelativeRotation;
 	FVector RelativeScale3D;

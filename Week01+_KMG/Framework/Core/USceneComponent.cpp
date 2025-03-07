@@ -1,6 +1,11 @@
 #include "stdafx.h"
 #include "USceneComponent.h"
 
+void USceneComponent::setVisible(const bool bValue)
+{
+	bVisible = bValue;
+}
+
 void USceneComponent::Update()
 {
 	UActorComponent::Update();
