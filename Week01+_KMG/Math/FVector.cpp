@@ -5,3 +5,6 @@ const FVector FVector::Forward = FVector(0, 0, 1);
 const FVector FVector::Right = FVector(1, 0, 0);
 const FVector FVector::One = FVector(1, 1, 1);
 const FVector FVector::Zero = FVector(0, 0, 0);
+
+const FVector4 FVector4::One = FVector4(1, 1, 1, 1);
+const FVector4 FVector4::Zero = FVector4(0, 0, 0, 0);

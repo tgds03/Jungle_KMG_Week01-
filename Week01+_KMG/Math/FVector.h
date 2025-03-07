@@ -81,6 +81,8 @@ struct FVector {
 
 struct FVector4 {
 	float x, y, z, w;
+	static const FVector4 One;
+	static const FVector4 Zero;
 	FVector4(float _x = 0, float _y = 0, float _z = 0, float _w = 0) : x(_x), y(_y), z(_z), w(_w) {}
 	FVector4(FVector vec, float _w) : x(vec.x), y(vec.y), z(vec.z), w(_w) {} // Add
 	FVector4 operator*(float scalar) const {
@@ -165,5 +167,8 @@ struct FVector4 {
 			return *this / length;
 
 		return FVector4();
+	}
+	FVector xyz() const {
+		return FVector(x, y, z);
 	}
 };
