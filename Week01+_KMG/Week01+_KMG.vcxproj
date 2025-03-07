@@ -145,6 +145,8 @@
     <ClCompile Include="Framework\DirectXWrapper\CInputLayout.cpp" />
     <ClCompile Include="Framework\DirectXWrapper\CShader.cpp" />
     <ClCompile Include="Framework\DirectXWrapper\CState.cpp" />
+    <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Input.h" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Math\FMatrix.cpp" />
     <ClCompile Include="Math\FVector.cpp" />

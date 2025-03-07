@@ -33,14 +33,14 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 	CRenderer::Instance()->Init(hWnd);
 	UCubeComponent* obj = new UCubeComponent();
-	obj->RelativeScale3D = FVector(1, 1, 1);
-	obj->RelativeRotation = FVector(0.5, 0.5, 0.5);
+
 	MSG msg = {};
 	while (msg.message != WM_QUIT) {
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
+		obj->RelativeRotation += FVector(0.01, 0.01, 0.01);
 		CRenderer::Instance()->GetGraphics()->RenderBegin();
 		UActorComponent::RenderAll();
 		CRenderer::Instance()->GetGraphics()->RenderEnd();
