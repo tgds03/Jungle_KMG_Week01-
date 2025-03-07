@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "AActor.h"
+#include "Framework/Core/UPrimitiveComponent.h"
 
 TLinkedList<AActor*> GAActorList;
 
@@ -27,6 +28,9 @@ void AActor::Update() {
 
 void AActor::Render() {
 	for ( auto comp : _components ) {
-		comp->Render();
+		if (UPrimitiveComponent* renderable = dynamic_cast<UPrimitiveComponent*>(comp))
+		{
+			renderable->Render();
+		}
 	}
 }
