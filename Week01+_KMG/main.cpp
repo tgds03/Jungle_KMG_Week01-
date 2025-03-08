@@ -3,6 +3,7 @@
 #include "Math\FVector.h"
 #include "Math\FMatrix.h"
 #include "UCubeComponent.h"
+#include "UWorld.h"
 
 const int TARGET_FPS = 60;
 const double TARGET_FRAMERATE = 1000.0 / TARGET_FPS;
@@ -37,7 +38,10 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	CRenderer::Instance()->Init(hWnd);
 	Time::Instance()->Init();
 	Input::Instance()->Init(hInstance, hWnd, 800, 600);
-	UCubeComponent* obj = new UCubeComponent();
+	//UCubeComponent* obj = new UCubeComponent();
+	UWorld* mainScene = new UWorld();
+	UCubeComponent* obj = mainScene->SpawnActor<UCubeComponent>();
+	USphereComponent* sphere = mainScene->SpawnActor<USphereComponent>();
 
 	MSG msg = {};
 	while (msg.message != WM_QUIT) {
@@ -47,9 +51,10 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
-		UActorComponent::UpdateAll();
+		
 		CRenderer::Instance()->GetGraphics()->RenderBegin();
-		UActorComponent::RenderAll();
+		mainScene->Update();
+		mainScene->Render();
 		CRenderer::Instance()->GetGraphics()->RenderEnd();
 		Time::Instance()->_query_frame_end_time();
 		/*do {

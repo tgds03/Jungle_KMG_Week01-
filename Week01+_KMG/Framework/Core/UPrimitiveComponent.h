@@ -2,6 +2,7 @@
 #include "USceneComponent.h"
 #include "./Framework/DirectXWrapper/CBuffer.h"
 #include "./Framework/DirectXWrapper/CInputLayout.h"
+#include "./Framework/Core/CRenderer.h"
 
 class UPrimitiveComponent: public USceneComponent {
 public:

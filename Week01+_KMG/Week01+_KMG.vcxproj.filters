@@ -106,7 +106,10 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Core\UPrimitiveComponent.cpp">
-      <Filter>소스 파일\Framework</Filter>
+      <Filter>소스 파일\Framework\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="USphereComponent.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -174,7 +177,10 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Core\UPrimitiveComponent.h">
-      <Filter>소스 파일\Framework</Filter>
+      <Filter>헤더 파일\Framework\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="USphereComponent.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
