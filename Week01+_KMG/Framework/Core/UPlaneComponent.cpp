@@ -14,8 +14,8 @@ UPlaneComponent::UPlaneComponent() {
 	
 	indices = 
 	{
-		0, 1, 2,  // 첫 번째 삼각형
-		0, 2, 3   // 두 번째 삼각형
+		0, 2, 1,  // 첫 번째 삼각형
+		0, 3, 2   // 두 번째 삼각형
 	};
 
 	//vertices = {

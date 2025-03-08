@@ -106,6 +106,21 @@ FMatrix USceneComponent::GetComponentTransform() const
 	}
 }
 
+FVector USceneComponent::GetComponentX() const
+{
+	return (FVector4(1, 0, 0, 0) * GetComponentTransform()).xyz();
+}
+
+FVector USceneComponent::GetComponentY() const
+{
+	return (FVector4(0, 1, 0, 0) * GetComponentTransform()).xyz();
+}
+
+FVector USceneComponent::GetComponentZ() const
+{
+	return (FVector4(0, 0, 1, 0) * GetComponentTransform()).xyz();
+}
+
 void USceneComponent::SetRelativeLocation(const FVector NewLocation)
 {
 	RelativeLocation = NewLocation;

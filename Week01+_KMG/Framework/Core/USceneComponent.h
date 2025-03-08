@@ -5,13 +5,14 @@ public:
 	USceneComponent() {}
 	virtual void Update();
 	//virtual void Render();
-public:
+protected:
 	FVector RelativeLocation = FVector::Zero;
 	FVector RelativeRotation = FVector::Zero;
 	FVector RelativeScale3D = FVector::One;
 
 	//FMatrix Transformation();
 
+public:
 	FVector Right();
 	FVector Up();
 	FVector Front();
@@ -30,6 +31,9 @@ public:
 	//FVector GetComponentScale() const;
 	FMatrix GetComponentTransform() const;
 	//FVector GetComponentVelocity() const;
+	FVector GetComponentX() const;
+	FVector GetComponentY() const;
+	FVector GetComponentZ() const;
 
 	void SetRelativeLocation(const FVector NewLocation);
 	void SetRelativeLocationX(const float NewLocX);

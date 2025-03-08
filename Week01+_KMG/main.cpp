@@ -47,13 +47,17 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	UCoordArrowComponent* arrow = new UCoordArrowComponent();
 	UCoordArrowComponent* worldArrow = new UCoordArrowComponent();
 
+	CRenderer::Instance()->GetCamera()->SetRelativeLocation(FVector(0, 0, -5));
 
 	worldArrow->SetRelativeScale3D({ 100,100,100 });
 	ground->SetRelativeScale3D({ 10,5,3 });
-	ground->SetRelativeLocation({ 0,-10,0 });
-	arrow->SetRelativeLocation({ 0,5,0 });
-	obj->AttachToComponent(arrow);
-	arrow->SetRelativeRotation({ 0,1,0 });
+	//ground->SetRelativeLocation({ 0,-10,0 });
+	arrow->SetRelativeScale3D({ 3,3,3 });
+
+
+	arrow->SetRelativeLocation({ 0,0,0 });
+	arrow->AttachToComponent(obj);
+	obj->SetRelativeRotation({ 0,1,0 });
 
 	MSG msg = {};
 	while (msg.message != WM_QUIT) {
@@ -68,17 +72,34 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_J))
 		{
-			arrow->SetRelativeLocation(arrow->GetRelativeLocation() + FVector( - 1, 0, 0 ));
+			obj->SetRelativeLocation(obj->GetRelativeLocation() - obj->Right());
 		}
 		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_L))
 		{
-			arrow->SetRelativeLocation(arrow->GetRelativeLocation() + FVector( 1,0,0 ));
+			obj->SetRelativeLocation(obj->GetRelativeLocation() + obj->Right());
 		}
-
-
+		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_I))
+		{
+			obj->SetRelativeLocation(obj->GetRelativeLocation() + obj->Front());
+		}
+		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_K))
+		{
+			obj->SetRelativeLocation(obj->GetRelativeLocation() - obj->Front());
+		}
+		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_O))
+		{
+			obj->SetRelativeLocation(obj->GetRelativeLocation() + obj->Up());
+		}
+		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_U))
+		{
+			obj->SetRelativeLocation(obj->GetRelativeLocation() - obj->Up());
+		}
+		CRenderer::Instance()->GetCamera()->PrintLoc(L"CAM");
+		obj->PrintLoc(L"obj");
+		
 		// 테스트용
 		////////////////////////////////
-
+		
 		UActorComponent::UpdateAll();
 		CRenderer::Instance()->GetGraphics()->RenderBegin();
 		guiController->NewFrame();
