@@ -16,7 +16,9 @@ class UWorld :
     public UObject
 {
 public:
-    UWorld() {}
+    UWorld() {
+        AddActor(CRenderer::Instance()->GetCamera());
+    }
     ~UWorld();
 
     void Update();
