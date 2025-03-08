@@ -2,8 +2,8 @@
 #include "Framework/Core/CRenderer.h"
 #include "Math\FVector.h"
 #include "Math\FMatrix.h"
-#include "UCubeComponent.h"
-#include "UPlaneComponent.h"
+#include "Framework/Core/UCubeComponent.h"
+#include "Framework/Core/UPlaneComponent.h"
 
 const int TARGET_FPS = 60;
 const double TARGET_FRAMERATE = 1000.0 / TARGET_FPS;
