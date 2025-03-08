@@ -13,8 +13,8 @@ public:
 
 private:
 	HWND _hWnd;
-	uint32 _width = 800;
-	uint32 _height = 600;
+	uint32 _width = SCR_WIDTH;
+	uint32 _height = SCR_HEIGHT;
 
 	ID3D11Device* _device = nullptr;
 	ID3D11DeviceContext* _deviceContext = nullptr;

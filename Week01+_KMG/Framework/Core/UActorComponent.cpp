@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "UActorComponent.h"
+#include "UPrimitiveComponent.h"
 
 TLinkedList<UActorComponent*> GUActorComponentList;
 
@@ -19,7 +19,10 @@ void UActorComponent::UpdateAll() {
 
 void UActorComponent::RenderAll() {
 	for ( auto comp : GUActorComponentList ) {
-		comp->Render();
+		if (UPrimitiveComponent* drawable = dynamic_cast<UPrimitiveComponent*>(comp))
+		{
+			drawable->Render();
+		}
 	}
 }
 

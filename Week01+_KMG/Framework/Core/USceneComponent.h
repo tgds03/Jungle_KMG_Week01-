@@ -5,11 +5,18 @@ public:
 	USceneComponent() {}
 	virtual void Update();
 	//virtual void Render();
-public:
+protected:
 	FVector RelativeLocation = FVector::Zero;
 	FVector RelativeRotation = FVector::Zero;
 	FVector RelativeScale3D = FVector::One;
 
+	//FMatrix Transformation();
+
+public:
+	FVector Right();
+	FVector Up();
+	FVector Front();
+	static const FVector PseudoUp;
 	//FMatrix Transformation();
 
 public:
@@ -24,6 +31,9 @@ public:
 	//FVector GetComponentScale() const;
 	FMatrix GetComponentTransform() const;
 	//FVector GetComponentVelocity() const;
+	FVector GetComponentX() const;
+	FVector GetComponentY() const;
+	FVector GetComponentZ() const;
 
 	void SetRelativeLocation(const FVector NewLocation);
 	void SetRelativeLocationX(const float NewLocX);
@@ -47,23 +57,23 @@ public:
 
 	//void UpdateComponentVelocity();
 
-// »ó¼Ó °ü·Ã
+// ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 protected:
 	USceneComponent* AttachParent = nullptr;
 	TArray<USceneComponent*> AttachChildern;
 
 public:
-	const TArray<USceneComponent*>& GetAttachChildren() const; // Á÷Á¢ÀûÀ¸·Î ºÙÀº children¸¸ ¹ÝÈ¯
-	void GetChildrenComponents(TArray<USceneComponent*>& Children) const; // Àç±Í·Î ¾Æ·¡ÀÇ ¸ðµç children ¹ÝÈ¯
+	const TArray<USceneComponent*>& GetAttachChildren() const; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ childrenï¿½ï¿½ ï¿½ï¿½È¯
+	void GetChildrenComponents(TArray<USceneComponent*>& Children) const; // ï¿½ï¿½Í·ï¿½ ï¿½Æ·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ children ï¿½ï¿½È¯
 	USceneComponent* GetAttachParent() const;
-	void GetParentComponents(TArray<USceneComponent*>& Parents) const; // Àç±Í·Î root±îÁö ¹ÝÈ¯
+	void GetParentComponents(TArray<USceneComponent*>& Parents) const; // ï¿½ï¿½Í·ï¿½ rootï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
 
-	void SetupAttachment(TArray<USceneComponent*>& Children); // ÀÚ½Ä ¼³Á¤ ½ÇÆÐ °¡´É
+	void SetupAttachment(TArray<USceneComponent*>& Children); // ï¿½Ú½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-	// ºÎ¸ðÀÚ½Ä °ü°è¸¦ ½ÇÁ¦·Î Á¤ÇÏ´Â ÀÌ ÇÔ¼ö »ÓÀÓ
-	bool AttachToComponent(USceneComponent* Parent); // ºÎ¸ð ¼³Á¤ ½ÇÆÐÇßÀ»¶© false
+	// ï¿½Î¸ï¿½ï¿½Ú½ï¿½ ï¿½ï¿½ï¿½è¸¦ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½
+	bool AttachToComponent(USceneComponent* Parent); // ï¿½Î¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ false
 
-// µð¹ö±×
+// ï¿½ï¿½ï¿½ï¿½ï¿½
 public:
 	void PrintLoc(std::wstring msg) const;
 };

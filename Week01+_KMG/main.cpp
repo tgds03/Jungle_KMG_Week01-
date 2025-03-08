@@ -2,7 +2,9 @@
 #include "Framework/Core/CRenderer.h"
 #include "Math\FVector.h"
 #include "Math\FMatrix.h"
-#include "UCubeComponent.h"
+#include "Framework/Core/UCubeComponent.h"
+#include "Framework/Core/UPlaneComponent.h"
+#include "Framework/Core/UCoordArrowComponent.h"
 
 const int TARGET_FPS = 60;
 const double TARGET_FRAMERATE = 1000.0 / TARGET_FPS;
@@ -34,62 +36,32 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 	HWND hWnd = CreateWindow(winClassName, winTitleName,
 		WS_POPUP | WS_VISIBLE | WS_OVERLAPPEDWINDOW,
-		CW_USEDEFAULT, CW_USEDEFAULT, 800, 600,
+		CW_USEDEFAULT, CW_USEDEFAULT, SCR_WIDTH, SCR_HEIGHT,
 		nullptr, nullptr, hInstance, nullptr
 	);
 
-	CRenderer::Instance()->Init(hWnd); // maincamera ����
+	CRenderer::Instance()->Init(hWnd); // maincamera ����
 	Time::Instance()->Init();
 	Input::Instance()->Init(hInstance, hWnd, 800, 600);
+	GuiController* guiController = new GuiController(hWnd, CRenderer::Instance()->GetGraphics());
+
+
+	UPlaneComponent* ground = new UPlaneComponent();
 	UCubeComponent* obj = new UCubeComponent();
-	UCubeComponent* stick = new UCubeComponent();
+	UCoordArrowComponent* arrow = new UCoordArrowComponent();
+	UCoordArrowComponent* worldArrow = new UCoordArrowComponent();
 
-	USceneComponent* world = new USceneComponent();
+	CRenderer::Instance()->GetCamera()->SetRelativeLocation(FVector(0, 0, -5));
 
-	USceneComponent* cam = CRenderer::Instance()->GetCamera();
-
-	cam->AttachToComponent(world);
-	obj->AttachToComponent(world);
-	stick->AttachToComponent(cam);
-	stick->SetRelativeLocation({0, 0, -10});
-
-	//std::vector<USceneComponent*> u;
-	//for (int i = 0; i < 6; i++)
-	//{
-	//	u.push_back(new USceneComponent);
-	//}
-
-	//std::vector<USceneComponent*> childs;
-	//childs.push_back(u[1]);
-	//u[0]->SetupAttachment(childs);
+	worldArrow->SetRelativeScale3D({ 100,100,100 });
+	ground->SetRelativeScale3D({ 10,5,3 });
+	//ground->SetRelativeLocation({ 0,-10,0 });
+	arrow->SetRelativeScale3D({ 3,3,3 });
 
 
-	//u[1]->AttachToComponent(u[0]);
-	//u[2]->AttachToComponent(u[1]);
-	//u[3]->AttachToComponent(u[1]);
-	//u[4]->AttachToComponent(u[3]);
-	//u[5]->AttachToComponent(u[3]);
-
-
-	//u[5]->SetRelativeLocation({ 2000, 2000, 2000 });
-	//u[0]->SetRelativeLocation({ 1,1,1 });
-	//u[1]->SetRelativeLocation({ 10,10,10 });
-	//u[4]->SetRelativeLocation({ 1000,1000,1000 });
-	//u[2]->SetRelativeLocation({ 100,100,100 });
-	//u[3]->SetRelativeLocation({ 200,200,200 });
-
-	////u[1]->SetRelativeScale3D({ 2,2,2 });
-
-	//u[1]->SetRelativeScale3D({ 2,2,2 });
-
-	//for (int i = 0; i < 6; i++)
-	//{
-	//	//u[i]->PrintLoc(std::wstring());
-	//	u[i]->PrintLoc(std::wstring(L"u[") + std::to_wstring(i) + std::wstring(L"]"));
-	//	//comp->Update();
-	//}
-
-	//obj->AttachToComponent(CRenderer::Instance()->GetCamera());
+	arrow->SetRelativeLocation({ 0,0,0 });
+	arrow->AttachToComponent(obj);
+	obj->SetRelativeRotation({ 0,1,0 });
 
 	MSG msg = {};
 	while (msg.message != WM_QUIT) {
@@ -99,12 +71,48 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
+		////////////////////////////////
+		// CUBE - ARROW 따라가는지 테스트용
+
+		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_J))
+		{
+			obj->SetRelativeLocation(obj->GetRelativeLocation() - obj->Right());
+		}
+		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_L))
+		{
+			obj->SetRelativeLocation(obj->GetRelativeLocation() + obj->Right());
+		}
+		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_I))
+		{
+			obj->SetRelativeLocation(obj->GetRelativeLocation() + obj->Front());
+		}
+		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_K))
+		{
+			obj->SetRelativeLocation(obj->GetRelativeLocation() - obj->Front());
+		}
+		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_O))
+		{
+			obj->SetRelativeLocation(obj->GetRelativeLocation() + obj->Up());
+		}
+		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_U))
+		{
+			obj->SetRelativeLocation(obj->GetRelativeLocation() - obj->Up());
+		}
+		CRenderer::Instance()->GetCamera()->PrintLoc(L"CAM");
+		obj->PrintLoc(L"obj");
+		
+		// 테스트용
+		////////////////////////////////
+		
 		UActorComponent::UpdateAll();
 		CRenderer::Instance()->GetGraphics()->RenderBegin();
-		//obj->PrintLoc(L"OBJ");
-		//stick->PrintLoc(L"stick");
-		//CRenderer::Instance()->GetCamera()->PrintLoc(L"CAM");
+
+		obj->PrintLoc(L"OBJ");
+		CRenderer::Instance()->GetCamera()->PrintLoc(L"CAM");
+
+		guiController->NewFrame();
 		UActorComponent::RenderAll();
+		guiController->RenderFrame();
 		CRenderer::Instance()->GetGraphics()->RenderEnd();
 		Time::Instance()->_query_frame_end_time();
 		/*do {
