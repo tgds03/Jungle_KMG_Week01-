@@ -66,4 +66,5 @@ UCubeComponent::~UCubeComponent() {
 
 void UCubeComponent::Update() {
 	RelativeRotation += FVector(1.f, 1.f, 1.f) * Time::GetDeltaTime();
+	RelativeLocation.x = sin(Time::GetElapsedTime());
 }
