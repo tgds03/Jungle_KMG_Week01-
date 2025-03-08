@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "USceneComponent.h"
+const FVector USceneComponent::PseudoUp = { 0,1,0 };
 
 void USceneComponent::Update()
 {

@@ -4,6 +4,7 @@ class UCameraComponent :public USceneComponent {
 public:
 	virtual void Update();
 	virtual void Render();
+	FMatrix View();
 	FMatrix PerspectiveProjection();
 	float fieldOfView = 60.f;
 	float aspectRatio = 800.f / 600.f;

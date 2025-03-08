@@ -43,6 +43,12 @@ void UCameraComponent::Render() {
 	ImGui::End();
 }
 
+FMatrix UCameraComponent::View()
+{
+	assert(0);
+	return FMatrix::Identity;
+}
+
 //FMatrix UCameraComponent::InverseTransformation() {
 //	FMatrix m = FMatrix::Translate(-RelativeLocation.x, -RelativeLocation.y, -RelativeLocation.z);
 //	m = m * FMatrix::RotateZ(-RelativeRotation.z);

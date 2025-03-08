@@ -15,6 +15,7 @@ public:
 	FVector Right();
 	FVector Up();
 	FVector Front();
+	static const FVector PseudoUp;
 	//FMatrix Transformation();
 
 public:

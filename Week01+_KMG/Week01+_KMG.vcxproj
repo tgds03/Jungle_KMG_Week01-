@@ -172,6 +172,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Math\FMatrix.cpp" />
     <ClCompile Include="Math\FVector.cpp" />
+    <ClCompile Include="UCoordArrowComponent.cpp" />
     <ClCompile Include="UPlaneComponent.cpp" />
     <FxCompile Include="Shader.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -212,6 +213,7 @@
     <ClInclude Include="Math\FVector.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="UCameraComponent.h" />
+    <ClInclude Include="UCoordArrowComponent.h" />
     <ClInclude Include="UCubeComponent.h" />
     <ClInclude Include="UPlaneComponent.h" />
   </ItemGroup>

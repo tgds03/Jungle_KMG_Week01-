@@ -41,8 +41,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	GuiController* guiController = new GuiController(hWnd, CRenderer::Instance()->GetGraphics());
 
 
-	UCubeComponent* obj = new UCubeComponent();
 	UPlaneComponent* ground = new UPlaneComponent();
+	UCubeComponent* obj = new UCubeComponent();
 
 	MSG msg = {};
 	while (msg.message != WM_QUIT) {
