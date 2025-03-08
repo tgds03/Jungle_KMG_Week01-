@@ -6,16 +6,16 @@ UCubeComponent::UCubeComponent() {
 	vertices =
 	{
 		// Front Face (¾Õ¸é)
-		{ -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 0.0f },
-		{ -0.5f,  0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f },
-		{ 0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 1.0f, 0.0f },
-		{ 0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 0.0f, 0.0f },
+		{ -0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f },
+		{ -0.5f,  0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f },
+		{ 0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 1.0f, 1.0f },
+		{ 0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 0.0f, 1.0f },
 
 		// Back Face (µÞ¸é)
-		{ -0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 0.0f },
-		{ 0.5f, -0.5f,  -0.5f, 0.5f, 0.5f, 0.5f, 0.5f },
+		{ -0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 1.0f },
+		{ 0.5f, -0.5f,  -0.5f, 1.0f, 0.0f, 1.0f, 1.0f },
 		{ -0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f },
-		{ 0.5f,  0.5f,  -0.5f, 0.0f, 0.0f, 0.0f, 0.0f }
+		{ 0.5f,  0.5f,  -0.5f, 0.0f, 0.0f, 0.0f, 1.0f }
 	};
 
 	indices =
@@ -60,6 +60,6 @@ UCubeComponent::UCubeComponent() {
 }
 
 UCubeComponent::~UCubeComponent() {
-	//SafeRelease(&_vertexBuffer);
-	//SafeRelease(&_indexBuffer);
+	delete _vertexBuffer;
+	delete _indexBuffer;
 }

@@ -40,7 +40,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
-		obj->RelativeRotation += FVector(0.01, 0.01, 0.01);
+		obj->RelativeRotation += FVector(0.01, 0.01, 0.02);
 		CRenderer::Instance()->GetGraphics()->RenderBegin();
 		UActorComponent::RenderAll();
 		CRenderer::Instance()->GetGraphics()->RenderEnd();
