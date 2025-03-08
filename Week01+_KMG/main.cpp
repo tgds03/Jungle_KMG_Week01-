@@ -38,6 +38,9 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	CRenderer::Instance()->Init(hWnd);
 	Time::Instance()->Init();
 	Input::Instance()->Init(hInstance, hWnd, 800, 600);
+	GuiController* guiController = new GuiController(hWnd, CRenderer::Instance()->GetGraphics());
+
+
 	UCubeComponent* obj = new UCubeComponent();
 	UPlaneComponent* ground = new UPlaneComponent();
 
@@ -49,10 +52,13 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
+
 		UActorComponent::UpdateAll();
 		CRenderer::Instance()->GetGraphics()->RenderBegin();
+		guiController->NewFrame();
 		UActorComponent::RenderAll();
 		CRenderer::Instance()->GetGraphics()->RenderEnd();
+		guiController->RenderFrame();
 		Time::Instance()->_query_frame_end_time();
 		/*do {
 			Sleep(0);
