@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "USceneComponent.h"
+const FVector USceneComponent::PseudoUp = { 0,1,0 };
 
 void USceneComponent::Update()
 {
@@ -103,6 +104,21 @@ FMatrix USceneComponent::GetComponentTransform() const
 	{
 		return GetRelativeTransform();
 	}
+}
+
+FVector USceneComponent::GetComponentX() const
+{
+	return (FVector4(1, 0, 0, 0) * GetComponentTransform()).xyz();
+}
+
+FVector USceneComponent::GetComponentY() const
+{
+	return (FVector4(0, 1, 0, 0) * GetComponentTransform()).xyz();
+}
+
+FVector USceneComponent::GetComponentZ() const
+{
+	return (FVector4(0, 0, 1, 0) * GetComponentTransform()).xyz();
 }
 
 void USceneComponent::SetRelativeLocation(const FVector NewLocation)

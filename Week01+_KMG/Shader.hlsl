@@ -21,11 +21,13 @@ VS_OUTPUT VS(VS_INPUT input)
     
     // 정점 좌표를 4D 벡터로 변환 후 행렬 곱
     output.Position = mul(float4(input.Position.xyz, 1.f), WorldMatrix);
+    //output.Position.z *= -1;
     //output.Position.xyz /= output.Position.w;
     //output.Position = float4(input.Position, 1.0f);
     
     // 정점 색상을 그대로 전달
     output.Color = input.Color;
+    //output.Color = float4(-output.Position.zzz, 1.0f);
     
     return output;
 }

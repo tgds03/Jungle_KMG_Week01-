@@ -2,8 +2,9 @@
 #include "Framework/Core/CRenderer.h"
 #include "Math\FVector.h"
 #include "Math\FMatrix.h"
-#include "UCubeComponent.h"
-#include "UPlaneComponent.h"
+#include "Framework/Core/UCubeComponent.h"
+#include "Framework/Core/UPlaneComponent.h"
+#include "Framework/Core/UCoordArrowComponent.h"
 
 const int TARGET_FPS = 60;
 const double TARGET_FRAMERATE = 1000.0 / TARGET_FPS;
@@ -31,7 +32,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 	HWND hWnd = CreateWindow(winClassName, winTitleName,
 		WS_POPUP | WS_VISIBLE | WS_OVERLAPPEDWINDOW,
-		CW_USEDEFAULT, CW_USEDEFAULT, 800, 600,
+		CW_USEDEFAULT, CW_USEDEFAULT, SCR_WIDTH, SCR_HEIGHT,
 		nullptr, nullptr, hInstance, nullptr
 	);
 
@@ -41,8 +42,22 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	GuiController* guiController = new GuiController(hWnd, CRenderer::Instance()->GetGraphics());
 
 
-	UCubeComponent* obj = new UCubeComponent();
 	UPlaneComponent* ground = new UPlaneComponent();
+	UCubeComponent* obj = new UCubeComponent();
+	UCoordArrowComponent* arrow = new UCoordArrowComponent();
+	UCoordArrowComponent* worldArrow = new UCoordArrowComponent();
+
+	CRenderer::Instance()->GetCamera()->SetRelativeLocation(FVector(0, 0, -5));
+
+	worldArrow->SetRelativeScale3D({ 100,100,100 });
+	ground->SetRelativeScale3D({ 10,5,3 });
+	//ground->SetRelativeLocation({ 0,-10,0 });
+	arrow->SetRelativeScale3D({ 3,3,3 });
+
+
+	arrow->SetRelativeLocation({ 0,0,0 });
+	arrow->AttachToComponent(obj);
+	obj->SetRelativeRotation({ 0,1,0 });
 
 	MSG msg = {};
 	while (msg.message != WM_QUIT) {
@@ -52,7 +67,39 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
+		////////////////////////////////
+		// CUBE - ARROW 따라가는지 테스트용
 
+		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_J))
+		{
+			obj->SetRelativeLocation(obj->GetRelativeLocation() - obj->Right());
+		}
+		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_L))
+		{
+			obj->SetRelativeLocation(obj->GetRelativeLocation() + obj->Right());
+		}
+		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_I))
+		{
+			obj->SetRelativeLocation(obj->GetRelativeLocation() + obj->Front());
+		}
+		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_K))
+		{
+			obj->SetRelativeLocation(obj->GetRelativeLocation() - obj->Front());
+		}
+		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_O))
+		{
+			obj->SetRelativeLocation(obj->GetRelativeLocation() + obj->Up());
+		}
+		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_U))
+		{
+			obj->SetRelativeLocation(obj->GetRelativeLocation() - obj->Up());
+		}
+		CRenderer::Instance()->GetCamera()->PrintLoc(L"CAM");
+		obj->PrintLoc(L"obj");
+		
+		// 테스트용
+		////////////////////////////////
+		
 		UActorComponent::UpdateAll();
 		CRenderer::Instance()->GetGraphics()->RenderBegin();
 		guiController->NewFrame();
