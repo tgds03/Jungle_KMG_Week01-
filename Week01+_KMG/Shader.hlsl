@@ -1,6 +1,6 @@
 cbuffer TransformBuffer : register(b0)
 {
-    matrix WorldMatrix; // 4x4 변환 행렬
+    row_major matrix WorldMatrix; // 4x4 변환 행렬
 };
 
 struct VS_INPUT

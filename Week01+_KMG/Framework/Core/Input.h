@@ -1,5 +1,6 @@
 #pragma once
-#include "stdafx.h"
+#pragma comment(lib, "dinput8.lib")
+#pragma comment(lib, "dxguid.lib")
 #define DIRECTINPUT_VERSION 0x0800
 #include <dinput.h>
 
@@ -8,19 +9,19 @@
 
 class Input {
 private:
-	static Input* singleton;
+	static Input* _instance;
 	Input() {};
 	Input(const Input& ref) {};
 	Input& operator=(const Input& ref) {};
 	~Input() {};
 public:
 	static Input* Instance() {
-		if ( !singleton ) {
-			singleton = new Input();
+		if ( !_instance ) {
+			_instance = new Input();
 		}
-		return singleton;
+		return _instance;
 	}
-	bool Initialize(HINSTANCE, HWND, int, int);
+	bool Init(HINSTANCE hInstance, HWND hWnd, int screenWidth, int screenHeight);
 	void Shutdown();
 	bool Frame();
 

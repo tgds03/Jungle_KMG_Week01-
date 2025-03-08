@@ -1,9 +1,9 @@
 #include "stdafx.h"
 #include "Input.h"
 
-Input* Input::singleton = nullptr;
+Input* Input::_instance = nullptr;
 
-bool Input::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight) {
+bool Input::Init(HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight) {
 	HRESULT result;
 
 	// Store the screen size which will be used for positioning the mouse cursor.

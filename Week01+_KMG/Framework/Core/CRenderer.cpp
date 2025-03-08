@@ -1,6 +1,12 @@
 #include "stdafx.h"
 #include "CRenderer.h"
 
+CRenderer* CRenderer::_instance = nullptr;
+
+CRenderer::CRenderer() {
+	_mainCamera = new UCameraComponent();
+}
+
 void CRenderer::Init(HWND hWnd) {
 	_graphics = new CGraphics(hWnd);
 	_constantBuffer = new CConstantBuffer<FMatrix>(_graphics->GetDevice(), _graphics->GetDeviceContext());
@@ -57,7 +63,8 @@ void CRenderer::SetRasterzierState() {
 }
 
 void CRenderer::SetConstantBuffer(FMatrix matrix) {
-	_constantBuffer->CopyData(matrix);
+	FMatrix view = matrix * _mainCamera->InverseTransformation();
+	_constantBuffer->CopyData(view);
 	ID3D11Buffer* constantBuffer = _constantBuffer->Get();
 	_graphics->GetDeviceContext()->VSSetConstantBuffers(0, 1, &constantBuffer);
 }

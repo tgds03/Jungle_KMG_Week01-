@@ -23,6 +23,9 @@ using FWString = std::wstring;
 #include "Math/FVector.h"
 #include "Math/FMatrix.h"
 
+#include "Framework/Core/Time.h"
+#include "Framework/Core/Input.h"
+
 template <typename T> void SafeRelease(T** ppT) {
 	if (*ppT) {
 		(*ppT)->Release();

@@ -4,4 +4,5 @@ class UCubeComponent: public UPrimitiveComponent {
 public:
 	UCubeComponent();
 	virtual ~UCubeComponent();
+	virtual void Update();
 };

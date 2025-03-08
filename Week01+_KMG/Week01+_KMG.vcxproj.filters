@@ -93,10 +93,13 @@
     <ClCompile Include="UCubeComponent.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Input.h">
-      <Filter>헤더 파일\Framework\Core</Filter>
+    <ClCompile Include="UCameraComponent.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Input.cpp">
+    <ClCompile Include="Framework\Core\Time.cpp">
+      <Filter>소스 파일\Framework\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Core\Input.cpp">
       <Filter>소스 파일\Framework\Core</Filter>
     </ClCompile>
   </ItemGroup>
@@ -151,6 +154,15 @@
     </ClInclude>
     <ClInclude Include="UCubeComponent.h">
       <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="UCameraComponent.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Core\Time.h">
+      <Filter>헤더 파일\Framework\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Core\Input.h">
+      <Filter>헤더 파일\Framework\Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

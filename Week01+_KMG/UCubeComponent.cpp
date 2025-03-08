@@ -63,3 +63,7 @@ UCubeComponent::~UCubeComponent() {
 	delete _vertexBuffer;
 	delete _indexBuffer;
 }
+
+void UCubeComponent::Update() {
+	RelativeRotation += FVector(1.f, 1.f, 1.f) * Time::GetDeltaTime();
+}

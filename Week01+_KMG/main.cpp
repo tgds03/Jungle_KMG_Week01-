@@ -4,6 +4,9 @@
 #include "Math\FMatrix.h"
 #include "UCubeComponent.h"
 
+const int TARGET_FPS = 60;
+const double TARGET_FRAMERATE = 1000.0 / TARGET_FPS;
+
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
 	switch (message) {
 	case WM_DESTROY:
@@ -32,18 +35,30 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	);
 
 	CRenderer::Instance()->Init(hWnd);
+	Time::Instance()->Init();
+	Input::Instance()->Init(hInstance, hWnd, 800, 600);
 	UCubeComponent* obj = new UCubeComponent();
 
 	MSG msg = {};
 	while (msg.message != WM_QUIT) {
+		Time::Instance()->_query_frame_update_time();
+		Input::Instance()->Frame();
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
-		obj->RelativeRotation += FVector(0.01, 0.01, 0.02);
+		UActorComponent::UpdateAll();
 		CRenderer::Instance()->GetGraphics()->RenderBegin();
 		UActorComponent::RenderAll();
 		CRenderer::Instance()->GetGraphics()->RenderEnd();
+		Time::Instance()->_query_frame_end_time();
+		/*do {
+			Sleep(0);
+			Time::Instance()->_query_frame_end_time();
+		} while ( Time::GetDeltaTime() < TARGET_FRAMERATE );*/
+		
 	}
+	Input::Instance()->Shutdown();
+	CRenderer::Release();
 	return 0;
 }

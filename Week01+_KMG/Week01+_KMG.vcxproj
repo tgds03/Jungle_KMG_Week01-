@@ -136,6 +136,8 @@
     <ClCompile Include="Framework\Core\CEngineStatics.cpp" />
     <ClCompile Include="Framework\Core\CObjectMeta.cpp" />
     <ClCompile Include="Framework\Core\CRenderer.cpp" />
+    <ClCompile Include="Framework\Core\Input.cpp" />
+    <ClCompile Include="Framework\Core\Time.cpp" />
     <ClCompile Include="Framework\Core\UActorComponent.cpp" />
     <ClCompile Include="Framework\Core\UObject.cpp" />
     <ClCompile Include="Framework\Core\UPrimitiveComponent.cpp" />
@@ -145,8 +147,6 @@
     <ClCompile Include="Framework\DirectXWrapper\CInputLayout.cpp" />
     <ClCompile Include="Framework\DirectXWrapper\CShader.cpp" />
     <ClCompile Include="Framework\DirectXWrapper\CState.cpp" />
-    <ClCompile Include="Input.cpp" />
-    <ClCompile Include="Input.h" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Math\FMatrix.cpp" />
     <ClCompile Include="Math\FVector.cpp" />
@@ -157,6 +157,7 @@
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="UCameraComponent.cpp" />
     <ClCompile Include="UCubeComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -164,6 +165,8 @@
     <ClInclude Include="Framework\Core\CEngineStatics.h" />
     <ClInclude Include="Framework\Core\CObjectMeta.h" />
     <ClInclude Include="Framework\Core\CRenderer.h" />
+    <ClInclude Include="Framework\Core\Input.h" />
+    <ClInclude Include="Framework\Core\Time.h" />
     <ClInclude Include="Framework\Core\UActorComponent.h" />
     <ClInclude Include="Framework\Core\UObject.h" />
     <ClInclude Include="Framework\Core\UPrimitiveComponent.h" />
@@ -176,6 +179,7 @@
     <ClInclude Include="Math\FMatrix.h" />
     <ClInclude Include="Math\FVector.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="UCameraComponent.h" />
     <ClInclude Include="UCubeComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
