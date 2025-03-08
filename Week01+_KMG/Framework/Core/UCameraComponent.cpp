@@ -34,6 +34,10 @@ void UCameraComponent::Update() {
 		
 	}
 	//OutputDebugString((std::to_wstring(dx) + L"\n").c_str());
+	ImGui::Begin("Camera");
+	ImGui::Text(("position: " + static_cast<std::string>(RelativeLocation)).c_str());
+	ImGui::Text(("rotation: " + static_cast<std::string>(RelativeRotation)).c_str());
+	ImGui::End();
 }
 
 void UCameraComponent::Render() {

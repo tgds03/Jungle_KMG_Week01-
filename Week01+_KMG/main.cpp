@@ -99,10 +99,9 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		
 		// 테스트용
 		////////////////////////////////
-		
+		guiController->NewFrame();
 		UActorComponent::UpdateAll();
 		CRenderer::Instance()->GetGraphics()->RenderBegin();
-		guiController->NewFrame();
 		UActorComponent::RenderAll();
 		guiController->RenderFrame();
 		CRenderer::Instance()->GetGraphics()->RenderEnd();
