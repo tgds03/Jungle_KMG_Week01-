@@ -3,6 +3,7 @@
 #include "Math\FVector.h"
 #include "Math\FMatrix.h"
 #include "UCubeComponent.h"
+#include "UPlaneComponent.h"
 
 const int TARGET_FPS = 60;
 const double TARGET_FRAMERATE = 1000.0 / TARGET_FPS;
@@ -38,6 +39,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	Time::Instance()->Init();
 	Input::Instance()->Init(hInstance, hWnd, 800, 600);
 	UCubeComponent* obj = new UCubeComponent();
+	UPlaneComponent* ground = new UPlaneComponent();
 
 	MSG msg = {};
 	while (msg.message != WM_QUIT) {

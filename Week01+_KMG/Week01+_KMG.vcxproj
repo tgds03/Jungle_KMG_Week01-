@@ -150,6 +150,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Math\FMatrix.cpp" />
     <ClCompile Include="Math\FVector.cpp" />
+    <ClCompile Include="UPlaneComponent.cpp" />
     <FxCompile Include="Shader.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <FileType>Document</FileType>
@@ -181,6 +182,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="UCameraComponent.h" />
     <ClInclude Include="UCubeComponent.h" />
+    <ClInclude Include="UPlaneComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
