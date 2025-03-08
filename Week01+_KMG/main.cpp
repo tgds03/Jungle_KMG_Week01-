@@ -29,13 +29,13 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	winClass.lpfnWndProc = WinProc;
 	RegisterClass(&winClass);
 
-	HWND hWnd = CreateWindow(winClassName, winTitleName, 
+	HWND hWnd = CreateWindow(winClassName, winTitleName,
 		WS_POPUP | WS_VISIBLE | WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT, CW_USEDEFAULT, 800, 600,
 		nullptr, nullptr, hInstance, nullptr
 	);
 
-	CRenderer::Instance()->Init(hWnd);
+	CRenderer::Instance()->Init(hWnd); // maincamera ����
 	Time::Instance()->Init();
 	Input::Instance()->Init(hInstance, hWnd, 800, 600);
 	GuiController* guiController = new GuiController(hWnd, CRenderer::Instance()->GetGraphics());

@@ -31,6 +31,15 @@ FMatrix::FMatrix(const std::initializer_list<float>& m) {
 	}
 }
 
+FMatrix::FMatrix(const FMatrix& other)
+{
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 4; j++) {
+			m[i][j] = other.m[i][j];  // 깊은 복사
+		}
+	}
+}
+
 FMatrix FMatrix::operator+(const FMatrix& rhs) const {
 	float m[4][4] = {
 		{this->m[0][0] + rhs.m[0][0], this->m[0][1] + rhs.m[0][1], this->m[0][2] + rhs.m[0][2], this->m[0][3] + rhs.m[0][3]},
@@ -70,6 +79,18 @@ FMatrix FMatrix::operator*(const FMatrix& rhs) const {
 	});
 }
 
+FMatrix& FMatrix::operator=(const FMatrix& other)
+{
+	if (this != &other) {  // 자기 자신을 복사하는 경우 방지
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 4; j++) {
+				m[i][j] = other.m[i][j];  // 깊은 복사 수행
+			}
+		}
+	}
+	return *this;
+}
+
 //FVector4 FMatrix::operator*(const FVector4& rhs) const {
 //	return FVector4(rhs.Dot(c1()), rhs.Dot(c2()), rhs.Dot(c3()), rhs.Dot(c4()));
 //}
@@ -103,6 +124,61 @@ FMatrix FMatrix::Transpose() const {
 	});
 }
 
+FMatrix FMatrix::Inverse() const
+{
+	FMatrix A = *this;
+	FMatrix inv = FMatrix::Identity;
+	// 가우스-조던 소거법
+	for (int i = 0; i < 4; i++) {
+		// 피벗이 0이면 행 교환
+		if (A[i][i] == 0) {
+			int swapRow = i + 1;
+			while (swapRow < 4 && A.m[swapRow][i] == 0) swapRow++;
+			if (swapRow == 4)
+			{
+				UE_LOG(L"역행렬이 존재하지 않습니다.");
+				return FMatrix::Identity; // 역행렬 없음
+			}
+			A = A.Swap(i, swapRow);
+			inv = inv.Swap(i, swapRow);
+		}
+
+		// 피벗을 1로 만들기
+		float pivot = A.m[i][i];
+		for (int j = 0; j < 4; j++) {
+			A.m[i][j] /= pivot;
+			inv.m[i][j] /= pivot;
+		}
+
+		// 다른 행의 i열을 0으로 만들기
+		for (int k = 0; k < 4; k++) {
+			if (i == k) continue;
+			float factor = A.m[k][i];
+			for (int j = 0; j < 4; j++) {
+				A.m[k][j] -= factor * A.m[i][j];
+				inv.m[k][j] -= factor * inv.m[i][j];
+			}
+		}
+	}
+	return inv;
+}
+
+inline std::wstring FMatrix::to_wstring() const
+{
+	std::wstring str;
+	std::wstring sep(L" ");
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			str += std::to_wstring(m[i][j]);
+			str += sep;
+		}
+		str += std::wstring(L"\n");
+	}
+	return str;
+}
+
 FMatrix FMatrix::Scale(float sx, float sy, float sz) {
 	return FMatrix({
 		sx, 0.f, 0.f, 0.f,
@@ -110,6 +186,11 @@ FMatrix FMatrix::Scale(float sx, float sy, float sz) {
 		0.f, 0.f, sz, 0.f,
 		0.f, 0.f, 0.f, 1.f
 	});
+}
+
+FMatrix FMatrix::Scale(FVector xyz)
+{
+	return Scale(xyz.x, xyz.y, xyz.z);
 }
 
 FMatrix FMatrix::RotateX(float rx) {
@@ -139,6 +220,16 @@ FMatrix FMatrix::RotateZ(float rz) {
 	});
 }
 
+FMatrix FMatrix::RotateXYZ(FVector xyz)
+{
+	FMatrix mat = FMatrix::Identity;
+	mat = mat.RotateX(xyz.x);
+	mat = mat.RotateY(xyz.y);
+	mat = mat.RotateZ(xyz.z);
+	
+	return mat;
+}
+
 FMatrix FMatrix::Translate(float tx, float ty, float tz) {
 	return FMatrix({
 		1.f, 0.f, 0.f, 0.f,
@@ -146,4 +237,29 @@ FMatrix FMatrix::Translate(float tx, float ty, float tz) {
 		0.f, 0.f, 1.f, 0.f,
 		tx, ty, tz, 1.f
 	});
+}
+
+FMatrix FMatrix::Translate(FVector xyz)
+{
+	return Translate(xyz.x, xyz.y, xyz.z);
+}
+
+FMatrix FMatrix::Swap(UINT r1, UINT r2)
+{
+	if (r1 > 3 || r2 > 3) return FMatrix::Identity;
+
+	FMatrix swapped = *this;
+	float tempRow[4] = { m[r1][0], m[r1][1], m[r1][2], m[r1][3] };
+
+	swapped.m[r1][0] = m[r2][0];
+	swapped.m[r1][1] = m[r2][1];
+	swapped.m[r1][2] = m[r2][2];
+	swapped.m[r1][3] = m[r2][3];
+
+	swapped.m[r1][0] = tempRow[0];
+	swapped.m[r1][1] = tempRow[1];
+	swapped.m[r1][2] = tempRow[2];
+	swapped.m[r1][3] = tempRow[3];
+
+	return swapped;
 }

@@ -5,7 +5,9 @@ CRenderer* CRenderer::_instance = nullptr;
 
 CRenderer::CRenderer() {
 	_mainCamera = new UCameraComponent();
-	_mainCamera->RelativeLocation.z = 5.f;
+	_mainCamera->SetRelativeLocation({ 0,0,5.f });
+
+	//_mainCamera->GetRelativeLocation().z = 5.f;
 }
 
 void CRenderer::Init(HWND hWnd) {
@@ -64,11 +66,16 @@ void CRenderer::SetRasterzierState() {
 }
 
 void CRenderer::SetConstantBuffer(FMatrix matrix) {
-	FMatrix view = matrix * _mainCamera->InverseTransformation();
+	FMatrix view = matrix * _mainCamera->GetRelativeTransform().Inverse();
 	FMatrix projection = view * _mainCamera->PerspectiveProjection();
 	_constantBuffer->CopyData(projection);
 	ID3D11Buffer* constantBuffer = _constantBuffer->Get();
 	_graphics->GetDeviceContext()->VSSetConstantBuffers(0, 1, &constantBuffer);
+}
+
+UCameraComponent* CRenderer::GetCamera() const
+{
+	return _mainCamera;
 }
 
 
