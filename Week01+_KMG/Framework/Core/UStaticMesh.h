@@ -7,7 +7,7 @@
 class UStaticMesh : public UObject
 {
 public:
-	UStaticMesh(TArray<FVertexSimple> vertices, TArray<UINT32> indices);
+	UStaticMesh(const TArray<FVertexSimple>& vertices, const TArray<UINT32>& indices);
 	~UStaticMesh();
 private:
 	TArray<FVertexSimple> Vertices;
@@ -17,7 +17,7 @@ private:
 	CIndexBuffer *IndexBuffer = nullptr;
 
 public:
-	virtual void CreateBuffer(ID3D11Device* device);
+	virtual void CreateBuffer();
 	CVertexBuffer<FVertexSimple>* GetVertexBuffer() const;
 	CIndexBuffer* GetIndexBuffer() const;
 };

@@ -1,0 +1,193 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="UCubeComp" Collapsed="true">
+    <Position X="0.5" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAQAAAAAAAAAAAAAAAAAIAAAAAAQAAAAABACAAAAAAA=</HashCode>
+      <FileName>Framework\Core\UCubeComp.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UPrimitiveComponent" Collapsed="true">
+    <Position X="0.5" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAUAAAgAAAAAAAAAAAAIABIAAAAAAAACQRACACUAAAA=</HashCode>
+      <FileName>Framework\Core\UPrimitiveComponent.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UStaticMesh" Collapsed="true">
+    <Position X="2.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEEAAAAABEAAAEAAAAAAAAABAEAAAAAAAEAA=</HashCode>
+      <FileName>Framework\Core\UStaticMesh.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AActor" Collapsed="true">
+    <Position X="5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAIAAAAAAAAEAAAAIBAAAEABAAAAAAAAA=</HashCode>
+      <FileName>Framework\Core\AActor.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CEngineStatics" Collapsed="true">
+    <Position X="13" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAQAAAAIAAIAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Framework\Core\CEngineStatics.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CObjectMeta" Collapsed="true">
+    <Position X="16.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgAAAAAAAAAAAAQAAAAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>Framework\Core\CObjectMeta.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CRenderer" Collapsed="true">
+    <Position X="13" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAgAAAAAAQAAAAAAAAAAAAAAAAACQAAiAAAAAAA=</HashCode>
+      <FileName>Framework\Core\CRenderer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UActorComponent" Collapsed="true">
+    <Position X="0.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAA=</HashCode>
+      <FileName>Framework\Core\UActorComponent.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UObject" Collapsed="true">
+    <Position X="2.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAQBAAAAABAIAAAAAAAQAAAAAAAAAAAAAAAgIAAAA=</HashCode>
+      <FileName>Framework\Core\UObject.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="USceneComponent" Collapsed="true">
+    <Position X="0.5" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAiApgCAAAQCIECAEIoAgAIAAgAAAAAABDAAgA=</HashCode>
+      <FileName>Framework\Core\USceneComponent.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CBuffer&lt;T&gt;" Collapsed="true">
+    <Position X="2.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAgAAAAAAhIIAAAAQAAAAAAgEAAAAOAAAAAAAA=</HashCode>
+      <FileName>Framework\DirectXWrapper\CBuffer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CVertexBuffer&lt;T&gt;" Collapsed="true">
+    <Position X="0.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACAAAAAAAAAAAAEAAAAAAAgAAAAA=</HashCode>
+      <FileName>Framework\DirectXWrapper\CBuffer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CIndexBuffer" Collapsed="true">
+    <Position X="2.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAAAAAAAAAAAAAAEAAAAAAIAAAAAA=</HashCode>
+      <FileName>Framework\DirectXWrapper\CBuffer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CConstantBuffer&lt;T&gt;" Collapsed="true">
+    <Position X="5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAAAAAAAQAAAAEAAAAAAAAAAABA=</HashCode>
+      <FileName>Framework\DirectXWrapper\CBuffer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CGraphics" Collapsed="true">
+    <Position X="14.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAIAEAAACAIAAAAEEAAAAAYJAAgAiAAABAQBICAAA=</HashCode>
+      <FileName>Framework\DirectXWrapper\CGraphics.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="InputLayout" Collapsed="true">
+    <Position X="14.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAIAAAAAAAAAgEAAAAAAAgAAAAA=</HashCode>
+      <FileName>Framework\DirectXWrapper\CInputLayout.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CShader" Collapsed="true">
+    <Position X="9.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAIAYAAAACAAAAAAAAAAAAAAAAgEAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Framework\DirectXWrapper\CShader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CVertexShader" Collapsed="true">
+    <Position X="8.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgABAAAACAAAAAAAAAEAAAAAIAAAAAAA=</HashCode>
+      <FileName>Framework\DirectXWrapper\CShader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CPixelShader" Collapsed="true">
+    <Position X="10.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAEAAAAAAAABAAAAAAAAAAABAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Framework\DirectXWrapper\CShader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CState" Collapsed="true">
+    <Position X="2.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAAAAAAAAAAAAgAAAACAAAAAAAAA=</HashCode>
+      <FileName>Framework\DirectXWrapper\CState.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSamplerState" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQACAAAAAAAABAACAAAAAAAgAAEEAAAAAAAQAAAAA=</HashCode>
+      <FileName>Framework\DirectXWrapper\CState.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CRasterizerState" Collapsed="true">
+    <Position X="2.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAIAAAAAAABAAAAAAAAAAAAAAEAAAAAAAAAAAQA=</HashCode>
+      <FileName>Framework\DirectXWrapper\CState.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CBlendState" Collapsed="true">
+    <Position X="5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAACIAAAAAAAQACEEAAAAAgBAAAAA=</HashCode>
+      <FileName>Framework\DirectXWrapper\CState.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="FVertexSimple" Collapsed="true">
+    <Position X="13" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAoAQBhAQAAAAA=</HashCode>
+      <FileName>Framework\Core\FVertexSimple.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="FMatrix" Collapsed="true">
+    <Position X="13" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAWAAAAgAAAAAAAAIAAAAAQAGBAAAAIkBkAAgAEAA=</HashCode>
+      <FileName>Math\FMatrix.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="FVector" Collapsed="true">
+    <Position X="14.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAACAAAAAAAAQAACQAQAgAAAADgAQEAAII=</HashCode>
+      <FileName>Math\FVector.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="FVector4" Collapsed="true">
+    <Position X="16.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAAAIAAAAAAAQCACQEAAgAAAAhgAQEAAIA=</HashCode>
+      <FileName>Math\FVector.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Font Name="맑은 고딕" Size="9" />
+</ClassDiagram>

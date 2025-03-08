@@ -27,11 +27,11 @@ private:
 	D3D11_SAMPLER_DESC _desc = {};
 };
 
-class CRasterzierState : public CState {
+class CRasterizerState : public CState {
 	using Super = CState;
 public:
-	CRasterzierState(ID3D11Device* device) : Super(device), _rasterizerState(nullptr) {};
-	~CRasterzierState() {
+	CRasterizerState(ID3D11Device* device) : Super(device), _rasterizerState(nullptr) {};
+	~CRasterizerState() {
 		SafeRelease(&_rasterizerState);
 	};
 	ID3D11RasterizerState* Get() { return _rasterizerState; }

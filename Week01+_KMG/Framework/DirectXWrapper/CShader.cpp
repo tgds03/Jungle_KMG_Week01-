@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "CShader.h"
+#include <comdef.h>
 
 void CShader::LoadShaderFromFile(const FWString& path, const FString& name, const FString& version) {
 	_path = path;
@@ -17,6 +18,15 @@ void CShader::LoadShaderFromFile(const FWString& path, const FString& name, cons
 		&_blob,
 		nullptr
 	);
+	if (!SUCCEEDED(hr))
+	{
+		_com_error err(hr);
+		std::wstring errMsg = err.ErrorMessage();
+		// HRESULT 값도 함께 출력 (16진수 형식으로 보기 쉽게)
+		wchar_t debugMsg[512];
+		swprintf_s(debugMsg, L"Error: 0x%08X - %s\n", hr, errMsg.c_str());
+		OutputDebugString(debugMsg);
+	}
 	assert(SUCCEEDED(hr));
 }
 

@@ -1,5 +1,35 @@
 #include "stdafx.h"
 #include "UPrimitiveComponent.h"
+#include "CRenderer.h"
+
+UPrimitiveComponent::UPrimitiveComponent() {}
+
+void UPrimitiveComponent::Init(CVertexShader* vertexShader, CPixelShader* pixelShader, UStaticMesh* mesh)
+{
+	ID3D11Device* device = CRenderer::Instance()->GetGraphics()->GetDevice();
+	ID3D11DeviceContext* deviceContext = CRenderer::Instance()->GetGraphics()->GetDeviceContext();
+
+	VertexShader = vertexShader;
+	PixelShader = pixelShader;
+	Mesh = mesh;
+
+	//VertexShader = new CVertexShader(device);
+	//VertexShader->Create(L"Shader.hlsl", "VS", "vs_5_0");
+
+	//PixelShader = new CPixelShader(device);
+	//PixelShader->Create(L"Shader.hlsl", "PS", "ps_5_0");
+
+	inputLayout = new InputLayout(device);
+	inputLayout->Create(FVertexSimple::descs, VertexShader->GetBlob());
+
+	ConstantBuffer = new CConstantBuffer<FMatrix>(device, deviceContext);
+	ConstantBuffer->Create();
+
+	RasterizerState = new CRasterizerState(device);
+	RasterizerState->Create();
+
+
+}
 
 void UPrimitiveComponent::Update()
 {
@@ -7,32 +37,33 @@ void UPrimitiveComponent::Update()
 
 void UPrimitiveComponent::Render()
 {
-	//if (bVisible)
-	//{
-	//	return;
-	//	if (context == nullptr)
-	//		return;
+	
+	if (!bVisible)
+	{
+		return;
+	}
+	ID3D11Device* device = CRenderer::Instance()->GetGraphics()->GetDevice();
+	ID3D11DeviceContext* deviceContext = CRenderer::Instance()->GetGraphics()->GetDeviceContext();
 
-	//	context->IASetInputLayout(_inputLayout->Get());
-	//	context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	//	context->VSSetShader(_vertexShader->Get(), nullptr, 0);
-	//	context->RSSetState(_rasterizerState->Get());
-	//	context->PSSetShader(_pixelShader->Get(), nullptr, 0);
+	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	deviceContext->IASetInputLayout(inputLayout->Get());
+	deviceContext->VSSetShader(VertexShader->Get(), nullptr, 0);
+	deviceContext->RSSetState(RasterizerState->Get());
+	deviceContext->PSSetShader(PixelShader->Get(), nullptr, 0);
 
-	//	UINT32 stride, offset;
-	//	ID3D11Buffer* vertexBuffer = _vertexBuffer->Get();
-	//	stride = _vertexBuffer->GetStride();
-	//	offset = _vertexBuffer->GetOffset();
-	//	context->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
+	UINT32 stride, offset;
+	ID3D11Buffer* vertexBuffer = Mesh->GetVertexBuffer()->Get();
+	stride = Mesh->GetVertexBuffer()->GetStride();
+	offset = Mesh->GetVertexBuffer()->GetOffset();
+	deviceContext->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
 
-	//	context->IASetIndexBuffer(_indexBuffer->Get(), DXGI_FORMAT_R32_UINT, 0);
+	deviceContext->IASetIndexBuffer(Mesh->GetIndexBuffer()->Get(), DXGI_FORMAT_R32_UINT, 0);
 
-	//	_constantBuffer->CopyData(VS_CB_GAMEOBJECT_INFO{ _tf.GetWorldMatrix() });
-	//	ID3D11Buffer* constantBuffer = _constantBuffer->Get();
-	//	context->VSSetConstantBuffers(2, 1, &constantBuffer);
+	//ConstantBuffer->CopyData(FMatrix{ GetComponentTransform()});
+	//ID3D11Buffer* constantBuffer = ConstantBuffer->Get();
+	//deviceContext->VSSetConstantBuffers(0, 1, &constantBuffer);
 
-	//	context->DrawIndexed(_indexBuffer->GetCount(), 0, 0);
-	//}
+	deviceContext->DrawIndexed(Mesh->GetIndexBuffer()->GetCount(), 0, 0);
 }
 
 void UPrimitiveComponent::setVisible(const bool bValue)

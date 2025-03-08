@@ -25,7 +25,7 @@ void CSamplerState::Create() {
 	HRESULT hr = _device->CreateSamplerState(&_desc, &_samplerState);
 }
 
-void CRasterzierState::Create() {
+void CRasterizerState::Create() {
 	D3D11_RASTERIZER_DESC desc = {};
 	desc.FillMode = D3D11_FILL_SOLID;
 	desc.CullMode = D3D11_CULL_BACK;

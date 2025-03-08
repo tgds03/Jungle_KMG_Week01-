@@ -33,7 +33,8 @@ FVector USceneComponent::GetRelativeScale3D() const
 
 FMatrix USceneComponent::GetRelativeTransform() const
 {
-	FMatrix origin = FMatrix(FVector4::Zero, FVector4::Zero, FVector4::Zero, FVector4(0, 0, 0, 1));
+	//FMatrix origin = FMatrix(FVector4::Zero, FVector4::Zero, FVector4::Zero, FVector4(0, 0, 0, 1));
+	FMatrix origin = FMatrix::Identity;
 
 	FMatrix scale = FMatrix::Scale(RelativeScale3D);
 	FMatrix rot = FMatrix::RotateX(RelativeRotation.x) * FMatrix::RotateY(RelativeRotation.y) * FMatrix::RotateZ(RelativeRotation.z);
@@ -186,7 +187,7 @@ void USceneComponent::SetupAttachment(_In_ TArray<USceneComponent*>& Children)
 
 	for (auto& child : Children)
 	{
-		if (child->AttachToComponent(this))
+		if (!child->AttachToComponent(this))
 		{
 			UE_LOG(L"USceneComponent::SetupAttachment::Children으로 지정하는데 실패했습니다.");
 		}

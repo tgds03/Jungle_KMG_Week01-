@@ -5,6 +5,18 @@
 
 class USceneComponent :public UActorComponent {
 public:
+	void PrintLoc(std::wstring msg)
+	{
+		FVector loc = GetRelativeLocation();
+		UE_LOG((std::wstring(L"\n") + msg + std::wstring(L"*************************\n")).c_str());
+		UE_LOG((std::wstring(L"Relative Location\nx :") + std::to_wstring(loc.x) + std::wstring(L" y :")
+			+ std::to_wstring(loc.y) + std::wstring(L" z :") + std::to_wstring(loc.z) + std::wstring(L"\n")).c_str());
+		loc = GetComponentLocation();
+		UE_LOG((std::wstring(L"Component Location\nx :") + std::to_wstring(loc.x) + std::wstring(L" y :")
+			+ std::to_wstring(loc.y) + std::wstring(L" z :") + std::to_wstring(loc.z) + std::wstring(L"\n")).c_str());
+
+	}
+public:
 	USceneComponent() {}
 	virtual void Update();
 	//virtual void Render();
@@ -12,11 +24,11 @@ public:
 // 물리, 변환 관련
 protected:
 	// 동기화 어떻게 시키지
-	FVector RelativeLocation;
-	FVector RelativeRotation;
-	FVector RelativeScale3D;
+	FVector RelativeLocation = { 0,0,0 };
+	FVector RelativeRotation = { 0,0,0 };
+	FVector RelativeScale3D = { 1,1,1 };
 	//FVector ComponentVelocity;
-	FMatrix ComponentToWorld;
+	//FMatrix ComponentToWorld; // 추가필요!!!!
 
 public:
 	FVector GetRelativeLocation() const;

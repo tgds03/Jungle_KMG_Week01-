@@ -23,7 +23,7 @@ private:
 	ID3D11Texture2D* _backBuffer = nullptr;
 	ID3D11RenderTargetView* _renderTargetView = nullptr;
 
-	float _clearColor[4] = { 0.f, 0.f, 0.f, 1.f };
+	float _clearColor[4] = { 1.f, 0.f, 0.f, 1.f };
 
 private:
 	void CreateDeviceAndSwapChain();

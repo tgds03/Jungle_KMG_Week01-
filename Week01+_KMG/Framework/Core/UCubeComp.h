@@ -4,7 +4,8 @@ class UCubeComp :
     public UPrimitiveComponent
 {
 public:
-    UCubeComp() {}
+    UCubeComp() : UPrimitiveComponent() {}
+    virtual void Init(CVertexShader* vertexShader, CPixelShader* pixelShader);
     virtual void Update();
     virtual void Render();
 
