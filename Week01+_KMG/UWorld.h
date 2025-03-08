@@ -16,9 +16,7 @@ class UWorld :
     public UObject
 {
 public:
-    UWorld() {
-        AddActor(CRenderer::Instance()->GetCamera());
-    }
+    UWorld();
     ~UWorld();
 
     void Update();
@@ -27,6 +25,7 @@ public:
     void AddActor(UActorComponent* comp);
     void RemoveActor(UActorComponent* comp);
 
+    UCameraComponent* SpawnCamera();
     UCubeComponent* SpawnCubeActor();
     USphereComponent* SpawnSphereACtor();
     UPlaneComponent* SpawnPlaneActor();
@@ -36,7 +35,7 @@ private:
     TLinkedList<UActorComponent*> actorList = {};
 
     template <typename T>
-    T* SpawnActor(); // RTTI Àû¿ë ÈÄ publicÀ¸·Î º¯°æ
+    T* SpawnActor(); // RTTI ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ publicï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     template <typename T>
     T* SpawnActor(FVector position, FVector rotation = FVector::Zero, FVector scal = FVector::One);
 };

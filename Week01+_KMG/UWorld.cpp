@@ -1,6 +1,11 @@
 #include "stdafx.h"
 #include "UWorld.h"
 
+UWorld::UWorld()
+{
+    CRenderer::Instance()->SetCamera(SpawnCamera());
+}
+
 UWorld::~UWorld()
 {
     for (auto* comp : actorList)
@@ -36,6 +41,13 @@ void UWorld::AddActor(UActorComponent* comp)
 void UWorld::RemoveActor(UActorComponent* comp)
 {
     actorList.remove(comp);
+}
+
+UCameraComponent* UWorld::SpawnCamera()
+{
+    UCameraComponent* newCamera = SpawnActor<UCameraComponent>();
+    newCamera->SetRelativeLocation({ 0, 0, -5.0f });
+    return newCamera;
 }
 
 UCubeComponent* UWorld::SpawnCubeActor()

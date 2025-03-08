@@ -4,7 +4,7 @@
 CRenderer* CRenderer::_instance = nullptr;
 
 CRenderer::CRenderer() {
-	_mainCamera = new UCameraComponent();
+	//_mainCamera = new UCameraComponent();
 	//_mainCamera->SetRelativeLocation({ 0,0,5.f });
 
 	//_mainCamera->GetRelativeLocation().z = 5.f;
@@ -36,7 +36,6 @@ void CRenderer::SetVertexShader(const FWString filename, FString funcname, FStri
 
 	_graphics->GetDeviceContext()->IASetInputLayout(_inputLayout->Get());
 	_graphics->GetDeviceContext()->VSSetShader(_vertexShader->Get(), nullptr, 0);
-	
 }
 
 void CRenderer::ResetVertexShader() {
@@ -76,9 +75,14 @@ void CRenderer::SetConstantBuffer(FMatrix matrix) {
 	_graphics->GetDeviceContext()->VSSetConstantBuffers(0, 1, &constantBuffer);
 }
 
-UCameraComponent* CRenderer::GetCamera() const
+UCameraComponent* CRenderer::GetMainCamera() const
 {
 	return _mainCamera;
+}
+
+void CRenderer::SetCamera(UCameraComponent* camera)
+{
+	_mainCamera = camera;
 }
 
 

@@ -50,7 +50,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	UCoordArrowComponent* arrow = mainScene->SpawnCoordArrowActor();
 	UCoordArrowComponent* worldArrow = mainScene->SpawnCoordArrowActor();
 
-	CRenderer::Instance()->GetCamera()->SetRelativeLocation(FVector(0, 0, -5));
+	CRenderer::Instance()->GetMainCamera()->SetRelativeLocation(FVector(0, 0, -5));
 
 	worldArrow->SetRelativeScale3D({ 100,100,100 });
 	ground->SetRelativeScale3D({ 10,5,3 });
@@ -97,7 +97,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		{
 			obj->SetRelativeLocation(obj->GetRelativeLocation() - obj->Up());
 		}
-		CRenderer::Instance()->GetCamera()->PrintLoc(L"CAM");
+		CRenderer::Instance()->GetMainCamera()->PrintLoc(L"CAM");
 		obj->PrintLoc(L"obj");
 		
 		// 테스트용
