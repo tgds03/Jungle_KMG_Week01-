@@ -23,4 +23,12 @@ void UActorComponent::RenderAll() {
 	}
 }
 
+void UActorComponent::GenerateAllRayForPicking(FVector& pickPosition, FMatrix& viewMatrix)
+{
+	for (auto comp : GUActorComponentList) {
+		FVector rayOrigin, rayDir;
+		comp->GenerateRayForPicking(pickPosition, viewMatrix, &rayOrigin, &rayDir);
+	}
+}
+
 

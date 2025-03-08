@@ -37,6 +37,11 @@ public:
 	friend FVector4 operator*(const FVector4& lhs, const FMatrix& rhs);
 	std::wstring to_wstring() const;
 
+	FVector TransformCoord(FVector4 vec) {
+		FVector4 v = (vec * (*this));
+		return FVector(v.x / v.w, v.y / v.w, v.z / v.w);
+	}
+
 public:
 	static const FMatrix Identity;
 	static FMatrix Scale(float sx, float sy, float sz);

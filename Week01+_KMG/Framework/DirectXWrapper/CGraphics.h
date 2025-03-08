@@ -7,7 +7,7 @@ public:
 	void RenderBegin();
 	void RenderEnd();
 	void Release();
-
+	D3D11_VIEWPORT GetViewport() { return _viewPort; }
 	ID3D11Device* GetDevice() { return _device; }
 	ID3D11DeviceContext* GetDeviceContext() { return _deviceContext; }
 

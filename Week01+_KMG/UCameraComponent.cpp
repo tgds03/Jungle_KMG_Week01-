@@ -41,8 +41,6 @@ void UCameraComponent::Update() {
 			RelativeRotation.z -= 1.0f * Time::GetDeltaTime();
 		}
 	}
-	//OutputDebugString((std::to_wstring(RelativeLocation.y) + L"\n").c_str());
-	//PrintLoc(L"CAMERA");
 }
 
 //FMatrix UCameraComponent::InverseTransformation() {

@@ -68,3 +68,24 @@ void UCubeComponent::Update() {
 	//RelativeRotation += FVector(1.f, 1.f, 1.f) * Time::GetDeltaTime();
 	//RelativeLocation.x = sin(Time::GetElapsedTime());
 }
+
+bool UCubeComponent::IntersectsRay(const FVector& rayOrigin, const FVector& rayDir, const FVector& boxCenter, const FVector& boxHalfSize, const FVector boxAxes[3], float& hitDistance)
+{
+	return false;
+}
+
+void UCubeComponent::GenerateRayForPicking(FVector& pickPosition, FMatrix& viewMatrix, FVector* pickRayOrigin, FVector* pickRayDirection)
+{
+	// 1. world * viewMatrix
+	// 2. Inverse 
+	FMatrix WorldViewMatrix = GetComponentTransform() * viewMatrix;
+	FMatrix inVerse = WorldViewMatrix.Inverse();
+	FVector4 CameraOrigin{ 0,0,0,1 };
+	*pickRayOrigin =  inVerse.TransformCoord(CameraOrigin);
+	*pickRayDirection = inVerse.TransformCoord({ pickPosition,1});
+	*pickRayDirection =	(*pickRayDirection - *pickRayOrigin).Normalized();
+	OutputDebugString((L"x: " + std::to_wstring(pickRayDirection->x) + L"\n").c_str());
+	OutputDebugString((L"y: " + std::to_wstring(pickRayDirection->y) + L"\n").c_str());
+	OutputDebugString((L"z: " + std::to_wstring(pickRayDirection->z) + L"\n").c_str());
+	
+}

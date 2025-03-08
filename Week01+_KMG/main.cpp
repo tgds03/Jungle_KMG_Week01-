@@ -12,6 +12,10 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
+	case WM_LBUTTONDOWN:
+	case WM_LBUTTONUP:
+		CRenderer::Instance()->PickingByRay(lParam);
+		break;
 	default:
 		return DefWindowProc(hWnd, message, wParam, lParam);
 	}
@@ -97,9 +101,9 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		}
 		UActorComponent::UpdateAll();
 		CRenderer::Instance()->GetGraphics()->RenderBegin();
-		obj->PrintLoc(L"OBJ");
-		stick->PrintLoc(L"stick");
-		CRenderer::Instance()->GetCamera()->PrintLoc(L"CAM");
+		//obj->PrintLoc(L"OBJ");
+		//stick->PrintLoc(L"stick");
+		//CRenderer::Instance()->GetCamera()->PrintLoc(L"CAM");
 		UActorComponent::RenderAll();
 		CRenderer::Instance()->GetGraphics()->RenderEnd();
 		Time::Instance()->_query_frame_end_time();

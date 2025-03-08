@@ -78,4 +78,19 @@ UCameraComponent* CRenderer::GetCamera() const
 	return _mainCamera;
 }
 
+void CRenderer::PickingByRay(LPARAM lParam)
+{
+	FMatrix view = _mainCamera->GetComponentTransform().Inverse();
+	FMatrix proj = _mainCamera->PerspectiveProjection();
+	D3D11_VIEWPORT viewport = _graphics->GetViewport();
 
+	FVector pickPosition;
+	float size_x = LOWORD(lParam);
+	float size_y = HIWORD(lParam);
+	pickPosition.x = (((2.0f * size_x) / viewport.Width) - 1) / proj[1][1];
+	pickPosition.y = -(((2.0f * size_y) / viewport.Height) - 1) / proj[2][2];
+	pickPosition.z = 1;
+
+	UActorComponent::GenerateAllRayForPicking(pickPosition, view);
+
+}
