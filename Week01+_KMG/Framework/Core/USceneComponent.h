@@ -10,7 +10,7 @@ public:
 	FVector RelativeRotation = FVector::Zero;
 	FVector RelativeScale3D = FVector::One;
 
-	FMatrix Transformation();
+	//FMatrix Transformation();
 
 	FVector Right();
 	FVector Up();

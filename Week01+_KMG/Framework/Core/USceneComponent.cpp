@@ -7,17 +7,17 @@ void USceneComponent::Update()
 }
 
 FVector USceneComponent::Right() {
-	FVector4 r = Transformation().r1();
+	FVector4 r = GetComponentTransform().r1();
 	return FVector(r.x, r.y, r.z).Normalized();
 }
 
 FVector USceneComponent::Up() {
-	FVector4 r = Transformation().r2();
+	FVector4 r = GetComponentTransform().r2();
 	return FVector(r.x, r.y, r.z).Normalized();
 }
 
 FVector USceneComponent::Front() {
-	FVector4 r = Transformation().r3();
+	FVector4 r = GetComponentTransform().r3();
 	return FVector(r.x, r.y, r.z).Normalized();
 }
 //void USceneComponent::Render()
