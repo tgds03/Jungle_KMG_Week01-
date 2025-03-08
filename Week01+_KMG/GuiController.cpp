@@ -22,11 +22,15 @@ void GuiController::NewFrame()
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 
-	POINT p;
-	GetCursorPos(&p);
-	ScreenToClient(hWnd, &p);
-	_io->MousePos.x = static_cast<float>(p.x);
-	_io->MousePos.y = static_cast<float>(p.y);
+	//POINT p;
+	//GetCursorPos(&p);
+	//ScreenToClient(hWnd, &p);
+	//_io->MousePos.x = static_cast<float>(p.x);
+	//_io->MousePos.y = static_cast<float>(p.y);
+	int x, y;
+	Input::Instance()->GetMouseLocation(x, y);
+	_io->MousePos.x = static_cast<float>(x);
+	_io->MousePos.y = static_cast<float>(y);
 	_io->MouseDown[0] = Input::Instance()->IsMouseButtonDown(0);
 	_io->MouseDown[1] = Input::Instance()->IsMouseButtonDown(1);
 }

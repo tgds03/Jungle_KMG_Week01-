@@ -11,16 +11,16 @@ FMatrix USceneComponent::Transformation() {
 }
 
 FVector USceneComponent::Right() {
-	FVector4 c = Transformation().c1();
-	return FVector(c.x, c.y, c.z).Normalized();
+	FVector4 r = Transformation().r1();
+	return FVector(r.x, r.y, r.z).Normalized();
 }
 
 FVector USceneComponent::Up() {
-	FVector4 c = Transformation().c2();
-	return FVector(c.x, c.y, c.z).Normalized();
+	FVector4 r = Transformation().r2();
+	return FVector(r.x, r.y, r.z).Normalized();
 }
 
 FVector USceneComponent::Front() {
-	FVector4 c = Transformation().c3();
-	return FVector(c.x, c.y, c.z).Normalized();
+	FVector4 r = Transformation().r3();
+	return FVector(r.x, r.y, r.z).Normalized();
 }

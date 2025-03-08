@@ -67,6 +67,10 @@ struct FVector {
 
 		return FVector();
 	}
+
+	operator std::string() const {
+		return "(" + std::to_string(x) + "," + std::to_string(y) + "," + std::to_string(z) + ")";
+	}
 };
 
 struct FVector4 {
@@ -155,5 +159,9 @@ struct FVector4 {
 			return *this / length;
 
 		return FVector4();
+	}
+
+	operator std::string() const {
+		return "(" + std::to_string(x) + "," + std::to_string(y) + "," + std::to_string(z) + "," + std::to_string(w) + ")";
 	}
 };

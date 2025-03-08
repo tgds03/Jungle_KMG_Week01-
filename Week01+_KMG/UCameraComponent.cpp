@@ -36,6 +36,13 @@ void UCameraComponent::Update() {
 	//OutputDebugString((std::to_wstring(dx) + L"\n").c_str());
 }
 
+void UCameraComponent::Render() {
+	ImGui::Begin("Camera");
+	ImGui::Text(("position: " + static_cast<std::string>(RelativeLocation)).c_str());
+	ImGui::Text(("rotation: " + static_cast<std::string>(RelativeRotation)).c_str());
+	ImGui::End();
+}
+
 FMatrix UCameraComponent::InverseTransformation() {
 	FMatrix m = FMatrix::Translate(-RelativeLocation.x, -RelativeLocation.y, -RelativeLocation.z);
 	m = m * FMatrix::RotateZ(-RelativeRotation.z);

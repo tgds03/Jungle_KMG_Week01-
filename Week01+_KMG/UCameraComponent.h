@@ -3,6 +3,7 @@
 class UCameraComponent :public USceneComponent {
 public:
 	virtual void Update();
+	virtual void Render();
 	FMatrix InverseTransformation();
 	FMatrix PerspectiveProjection();
 	float fieldOfView = 60.f;

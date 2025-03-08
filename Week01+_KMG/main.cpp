@@ -57,8 +57,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		CRenderer::Instance()->GetGraphics()->RenderBegin();
 		guiController->NewFrame();
 		UActorComponent::RenderAll();
-		CRenderer::Instance()->GetGraphics()->RenderEnd();
 		guiController->RenderFrame();
+		CRenderer::Instance()->GetGraphics()->RenderEnd();
 		Time::Instance()->_query_frame_end_time();
 		/*do {
 			Sleep(0);
