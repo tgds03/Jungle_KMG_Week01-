@@ -3,28 +3,28 @@
 
 void UCameraComponent::Update() {
 	if ( Input::Instance()->IsKeyDown(DIK_A) ) {
-		//RelativeLocation.x -= 1.0f * Time::GetDeltaTime();
 		RelativeLocation -= Right() * Time::GetDeltaTime();
 	}
 	if ( Input::Instance()->IsKeyDown(DIK_D) ) {
-		//RelativeLocation.x += 1.0f * Time::GetDeltaTime();
 		RelativeLocation += Right() * Time::GetDeltaTime();
 	}
 	if ( Input::Instance()->IsKeyDown(DIK_W) ) {
-		//RelativeLocation.z -= 1.0f * Time::GetDeltaTime();
 		RelativeLocation -= Front() * Time::GetDeltaTime();
 	}
 	if ( Input::Instance()->IsKeyDown(DIK_S) ) {
-		//RelativeLocation.z += 1.0f * Time::GetDeltaTime();
 		RelativeLocation += Front() * Time::GetDeltaTime();
 	}
 	if ( Input::Instance()->IsKeyDown(DIK_SPACE) ) {
-		//RelativeLocation.y += 1.0f * Time::GetDeltaTime();
 		RelativeLocation += Up() * Time::GetDeltaTime();
 	}
 	if ( Input::Instance()->IsKeyDown(DIK_LSHIFT) ) {
-		//RelativeLocation.y -= 1.0f * Time::GetDeltaTime();
 		RelativeLocation -= Up() * Time::GetDeltaTime();
+	}
+	if ( Input::Instance()->IsKeyDown(DIK_Q) ) {
+		RelativeRotation.z += 1.0f * Time::GetDeltaTime();
+	}
+	if ( Input::Instance()->IsKeyDown(DIK_E) ) {
+		RelativeRotation.z -= 1.0f * Time::GetDeltaTime();
 	}
 	if ( Input::Instance()->IsMouseButtonDown(1) ) {
 		int dx, dy;
