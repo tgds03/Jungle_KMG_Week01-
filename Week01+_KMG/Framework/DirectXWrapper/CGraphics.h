@@ -13,8 +13,8 @@ public:
 
 private:
 	HWND _hWnd;
-	uint32 _width = 800;
-	uint32 _height = 600;
+	uint32 _width = SCR_WIDTH;
+	uint32 _height = SCR_HEIGHT;
 
 	ID3D11Device* _device = nullptr;
 	ID3D11DeviceContext* _deviceContext = nullptr;
@@ -22,6 +22,10 @@ private:
 
 	ID3D11Texture2D* _backBuffer = nullptr;
 	ID3D11RenderTargetView* _renderTargetView = nullptr;
+
+	ID3D11Texture2D* depthStencilBuffer;
+	ID3D11DepthStencilView* depthStencilView;
+	ID3D11DepthStencilState* depthStencilState;
 
 	D3D11_VIEWPORT _viewPort = {};
 
@@ -32,6 +36,7 @@ private:
 	void ReleaseDeviceAndSwapChain();
 	void CreateRenderTargetView();
 	void ReleaseRenderTargetView();
+	void CreateDepthStencilBuffer();
 	void SetViewport(float, float);
 };
 

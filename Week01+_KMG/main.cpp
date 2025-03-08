@@ -4,6 +4,9 @@
 #include "Math\FMatrix.h"
 #include "UCubeComponent.h"
 #include "UWorld.h"
+#include "Framework/Core/UCubeComponent.h"
+#include "Framework/Core/UPlaneComponent.h"
+#include "Framework/Core/UCoordArrowComponent.h"
 
 const int TARGET_FPS = 60;
 const double TARGET_FRAMERATE = 1000.0 / TARGET_FPS;
@@ -29,19 +32,36 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	winClass.lpfnWndProc = WinProc;
 	RegisterClass(&winClass);
 
-	HWND hWnd = CreateWindow(winClassName, winTitleName, 
+	HWND hWnd = CreateWindow(winClassName, winTitleName,
 		WS_POPUP | WS_VISIBLE | WS_OVERLAPPEDWINDOW,
-		CW_USEDEFAULT, CW_USEDEFAULT, 800, 600,
+		CW_USEDEFAULT, CW_USEDEFAULT, SCR_WIDTH, SCR_HEIGHT,
 		nullptr, nullptr, hInstance, nullptr
 	);
 
-	CRenderer::Instance()->Init(hWnd);
+	CRenderer::Instance()->Init(hWnd); // maincamera ����
 	Time::Instance()->Init();
 	Input::Instance()->Init(hInstance, hWnd, 800, 600);
-	//UCubeComponent* obj = new UCubeComponent();
+
+	GuiController* guiController = new GuiController(hWnd, CRenderer::Instance()->GetGraphics());
+
+	UPlaneComponent* ground = new UPlaneComponent();
+	UCubeComponent* obj = new UCubeComponent();
+	UCoordArrowComponent* arrow = new UCoordArrowComponent();
+	UCoordArrowComponent* worldArrow = new UCoordArrowComponent();
+
+	CRenderer::Instance()->GetCamera()->SetRelativeLocation(FVector(0, 0, -5));
+
 	UWorld* mainScene = new UWorld();
-	UCubeComponent* obj = mainScene->SpawnActor<UCubeComponent>();
-	USphereComponent* sphere = mainScene->SpawnActor<USphereComponent>();
+
+	worldArrow->SetRelativeScale3D({ 100,100,100 });
+	ground->SetRelativeScale3D({ 10,5,3 });
+	//ground->SetRelativeLocation({ 0,-10,0 });
+	arrow->SetRelativeScale3D({ 3,3,3 });
+
+
+	arrow->SetRelativeLocation({ 0,0,0 });
+	arrow->AttachToComponent(obj);
+	obj->SetRelativeRotation({ 0,1,0 });
 
 	MSG msg = {};
 	while (msg.message != WM_QUIT) {
@@ -51,16 +71,47 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
+
+		////////////////////////////////
+		// CUBE - ARROW 따라가는지 테스트용
+
+		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_J))
+		{
+			obj->SetRelativeLocation(obj->GetRelativeLocation() - obj->Right());
+		}
+		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_L))
+		{
+			obj->SetRelativeLocation(obj->GetRelativeLocation() + obj->Right());
+		}
+		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_I))
+		{
+			obj->SetRelativeLocation(obj->GetRelativeLocation() + obj->Front());
+		}
+		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_K))
+		{
+			obj->SetRelativeLocation(obj->GetRelativeLocation() - obj->Front());
+		}
+		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_O))
+		{
+			obj->SetRelativeLocation(obj->GetRelativeLocation() + obj->Up());
+		}
+		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_U))
+		{
+			obj->SetRelativeLocation(obj->GetRelativeLocation() - obj->Up());
+		}
+		CRenderer::Instance()->GetCamera()->PrintLoc(L"CAM");
+		obj->PrintLoc(L"obj");
 		
-		CRenderer::Instance()->GetGraphics()->RenderBegin();
+		// 테스트용
+		////////////////////////////////
+		
 		mainScene->Update();
+		CRenderer::Instance()->GetGraphics()->RenderBegin();
+		guiController->NewFrame();
 		mainScene->Render();
+		guiController->RenderFrame();
 		CRenderer::Instance()->GetGraphics()->RenderEnd();
 		Time::Instance()->_query_frame_end_time();
-		/*do {
-			Sleep(0);
-			Time::Instance()->_query_frame_end_time();
-		} while ( Time::GetDeltaTime() < TARGET_FRAMERATE );*/
 		
 	}
 	Input::Instance()->Shutdown();

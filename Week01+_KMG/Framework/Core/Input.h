@@ -32,6 +32,7 @@ public:
 	bool IsMouseButtonPressed(char button);
 	bool IsMouseButtonReleased(char button);
 	void GetMouseLocation(int& mouse_x, int& mouse_y);
+	void GetMouseDelta(int& mouse_x, int& mouse_y);
 	//void GetMouseRay(FVector& rayOrigin, FVector& rayDirection, const FVector& viewMatrix, const FVector& projectionMatrix);
 
 private:
@@ -49,6 +50,6 @@ private:
 	DIMOUSESTATE m_mouseStatePrevious;
 
 	int m_screenWidth, m_screenHeight;
-	int m_mouseX, m_mouseY;
+	//int m_mouseX, m_mouseY;
 	HWND m_hWnd;
 };

@@ -4,7 +4,8 @@
 CGraphics::CGraphics(HWND hWnd): _hWnd(hWnd) {
 	CreateDeviceAndSwapChain();
 	CreateRenderTargetView();
-	SetViewport(800.f, 600.f);
+	CreateDepthStencilBuffer();
+	SetViewport(_width, _height);
 }
 
 CGraphics::~CGraphics() {
@@ -12,7 +13,9 @@ CGraphics::~CGraphics() {
 }
 
 void CGraphics::RenderBegin() {
-	_deviceContext->OMSetRenderTargets(1, &_renderTargetView, nullptr);
+	_deviceContext->OMSetRenderTargets(1, &_renderTargetView, depthStencilView);
+	//_deviceContext->OMSetRenderTargets(1, &_renderTargetView, nullptr);
+	_deviceContext->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	_deviceContext->ClearRenderTargetView(_renderTargetView, _clearColor);
 	_deviceContext->RSSetViewports(1, &_viewPort);
 }
@@ -86,6 +89,44 @@ void CGraphics::CreateRenderTargetView() {
 void CGraphics::ReleaseRenderTargetView() {
 	SafeRelease(&_backBuffer);
 	SafeRelease(&_renderTargetView);
+}
+
+void CGraphics::CreateDepthStencilBuffer()
+{
+	HRESULT hr;
+
+	// Create depth stencil texture
+	D3D11_TEXTURE2D_DESC descDepth = {};
+	descDepth.Width = _width;
+	descDepth.Height = _height;
+	descDepth.MipLevels = 1;
+	descDepth.ArraySize = 1;
+	descDepth.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	descDepth.SampleDesc.Count = 1;
+	descDepth.SampleDesc.Quality = 0;
+	descDepth.Usage = D3D11_USAGE_DEFAULT;
+	descDepth.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	descDepth.CPUAccessFlags = 0;
+	descDepth.MiscFlags = 0;
+	hr = _device->CreateTexture2D(&descDepth, nullptr, &depthStencilBuffer);
+	if (FAILED(hr))
+		return;
+		//return hr;
+
+	// Create the depth stencil view
+	D3D11_DEPTH_STENCIL_VIEW_DESC descDSV = {};
+	descDSV.Format = descDepth.Format;
+	descDSV.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+	descDSV.Texture2D.MipSlice = 0;
+	hr = _device->CreateDepthStencilView(depthStencilBuffer, &descDSV, &depthStencilView);
+	if (FAILED(hr))
+		return;
+		//return hr;
+
+	//_deviceContext->OMSetRenderTargets(1, &_renderTargetView, depthStencilView);
+
+	depthStencilBuffer->Release();
+	depthStencilBuffer = nullptr;
 }
 
 void CGraphics::SetViewport(float width, float height) {
