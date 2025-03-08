@@ -2,47 +2,45 @@
 #include "UCameraComponent.h"
 
 void UCameraComponent::Update() {
-	if ( !Input::Instance()->IsMouseButtonDown(1) )  {
-		if ( Input::Instance()->IsKeyDown(DIK_A) ) {
-			RelativeLocation.x -= 1.0f * Time::GetDeltaTime();
-		}
-		if ( Input::Instance()->IsKeyDown(DIK_D) ) {
-			RelativeLocation.x += 1.0f * Time::GetDeltaTime();
-		}
-		if ( Input::Instance()->IsKeyDown(DIK_W) ) {
-			RelativeLocation.z -= 1.0f * Time::GetDeltaTime();
-		}
-		if ( Input::Instance()->IsKeyDown(DIK_S) ) {
-			RelativeLocation.z += 1.0f * Time::GetDeltaTime();
-		}
-		if ( Input::Instance()->IsKeyDown(DIK_SPACE) ) {
-			RelativeLocation.y += 1.0f * Time::GetDeltaTime();
-		}
-		if ( Input::Instance()->IsKeyDown(DIK_LSHIFT) ) {
-			RelativeLocation.y -= 1.0f * Time::GetDeltaTime();
-		}
-	} else {
-		if ( Input::Instance()->IsKeyDown(DIK_A) ) {
-			RelativeRotation.y -= 1.0f * Time::GetDeltaTime();
-		}
-		if ( Input::Instance()->IsKeyDown(DIK_D) ) {
-			RelativeRotation.y += 1.0f * Time::GetDeltaTime();
-		}
-		if ( Input::Instance()->IsKeyDown(DIK_W) ) {
-			RelativeRotation.x -= 1.0f * Time::GetDeltaTime();
-		}
-		if ( Input::Instance()->IsKeyDown(DIK_S) ) {
-			RelativeRotation.x += 1.0f * Time::GetDeltaTime();
-		}
-		if ( Input::Instance()->IsKeyDown(DIK_SPACE) ) {
-			RelativeRotation.z += 1.0f * Time::GetDeltaTime();
-		}
-		if ( Input::Instance()->IsKeyDown(DIK_LSHIFT) ) {
-			RelativeRotation.z -= 1.0f * Time::GetDeltaTime();
-		}
+	if ( Input::Instance()->IsKeyDown(DIK_A) ) {
+		//RelativeLocation.x -= 1.0f * Time::GetDeltaTime();
+		RelativeLocation -= Right() * Time::GetDeltaTime();
 	}
-	//OutputDebugString((std::to_wstring(RelativeLocation.y) + L"\n").c_str());
-	//PrintLoc(L"CAMERA");
+	if ( Input::Instance()->IsKeyDown(DIK_D) ) {
+		//RelativeLocation.x += 1.0f * Time::GetDeltaTime();
+		RelativeLocation += Right() * Time::GetDeltaTime();
+	}
+	if ( Input::Instance()->IsKeyDown(DIK_W) ) {
+		//RelativeLocation.z -= 1.0f * Time::GetDeltaTime();
+		RelativeLocation -= Front() * Time::GetDeltaTime();
+	}
+	if ( Input::Instance()->IsKeyDown(DIK_S) ) {
+		//RelativeLocation.z += 1.0f * Time::GetDeltaTime();
+		RelativeLocation += Front() * Time::GetDeltaTime();
+	}
+	if ( Input::Instance()->IsKeyDown(DIK_SPACE) ) {
+		//RelativeLocation.y += 1.0f * Time::GetDeltaTime();
+		RelativeLocation += Up() * Time::GetDeltaTime();
+	}
+	if ( Input::Instance()->IsKeyDown(DIK_LSHIFT) ) {
+		//RelativeLocation.y -= 1.0f * Time::GetDeltaTime();
+		RelativeLocation -= Up() * Time::GetDeltaTime();
+	}
+	if ( Input::Instance()->IsMouseButtonDown(1) ) {
+		int dx, dy;
+		Input::Instance()->GetMouseDelta(dx, dy);
+		RelativeRotation.y += degToRad(dx) * mouseSensitive;
+		RelativeRotation.x += degToRad(dy) * mouseSensitive;
+		
+	}
+	//OutputDebugString((std::to_wstring(dx) + L"\n").c_str());
+}
+
+void UCameraComponent::Render() {
+	ImGui::Begin("Camera");
+	ImGui::Text(("position: " + static_cast<std::string>(RelativeLocation)).c_str());
+	ImGui::Text(("rotation: " + static_cast<std::string>(RelativeRotation)).c_str());
+	ImGui::End();
 }
 
 //FMatrix UCameraComponent::InverseTransformation() {

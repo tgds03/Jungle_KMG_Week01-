@@ -11,8 +11,8 @@ bool Input::Init(HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeig
 	m_screenHeight = screenHeight;
 
 	// Initialize the location of the mouse on the screen.
-	m_mouseX = 0;
-	m_mouseY = 0;
+	//m_mouseX = 0;
+	//m_mouseY = 0;
 
 	// Initialize the main direct input interface.
 	result = DirectInput8Create(hinstance, DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&m_directInput, NULL);
@@ -115,10 +115,20 @@ bool Input::IsMouseButtonReleased(char button) {
 	return false;
 }
 
-void Input::GetMouseLocation(int& mouseX, int& mouseY) {
-	mouseX = m_mouseX;
-	mouseY = m_mouseY;
+void Input::GetMouseLocation(int& mouse_x, int& mouse_y) {
+	//mouseX = m_mouseX;
+	//mouseY = m_mouseY;
+	POINT p;
+	GetCursorPos(&p);
+	ScreenToClient(m_hWnd, &p);
+	mouse_x = p.x;
+	mouse_y = p.y;
 	return;
+}
+
+void Input::GetMouseDelta(int& mouse_x, int& mouse_y) {
+	mouse_x = m_mouseState.lX;
+	mouse_y = m_mouseState.lY;
 }
 
 
@@ -157,14 +167,14 @@ bool Input::ReadMouse() {
 
 void Input::ProcessInput() {
 
-	m_mouseX += m_mouseState.lX;
-	m_mouseY += m_mouseState.lY;
+	//m_mouseX += m_mouseState.lX;
+	//m_mouseY += m_mouseState.lY;
 
-	if ( m_mouseX < 0 ) { m_mouseX = 0; }
-	if ( m_mouseY < 0 ) { m_mouseY = 0; }
+	//if ( m_mouseX < 0 ) { m_mouseX = 0; }
+	//if ( m_mouseY < 0 ) { m_mouseY = 0; }
 
-	if ( m_mouseX > m_screenWidth ) { m_mouseX = m_screenWidth; }
-	if ( m_mouseY > m_screenHeight ) { m_mouseY = m_screenHeight; }
+	//if ( m_mouseX > m_screenWidth ) { m_mouseX = m_screenWidth; }
+	//if ( m_mouseY > m_screenHeight ) { m_mouseY = m_screenHeight; }
 
 	return;
 }

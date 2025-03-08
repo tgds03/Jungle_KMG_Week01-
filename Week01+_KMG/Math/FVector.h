@@ -67,6 +67,9 @@ struct FVector {
 
 		return FVector();
 	}
+	operator std::string() const {
+		return "(" + std::to_string(x) + "," + std::to_string(y) + "," + std::to_string(z) + ")";
+	}
 	FVector ProjectOn(FVector vec) const {
 		FVector unit = vec.Normalized();
 		return unit * unit.Dot(*this);
@@ -159,6 +162,9 @@ struct FVector4 {
 			return *this / length;
 
 		return FVector4();
+	}
+	operator std::string() const {
+		return "(" + std::to_string(x) + "," + std::to_string(y) + "," + std::to_string(z) + "," + std::to_string(w) + ")";
 	}
 	FVector xyz() const {
 		return FVector(x, y, z);

@@ -6,6 +6,20 @@ void USceneComponent::Update()
 	UActorComponent::Update();
 }
 
+FVector USceneComponent::Right() {
+	FVector4 r = GetComponentTransform().r1();
+	return FVector(r.x, r.y, r.z).Normalized();
+}
+
+FVector USceneComponent::Up() {
+	FVector4 r = GetComponentTransform().r2();
+	return FVector(r.x, r.y, r.z).Normalized();
+}
+
+FVector USceneComponent::Front() {
+	FVector4 r = GetComponentTransform().r3();
+	return FVector(r.x, r.y, r.z).Normalized();
+}
 //void USceneComponent::Render()
 //{
 //	UActorComponent::Render();
@@ -151,7 +165,7 @@ void USceneComponent::SetRelativeScale3DZ(const float NewScaleZ)
 	RelativeScale3D.z = NewScaleZ;
 }
 
-// ¿ùµå ÁÂÇ¥¿¡¼­ ¿Å±â°í, ÀÌÈÄ Parent¿ÍÀÇ »ó´ëÀ§Ä¡¸¦ ÀÌ¿¡ µû¶ó ¾÷µ¥ÀÌÆ®
+// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç¥ï¿½ï¿½ï¿½ï¿½ ï¿½Å±ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ Parentï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½Ì¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 void USceneComponent::SetWorldLocation(const FVector NewWorldLocation)
 {
 	if (GetAttachParent() != nullptr)
@@ -188,9 +202,9 @@ void USceneComponent::SetWorldLocationAndRotation(const FVector NewWorldLocation
 //
 //}
 
-// const¶û pass by reference(&)
-// µ¥ÀÌÅÍ¸¦ È¿À²ÀûÀ¸·Î Àü´ÞÇÏ¸é¼­ È£ÃâÇÑ ÇÔ¼ö°¡ ÀÌ ¿ÀºêÁ§Æ®ÀÇ childrenÀ» ¹Ù²ÙÁö ¸øÇÏ°Ô ÇÔ
-// ¸®ÅÏ °ªÀ» ´Ù¸¥ º¯¼ö¿¡ ¿Å±â°í¼­("=" operator) »ç¿ë
+// constï¿½ï¿½ pass by reference(&)
+// ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ È¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸é¼­ È£ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ childrenï¿½ï¿½ ï¿½Ù²ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½
+// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Å±ï¿½ï¿½ï¿½ï¿½("=" operator) ï¿½ï¿½ï¿½
 const TArray<USceneComponent*>& USceneComponent::GetAttachChildren() const
 {
 	return AttachChildern;
@@ -216,7 +230,7 @@ void USceneComponent::GetParentComponents(TArray<USceneComponent*>& Parents) con
 {
 	Parents.clear();
 
-	// ¾ð¸®¾ó ¼Ò½ºÄÚµå /Engine/Source/Runtime/Engine/Classes/Components/SceneComponent.h Âü°í
+	// ï¿½ð¸®¾ï¿½ ï¿½Ò½ï¿½ï¿½Úµï¿½ /Engine/Source/Runtime/Engine/Classes/Components/SceneComponent.h ï¿½ï¿½ï¿½ï¿½
 	USceneComponent* ParentIterator = GetAttachParent();
 	while (ParentIterator != nullptr)
 	{
@@ -225,7 +239,7 @@ void USceneComponent::GetParentComponents(TArray<USceneComponent*>& Parents) con
 	}
 }
 
-// pass by reference·Î ¸Þ¸ð¸® Àý¾à
+// pass by referenceï¿½ï¿½ ï¿½Þ¸ï¿½ ï¿½ï¿½ï¿½ï¿½
 void USceneComponent::SetupAttachment(TArray<USceneComponent*>& Children)
 {
 	AttachChildern.clear();
@@ -234,7 +248,7 @@ void USceneComponent::SetupAttachment(TArray<USceneComponent*>& Children)
 	{
 		if (!child->AttachToComponent(this))
 		{
-			UE_LOG(L"USceneComponent::SetupAttachment::ChildrenÀ¸·Î ÁöÁ¤ÇÏ´Âµ¥ ½ÇÆÐÇß½À´Ï´Ù.");
+			UE_LOG(L"USceneComponent::SetupAttachment::Childrenï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´Âµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ß½ï¿½ï¿½Ï´ï¿½.");
 		}
 	}
 }
@@ -243,7 +257,7 @@ void USceneComponent::SetupAttachment(TArray<USceneComponent*>& Children)
 //{
 //	if (Child == this)
 //	{
-//		UE_LOG(L"ÀÚ±â ÀÚ½ÅÀ» ChildrenÀ¸·Î ÇÒ ¼ö ¾ø½À´Ï´Ù.");
+//		UE_LOG(L"ï¿½Ú±ï¿½ ï¿½Ú½ï¿½ï¿½ï¿½ Childrenï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
 //		return;
 //	}
 //	TArray<USceneComponent*> parents;
@@ -251,7 +265,7 @@ void USceneComponent::SetupAttachment(TArray<USceneComponent*>& Children)
 //	for (auto& parent : parents)
 //	{
 //		if (this == parent->GetAttachParent()) {
-//			UE_LOG(L"Ancestor¸¦ ChildrenÀ¸·Î ÇÒ ¼ö ¾ø½À´Ï´Ù.");
+//			UE_LOG(L"Ancestorï¿½ï¿½ Childrenï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
 //			return;
 //		}
 //	}
@@ -262,16 +276,16 @@ bool USceneComponent::AttachToComponent(USceneComponent* Parent)
 {
 	if (Parent == this)
 	{
-		UE_LOG(L"USceneComponent::AttachToComponent::ÀÚ±â ÀÚ½ÅÀ» Parent·Î ÇÒ ¼ö ¾ø½À´Ï´Ù.");
+		UE_LOG(L"USceneComponent::AttachToComponent::ï¿½Ú±ï¿½ ï¿½Ú½ï¿½ï¿½ï¿½ Parentï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
 		return false;
 	}
 
-	// parent·Î ÇÏ·Á´Â ÄÄÆ÷³ÍÆ®ÀÇ Á¶»ó¿¡ *this°¡ ÀÖ´ÂÁö È®ÀÎ
+	// parentï¿½ï¿½ ï¿½Ï·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ *thisï¿½ï¿½ ï¿½Ö´ï¿½ï¿½ï¿½ È®ï¿½ï¿½
 	TArray<USceneComponent*> parentsOfInput;
 	Parent->GetParentComponents(parentsOfInput);
 	if (parentsOfInput.end() != std::find(parentsOfInput.begin(), parentsOfInput.end(), this))
 	{
-		UE_LOG(L"USceneComponent::AttachToComponent::Descendent¸¦ Parent·Î ÇÒ ¼ö ¾ø½À´Ï´Ù.");
+		UE_LOG(L"USceneComponent::AttachToComponent::Descendentï¿½ï¿½ Parentï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
 		return false;
 	}
 

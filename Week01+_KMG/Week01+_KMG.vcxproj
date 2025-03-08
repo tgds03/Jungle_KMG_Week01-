@@ -147,9 +147,32 @@
     <ClCompile Include="Framework\DirectXWrapper\CInputLayout.cpp" />
     <ClCompile Include="Framework\DirectXWrapper\CShader.cpp" />
     <ClCompile Include="Framework\DirectXWrapper\CState.cpp" />
+    <ClCompile Include="GuiController.cpp" />
+    <ClCompile Include="ImGui\imgui.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_demo.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_draw.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_impl_dx11.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_impl_win32.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_tables.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_widgets.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Math\FMatrix.cpp" />
     <ClCompile Include="Math\FVector.cpp" />
+    <ClCompile Include="UPlaneComponent.cpp" />
     <FxCompile Include="Shader.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <FileType>Document</FileType>
@@ -176,11 +199,24 @@
     <ClInclude Include="Framework\DirectXWrapper\CInputLayout.h" />
     <ClInclude Include="Framework\DirectXWrapper\CShader.h" />
     <ClInclude Include="Framework\DirectXWrapper\CState.h" />
+    <ClInclude Include="GuiController.h" />
+    <ClInclude Include="ImGui\imconfig.h" />
+    <ClInclude Include="ImGui\imgui.h" />
+    <ClInclude Include="ImGui\imgui_impl_dx11.h" />
+    <ClInclude Include="ImGui\imgui_impl_win32.h" />
+    <ClInclude Include="ImGui\imgui_internal.h" />
+    <ClInclude Include="ImGui\imstb_rectpack.h" />
+    <ClInclude Include="ImGui\imstb_textedit.h" />
+    <ClInclude Include="ImGui\imstb_truetype.h" />
     <ClInclude Include="Math\FMatrix.h" />
     <ClInclude Include="Math\FVector.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="UCameraComponent.h" />
     <ClInclude Include="UCubeComponent.h" />
+    <ClInclude Include="UPlaneComponent.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ImGui\imgui.ini" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
