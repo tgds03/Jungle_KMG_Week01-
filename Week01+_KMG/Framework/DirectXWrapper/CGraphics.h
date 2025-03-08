@@ -23,6 +23,8 @@ private:
 	ID3D11Texture2D* _backBuffer = nullptr;
 	ID3D11RenderTargetView* _renderTargetView = nullptr;
 
+	D3D11_VIEWPORT _viewPort = {};
+
 	float _clearColor[4] = { 0.f, 0.f, 0.f, 1.f };
 
 private:
@@ -30,5 +32,6 @@ private:
 	void ReleaseDeviceAndSwapChain();
 	void CreateRenderTargetView();
 	void ReleaseRenderTargetView();
+	void SetViewport(float, float);
 };
 

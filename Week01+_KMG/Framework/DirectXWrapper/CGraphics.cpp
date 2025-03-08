@@ -4,6 +4,7 @@
 CGraphics::CGraphics(HWND hWnd): _hWnd(hWnd) {
 	CreateDeviceAndSwapChain();
 	CreateRenderTargetView();
+	SetViewport(800.f, 600.f);
 }
 
 CGraphics::~CGraphics() {
@@ -13,6 +14,7 @@ CGraphics::~CGraphics() {
 void CGraphics::RenderBegin() {
 	_deviceContext->OMSetRenderTargets(1, &_renderTargetView, nullptr);
 	_deviceContext->ClearRenderTargetView(_renderTargetView, _clearColor);
+	_deviceContext->RSSetViewports(1, &_viewPort);
 }
 
 void CGraphics::RenderEnd() {
@@ -32,7 +34,7 @@ void CGraphics::CreateDeviceAndSwapChain() {
 	desc.BufferDesc.Height = _height;
 	desc.BufferDesc.RefreshRate.Numerator = 60;
 	desc.BufferDesc.RefreshRate.Denominator = 1;
-	desc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	desc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
 	desc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
 	desc.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
 	desc.SampleDesc.Count = 1;
@@ -46,7 +48,7 @@ void CGraphics::CreateDeviceAndSwapChain() {
 		nullptr,
 		D3D_DRIVER_TYPE_HARDWARE,
 		nullptr,
-		0,
+		D3D11_CREATE_DEVICE_BGRA_SUPPORT | D3D11_CREATE_DEVICE_DEBUG,
 		featureLevels,
 		ARRAYSIZE(featureLevels),
 		D3D11_SDK_VERSION,
@@ -74,7 +76,7 @@ void CGraphics::CreateRenderTargetView() {
 	assert(SUCCEEDED(hr));
 
 	D3D11_RENDER_TARGET_VIEW_DESC desc = {};
-	desc.Format = DXGI_FORMAT_R8G8B8A8_UINT;
+	desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
 	desc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
 
 	hr = _device->CreateRenderTargetView(_backBuffer, &desc, &_renderTargetView);
@@ -84,4 +86,13 @@ void CGraphics::CreateRenderTargetView() {
 void CGraphics::ReleaseRenderTargetView() {
 	SafeRelease(&_backBuffer);
 	SafeRelease(&_renderTargetView);
+}
+
+void CGraphics::SetViewport(float width, float height) {
+	_viewPort.TopLeftX = 0;
+	_viewPort.TopLeftY = 0;
+	_viewPort.Width = width;
+	_viewPort.Height = height;
+	_viewPort.MinDepth = 0.f;
+	_viewPort.MaxDepth = 1.f;
 }

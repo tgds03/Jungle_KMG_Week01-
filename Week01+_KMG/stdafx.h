@@ -7,6 +7,7 @@
 #include <d3d11.h>
 #include <d3dcompiler.h>
 #include <assert.h>
+#include "comdef.h"
 #include <Windows.h>
 
 #include <vector>
@@ -21,6 +22,10 @@ using FWString = std::wstring;
 
 #include "Math/FVector.h"
 #include "Math/FMatrix.h"
+# define M_PI           3.14159265358979323846
+
+#include "Framework/Core/Time.h"
+#include "Framework/Core/Input.h"
 
 template <typename T> void SafeRelease(T** ppT) {
 	if (*ppT) {
@@ -28,3 +33,8 @@ template <typename T> void SafeRelease(T** ppT) {
 		*ppT = nullptr;
 	}
 }
+
+
+
+inline float degToRad(float deg) { return deg * M_PI / 180.f; }
+inline float radToDeg(float rad) { return rad * 180.f / M_PI; }

@@ -2,8 +2,10 @@
 #include "Framework/Core/CRenderer.h"
 #include "Math\FVector.h"
 #include "Math\FMatrix.h"
+#include "UCubeComponent.h"
 
-double gFrameElapsedTime = 0; // milisecond
+const int TARGET_FPS = 60;
+const double TARGET_FRAMERATE = 1000.0 / TARGET_FPS;
 
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
 	switch (message) {
@@ -18,7 +20,7 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
 	WCHAR winClassName[] = L"WindowClass";
-	WCHAR winTitleName[] = L"My Engine";
+	WCHAR winTitleName[] = L"Title";
 
 	WNDCLASS winClass = {};
 	winClass.hInstance = hInstance;
@@ -28,36 +30,35 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 	HWND hWnd = CreateWindow(winClassName, winTitleName, 
 		WS_POPUP | WS_VISIBLE | WS_OVERLAPPEDWINDOW,
-		CW_USEDEFAULT, CW_USEDEFAULT, 1920, 1080,
+		CW_USEDEFAULT, CW_USEDEFAULT, 800, 600,
 		nullptr, nullptr, hInstance, nullptr
 	);
 
-	const int TARGET_FPS = 60;
-	const double TARGET_FRAMETIME = 1000.0 / TARGET_FPS;
-	LARGE_INTEGER frequency, frameStartTime, frameUpdateTime, frameEndTime;
-
-	QueryPerformanceFrequency(&frequency);
-	QueryPerformanceFrequency(&frameStartTime);
-
 	CRenderer::Instance()->Init(hWnd);
+	Time::Instance()->Init();
+	Input::Instance()->Init(hInstance, hWnd, 800, 600);
+	UCubeComponent* obj = new UCubeComponent();
+
 	MSG msg = {};
-	while (msg.message != WM_QUIT) 
-	{
-		QueryPerformanceFrequency(&frameUpdateTime);
-		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
-		{
+	while (msg.message != WM_QUIT) {
+		Time::Instance()->_query_frame_update_time();
+		Input::Instance()->Frame();
+		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
+		UActorComponent::UpdateAll();
 		CRenderer::Instance()->GetGraphics()->RenderBegin();
-		
+		UActorComponent::RenderAll();
 		CRenderer::Instance()->GetGraphics()->RenderEnd();
-
-		do {
+		Time::Instance()->_query_frame_end_time();
+		/*do {
 			Sleep(0);
-			QueryPerformanceCounter(&frameEndTime);
-			gFrameElapsedTime = (frameEndTime.QuadPart - frameUpdateTime.QuadPart) * 1000.0 / frequency.QuadPart;
-		}
+			Time::Instance()->_query_frame_end_time();
+		} while ( Time::GetDeltaTime() < TARGET_FRAMERATE );*/
+		
 	}
+	Input::Instance()->Shutdown();
+	CRenderer::Release();
 	return 0;
 }
