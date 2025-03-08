@@ -1,4 +1,5 @@
 #pragma once
+#include "stdafx.h"
 #include "Framework/Core/CEngineStatics.h"
 #include "Framework/Core/CObjectMeta.h"
 #include <unordered_map>
@@ -19,6 +20,7 @@ public:
 		CEngineStatics::TotalAllocationBytes += size;
 		return ptr;
 	}
+
 	void operator delete(void* p) {
 		--CEngineStatics::TotalAllocationCount;
 		CEngineStatics::TotalAllocationBytes -= _allocationMap[p];

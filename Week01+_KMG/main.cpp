@@ -3,6 +3,7 @@
 #include "Math\FVector.h"
 #include "Math\FMatrix.h"
 #include "Framework/Core/UCubeComponent.h"
+#include "UWorld.h"
 #include "Framework/Core/UPlaneComponent.h"
 #include "Framework/Core/UCoordArrowComponent.h"
 
@@ -39,13 +40,15 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	CRenderer::Instance()->Init(hWnd); // maincamera ����
 	Time::Instance()->Init();
 	Input::Instance()->Init(hInstance, hWnd, 800, 600);
+
 	GuiController* guiController = new GuiController(hWnd, CRenderer::Instance()->GetGraphics());
 
+	UWorld* mainScene = new UWorld();
 
-	UPlaneComponent* ground = new UPlaneComponent();
-	UCubeComponent* obj = new UCubeComponent();
-	UCoordArrowComponent* arrow = new UCoordArrowComponent();
-	UCoordArrowComponent* worldArrow = new UCoordArrowComponent();
+	UPlaneComponent* ground = mainScene->SpawnPlaneActor();
+	UCubeComponent* obj = mainScene->SpawnCubeActor();
+	UCoordArrowComponent* arrow = mainScene->SpawnCoordArrowActor();
+	UCoordArrowComponent* worldArrow = mainScene->SpawnCoordArrowActor();
 
 	CRenderer::Instance()->GetCamera()->SetRelativeLocation(FVector(0, 0, -5));
 
@@ -53,7 +56,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	ground->SetRelativeScale3D({ 10,5,3 });
 	//ground->SetRelativeLocation({ 0,-10,0 });
 	arrow->SetRelativeScale3D({ 3,3,3 });
-
 
 	arrow->SetRelativeLocation({ 0,0,0 });
 	arrow->AttachToComponent(obj);
@@ -67,6 +69,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
+
 		////////////////////////////////
 		// CUBE - ARROW 따라가는지 테스트용
 
@@ -100,9 +103,9 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		// 테스트용
 		////////////////////////////////
 		guiController->NewFrame();
-		UActorComponent::UpdateAll();
+		mainScene->Update();
 		CRenderer::Instance()->GetGraphics()->RenderBegin();
-		UActorComponent::RenderAll();
+		mainScene->Render();
 
 		ImGui::Begin("profile");
 		ImGui::Text("UObject Count: %d", CEngineStatics::TotalAllocationCount);
@@ -112,10 +115,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		guiController->RenderFrame();
 		CRenderer::Instance()->GetGraphics()->RenderEnd();
 		Time::Instance()->_query_frame_end_time();
-		/*do {
-			Sleep(0);
-			Time::Instance()->_query_frame_end_time();
-		} while ( Time::GetDeltaTime() < TARGET_FRAMERATE );*/
 		
 	}
 	Input::Instance()->Shutdown();
