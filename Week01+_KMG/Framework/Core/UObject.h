@@ -1,23 +1,28 @@
 #pragma once
 #include "Framework/Core/CEngineStatics.h"
 #include "Framework/Core/CObjectMeta.h"
+#include <unordered_map>
 
 class UObject {
 private:
 	uint32 _uuid;
 	uint32 _internalIndex;		// ???
+	static std::unordered_map<void*, size_t> _allocationMap;
 public:
 	UObject();
 	virtual ~UObject();
 
 	void* operator new(size_t size) {
+		void* ptr = ::operator new(size);
 		++CEngineStatics::TotalAllocationCount;
-		//CEngineStatics::TotalAllocationBytes += size;
-		return ::operator new(size);
+		_allocationMap[ptr] = size;
+		CEngineStatics::TotalAllocationBytes += size;
+		return ptr;
 	}
 	void operator delete(void* p) {
 		--CEngineStatics::TotalAllocationCount;
-		//CEngineStatics::TotalAllocationBytes -= size; // ???
+		CEngineStatics::TotalAllocationBytes -= _allocationMap[p];
+		_allocationMap.erase(p);
 		free(p);
 	}
 
