@@ -2,9 +2,8 @@
 #include "Framework/Core/CRenderer.h"
 #include "Math\FVector.h"
 #include "Math\FMatrix.h"
-#include "UCubeComponent.h"
-#include "UWorld.h"
 #include "Framework/Core/UCubeComponent.h"
+#include "UWorld.h"
 #include "Framework/Core/UPlaneComponent.h"
 #include "Framework/Core/UCoordArrowComponent.h"
 
@@ -44,20 +43,19 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 	GuiController* guiController = new GuiController(hWnd, CRenderer::Instance()->GetGraphics());
 
-	UPlaneComponent* ground = new UPlaneComponent();
-	UCubeComponent* obj = new UCubeComponent();
-	UCoordArrowComponent* arrow = new UCoordArrowComponent();
-	UCoordArrowComponent* worldArrow = new UCoordArrowComponent();
+	UWorld* mainScene = new UWorld();
+
+	UPlaneComponent* ground = mainScene->SpawnPlaneActor();
+	UCubeComponent* obj = mainScene->SpawnCubeActor();
+	UCoordArrowComponent* arrow = mainScene->SpawnCoordArrowActor();
+	UCoordArrowComponent* worldArrow = mainScene->SpawnCoordArrowActor();
 
 	CRenderer::Instance()->GetCamera()->SetRelativeLocation(FVector(0, 0, -5));
-
-	UWorld* mainScene = new UWorld();
 
 	worldArrow->SetRelativeScale3D({ 100,100,100 });
 	ground->SetRelativeScale3D({ 10,5,3 });
 	//ground->SetRelativeLocation({ 0,-10,0 });
 	arrow->SetRelativeScale3D({ 3,3,3 });
-
 
 	arrow->SetRelativeLocation({ 0,0,0 });
 	arrow->AttachToComponent(obj);

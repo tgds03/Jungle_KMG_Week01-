@@ -37,3 +37,23 @@ void UWorld::RemoveActor(UActorComponent* comp)
 {
     actorList.remove(comp);
 }
+
+UCubeComponent* UWorld::SpawnCubeActor()
+{
+    return SpawnActor<UCubeComponent>();
+}
+
+USphereComponent* UWorld::SpawnSphereACtor()
+{
+    return SpawnActor<USphereComponent>();
+}
+
+UPlaneComponent* UWorld::SpawnPlaneActor()
+{
+    return SpawnActor<UPlaneComponent>();
+}
+
+UCoordArrowComponent* UWorld::SpawnCoordArrowActor()
+{
+    return SpawnActor<UCoordArrowComponent>();
+}

@@ -1,10 +1,16 @@
 #pragma once
 #include "Framework/Core/UObject.h"
-#include "Framework/Core/UActorComponent.h"
-#include "UCubeComponent.h"
 #include "USphereComponent.h"
+//#include "Framework/Core/UActorComponent.h"
+#include "Framework/Core/UCubeComponent.h"
+#include "Framework/Core/UPlaneComponent.h"
+#include "Framework/Core/UCoordArrowComponent.h"
 
-//class UActorComponent;
+class UActorComponent;
+class UCubeComponent;
+class USphereComponent;
+class UPlaneComponent;
+class UCoordArrowComponent;
 
 class UWorld :
     public UObject
@@ -19,17 +25,18 @@ public:
     void AddActor(UActorComponent* comp);
     void RemoveActor(UActorComponent* comp);
 
-    template <typename T>
-    T* SpawnActor(); // RTTI 적용 예정
-    template <typename T>
-    T* SpawnActor(FVector position, FVector rotation = FVector::Zero, FVector scal = FVector::One);
-
     UCubeComponent* SpawnCubeActor();
     USphereComponent* SpawnSphereACtor();
-
+    UPlaneComponent* SpawnPlaneActor();
+    UCoordArrowComponent* SpawnCoordArrowActor();
 
 private:
     TLinkedList<UActorComponent*> actorList = {};
+
+    template <typename T>
+    T* SpawnActor(); // RTTI 적용 후 public으로 변경
+    template <typename T>
+    T* SpawnActor(FVector position, FVector rotation = FVector::Zero, FVector scal = FVector::One);
 };
 
 template<typename T>
