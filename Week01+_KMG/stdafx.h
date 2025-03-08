@@ -34,7 +34,7 @@ template <typename T> void SafeRelease(T** ppT) {
 	}
 }
 
-
+#define UE_LOG OutputDebugString
 
 inline float degToRad(float deg) { return deg * M_PI / 180.f; }
 inline float radToDeg(float rad) { return rad * 180.f / M_PI; }

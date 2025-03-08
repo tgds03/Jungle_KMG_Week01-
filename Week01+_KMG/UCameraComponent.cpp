@@ -41,17 +41,18 @@ void UCameraComponent::Update() {
 			RelativeRotation.z -= 1.0f * Time::GetDeltaTime();
 		}
 	}
-	OutputDebugString((std::to_wstring(RelativeLocation.y) + L"\n").c_str());
+	//OutputDebugString((std::to_wstring(RelativeLocation.y) + L"\n").c_str());
+	//PrintLoc(L"CAMERA");
 }
 
-FMatrix UCameraComponent::InverseTransformation() {
-	FMatrix m = FMatrix::Translate(-RelativeLocation.x, -RelativeLocation.y, -RelativeLocation.z);
-	m = m * FMatrix::RotateZ(-RelativeRotation.z);
-	m = m * FMatrix::RotateY(-RelativeRotation.y);
-	m = m * FMatrix::RotateX(-RelativeRotation.x);
-	//m = m * FMatrix::Scale(1 / RelativeScale3D.x, 1 / RelativeScale3D.y, 1 / RelativeScale3D.z);
-	return m;
-}
+//FMatrix UCameraComponent::InverseTransformation() {
+//	FMatrix m = FMatrix::Translate(-RelativeLocation.x, -RelativeLocation.y, -RelativeLocation.z);
+//	m = m * FMatrix::RotateZ(-RelativeRotation.z);
+//	m = m * FMatrix::RotateY(-RelativeRotation.y);
+//	m = m * FMatrix::RotateX(-RelativeRotation.x);
+//	//m = m * FMatrix::Scale(1 / RelativeScale3D.x, 1 / RelativeScale3D.y, 1 / RelativeScale3D.z);
+//	return m;
+//}
 
 FMatrix UCameraComponent::PerspectiveProjection() {
 	float t = tan(degToRad(fieldOfView / 2));

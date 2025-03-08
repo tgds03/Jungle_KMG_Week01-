@@ -23,6 +23,10 @@ private:
 	ID3D11Texture2D* _backBuffer = nullptr;
 	ID3D11RenderTargetView* _renderTargetView = nullptr;
 
+	ID3D11Texture2D* depthStencilBuffer;
+	ID3D11DepthStencilView* depthStencilView;
+	ID3D11DepthStencilState* depthStencilState;
+
 	D3D11_VIEWPORT _viewPort = {};
 
 	float _clearColor[4] = { 0.f, 0.f, 0.f, 1.f };
@@ -32,6 +36,7 @@ private:
 	void ReleaseDeviceAndSwapChain();
 	void CreateRenderTargetView();
 	void ReleaseRenderTargetView();
+	void CreateDepthStencilBuffer();
 	void SetViewport(float, float);
 };
 
