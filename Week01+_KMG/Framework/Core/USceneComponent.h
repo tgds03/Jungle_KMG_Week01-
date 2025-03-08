@@ -7,5 +7,9 @@ public:
 	FVector RelativeScale3D = FVector::One;
 
 	FMatrix Transformation();
+
+	FVector Right();
+	FVector Up();
+	FVector Front();
 };
 
