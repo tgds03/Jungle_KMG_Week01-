@@ -16,7 +16,7 @@ class UWorld :
     public UObject
 {
 public:
-    UWorld() {}
+    UWorld();
     ~UWorld();
 
     void Update();
@@ -25,6 +25,7 @@ public:
     void AddActor(UActorComponent* comp);
     void RemoveActor(UActorComponent* comp);
 
+    UCameraComponent* SpawnCamera();
     UCubeComponent* SpawnCubeActor();
     USphereComponent* SpawnSphereACtor();
     UPlaneComponent* SpawnPlaneActor();

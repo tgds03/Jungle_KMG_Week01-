@@ -36,7 +36,8 @@ public:
 	void ResetPixelShader();
 	void SetRasterzierState();
 	void SetConstantBuffer(FMatrix matrix);
-	UCameraComponent* GetCamera() const;
+	UCameraComponent* GetMainCamera() const;
+	void SetCamera(UCameraComponent* camera);
 private:
 	CGraphics* _graphics = nullptr;
 	CVertexShader* _vertexShader = nullptr;
