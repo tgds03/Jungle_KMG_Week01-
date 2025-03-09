@@ -8,7 +8,6 @@ namespace json {
 	class JSON;
 }
 
-
 class DataManager
 {
 public:

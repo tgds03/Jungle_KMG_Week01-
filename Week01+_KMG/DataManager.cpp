@@ -5,6 +5,7 @@
 #include <fstream>
 #include <sstream>
 #include "Include/json.hpp"
+
 DataManager* DataManager::_instance = nullptr;
 
 bool CreateDirectoryIfNotExists(const FString& path)
@@ -45,12 +46,11 @@ FString DataManager::GenerateWorldJson(UWorld* world)
 
     json::JSON jsonData = json::Object();
 
-
-    json::JSON primitivesJson = json::Object();
-    int index = 0;
-
     jsonData["Version"] = 1;
     jsonData["NextUUID"] = CEngineStatics::TotalAllocationCount;
+    int index = 0;
+
+    json::JSON primitivesJson = json::Object();
     for (auto* comp : world->GetActors())
     {
         if (!comp) continue;
@@ -76,15 +76,15 @@ FString DataManager::GenerateWorldJson(UWorld* world)
 
         primitivesJson[std::to_string(index++)] = primitive;
     }
-    jsonData["Primitives"] = primitivesJson;
 
+    jsonData["Primitives"] = primitivesJson;
 
     return jsonData.dump();
 }
 
 json::JSON DataManager::SerializeFVector(const FVector& vec)
 {
-    return json::JSON();
+    return json::Array(vec.x, vec.y, vec.z);
 }
 
 
