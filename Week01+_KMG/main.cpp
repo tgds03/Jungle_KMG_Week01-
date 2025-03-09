@@ -33,9 +33,6 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 			
 			gMainScene->PickingByRay(LOWORD(lParam), HIWORD(lParam), gAxisXComp, gAxisYComp, gAxisZComp);
 		break;
-	case WM_CHAR:
-		ImGui::GetIO().AddInputCharacter((unsigned int)wParam);
-		break;
 	//case WM_SIZE:
 	//{
 	//	//if (CRenderer::Instance()->GetGraphics() && CRenderer::Instance()->GetGraphics()->GetDevice() && CRenderer::Instance()->GetGraphics()->GetDeviceContext()) {

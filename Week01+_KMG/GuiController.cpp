@@ -9,7 +9,7 @@ GuiController::GuiController(HWND hWnd, CGraphics* graphics): hWnd(hWnd) {
 	IMGUI_CHECKVERSION();
 	_context = ImGui::CreateContext();
 	_io = &ImGui::GetIO();
-	_io->ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+	//_io->ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 	ImGui_ImplDX11_Init(graphics->GetDevice(), graphics->GetDeviceContext());
 	ImGui_ImplWin32_Init(hWnd);
 	_console = new GuiConsole();
@@ -122,9 +122,7 @@ void GuiController::RenderEditor() {
 	}
 	ImGui::End();
 
-	//_console->Render();
-	ImGui::ShowDemoWindow();
+	_console->Render();
+	//ImGui::ShowDemoWindow();
 	ImGui::ShowDebugLogWindow();
-	if ( ImGui::IsKeyPressed(ImGuiKey_Enter) )
-		UE_LOG(L"Enter\n");
 }

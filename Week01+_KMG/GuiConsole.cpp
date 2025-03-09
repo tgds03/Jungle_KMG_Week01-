@@ -50,11 +50,11 @@ void GuiConsole::Render() {
         GuiConsole* console = (GuiConsole*)(data->UserData);
         return console->TextEditCallback(data);
     }, (void*)this) ) {
-        OutputDebugString(L"console");
+        //OutputDebugString(L"console");
 		char* s = _inputBuffer;
 		Strtrim(s);
-		/*if ( s[0] )
-			ExecCommand(s);*/
+		if ( s[0] )
+			ExecCommand(s);
 		strcpy_s(s, 256, "");
 	}
 	ImGui::End();
@@ -166,4 +166,8 @@ int GuiConsole::TextEditCallback(ImGuiInputTextCallbackData* data) {
     //}
     }
     return 0;
+}
+
+void GuiConsole::ExecCommand(const char* command_line) {
+    AddLog("# %s\n", command_line);
 }

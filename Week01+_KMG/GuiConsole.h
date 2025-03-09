@@ -17,5 +17,6 @@ private:
 	ImGuiTextFilter _filter;
 
 	int TextEditCallback(ImGuiInputTextCallbackData* data);
+	void ExecCommand(const char* command_line);
 };
 
