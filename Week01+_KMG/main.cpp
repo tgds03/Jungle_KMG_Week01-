@@ -62,6 +62,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	UPlaneComponent* ground = mainScene->SpawnPlaneActor();
 	UCubeComponent* obj = mainScene->SpawnCubeActor();
 	UCubeComponent* obj2 = mainScene->SpawnCubeActor();
+	USphereComponent* sphere = mainScene->SpawnSphereACtor();
 	UCoordArrowComponent* arrow = mainScene->SpawnCoordArrowActor();
 	UCoordArrowComponent* worldArrow = mainScene->SpawnCoordArrowActor();
 
