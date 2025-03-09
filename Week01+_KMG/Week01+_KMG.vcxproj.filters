@@ -90,20 +90,14 @@
     <ClCompile Include="Math\FVector.cpp">
       <Filter>소스 파일\Math</Filter>
     </ClCompile>
-     <ClCompile Include="UWorld.cpp">
-     <Filter>소스 파일</Filter>
+    <ClCompile Include="UWorld.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Core\Time.cpp">
       <Filter>소스 파일\Framework\Core</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Core\Input.cpp">
       <Filter>소스 파일\Framework\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="UCameraComponent.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="UCubeComponent.cpp">
-      <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Core\UPrimitiveComponent.cpp">
       <Filter>소스 파일\Framework\Core</Filter>
@@ -144,6 +138,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Core\UPlaneComponent.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Core\UArrowComponent.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -193,20 +190,11 @@
     <ClInclude Include="Math\FVector.h">
       <Filter>헤더 파일\Math</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="UWorld.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Core\Input.h">
       <Filter>헤더 파일\Framework\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="UCameraComponent.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="UCubeComponent.h">
-      <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Core\UPrimitiveComponent.h">
       <Filter>헤더 파일\Framework\Core</Filter>
@@ -254,6 +242,9 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Core\UPlaneComponent.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Core\UArrowComponent.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
