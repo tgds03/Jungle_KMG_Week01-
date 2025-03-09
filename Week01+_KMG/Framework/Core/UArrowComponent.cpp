@@ -36,9 +36,9 @@ UArrowComponent::UArrowComponent(EAxisColor axis): UPrimitiveComponent()
 				}
 
 				for (size_t i = 1; i + 1 < faceIndices.size(); ++i) {
-					indices.push_back(faceIndices[0]);    // Ã¹ ¹øÂ° Á¤Á¡
-					indices.push_back(faceIndices[i]);    // µÎ ¹øÂ° Á¤Á¡
-					indices.push_back(faceIndices[i + 1]); // ¼¼ ¹øÂ° Á¤Á¡
+					indices.push_back(faceIndices[0]);    // Ã¹ ï¿½ï¿½Â° ï¿½ï¿½ï¿½ï¿½
+					indices.push_back(faceIndices[i]);    // ï¿½ï¿½ ï¿½ï¿½Â° ï¿½ï¿½ï¿½ï¿½
+					indices.push_back(faceIndices[i + 1]); // ï¿½ï¿½ ï¿½ï¿½Â° ï¿½ï¿½ï¿½ï¿½
 				}
 			}
 

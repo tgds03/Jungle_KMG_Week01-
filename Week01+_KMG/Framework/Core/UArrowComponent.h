@@ -4,12 +4,13 @@ enum EAxisColor
 {
 	RED_X,
 	GREEN_Y,
-	BLUE_Z
+	BLUE_Z,
+	NONE
 };
 static const FVector AxisColors[] = {
-	FVector(1.0f, 0.0f, 0.0f),  // XÃà: »¡°­
-	FVector(0.0f, 1.0f, 0.0f),  // YÃà: ÃÊ·Ï
-	FVector(0.0f, 0.0f, 1.0f)   // ZÃà: ÆÄ¶û
+	FVector(1.0f, 0.0f, 0.0f),  // Xï¿½ï¿½: ï¿½ï¿½ï¿½ï¿½
+	FVector(0.0f, 1.0f, 0.0f),  // Yï¿½ï¿½: ï¿½Ê·ï¿½
+	FVector(0.0f, 0.0f, 1.0f)   // Zï¿½ï¿½: ï¿½Ä¶ï¿½
 };
 
 class UArrowComponent:public UPrimitiveComponent

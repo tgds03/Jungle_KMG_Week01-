@@ -1,5 +1,5 @@
-#include "stdafx.h"
-#include "Framework/Core/USphereComponent.h"
+ï»¿#include "stdafx.h"
+#include "USphereComponent.h"
 
 USphereComponent::USphereComponent()
 {
@@ -2428,7 +2428,7 @@ void USphereComponent::Update()
 bool USphereComponent::IntersectsRay(const FVector& rayOrigin, const FVector& rayDir, float& dist)
 {
 	// L = rayOrigin - sphereCenter
-	FVector sphereCenter{0,0,0};
+	FVector sphereCenter{ 0,0,0 };
 	float sphereRadius = 1.f;
 	FVector L = rayOrigin - sphereCenter;
 	FVector rayDirection = rayDir;
@@ -2438,14 +2438,14 @@ bool USphereComponent::IntersectsRay(const FVector& rayOrigin, const FVector& ra
 
 	float discriminant = b * b - 4 * a * c;
 	if (discriminant < 0)
-		return false; // ±³Â÷ ¾øÀ½
+		return false;  // êµì°¨ ì—†ìŒ
 
 	float sqrtDiscriminant = sqrt(discriminant);
-	// µÎ ±Ù °è»ê
+	// ë‘ ê·¼ ê³„ì‚°
 	float t0 = (-b - sqrtDiscriminant) / (2.0f * a);
 	float t1 = (-b + sqrtDiscriminant) / (2.0f * a);
 
-	// ¾çÀÇ °ª Áß ÀÛÀº t¸¦ ¼±ÅÃ
+	// ì–‘ì˜ ê°’ ì¤‘ ìž‘ì€ të¥¼ ì„ íƒ
 	if (t0 > 0 && t1 > 0)
 		dist = (t0 < t1) ? t0 : t1;
 	else if (t0 > 0)

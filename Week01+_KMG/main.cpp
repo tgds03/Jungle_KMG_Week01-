@@ -7,7 +7,9 @@
 #include "Framework/Core/UPlaneComponent.h"
 #include "Framework/Core/UCoordArrowComponent.h"
 #include "Framework/Core/UArrowComponent.h"
-
+#include "Framework/Core/UGizmoComponent.h"
+extern int SCR_WIDTH;
+extern int SCR_HEIGHT;
 const int TARGET_FPS = 60;
 const double TARGET_FRAMERATE = 1000.0 / TARGET_FPS;
 
@@ -15,6 +17,7 @@ UWorld* gMainScene;
 UArrowComponent* gAxisXComp;
 UArrowComponent* gAxisYComp;
 UArrowComponent* gAxisZComp;
+UGizmoComponent* gGizmo;
 
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
 	switch (message) {
@@ -25,6 +28,26 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 		if(gMainScene)
 			gMainScene->PickingByRay(LOWORD(lParam), HIWORD(lParam), gAxisXComp, gAxisYComp, gAxisZComp);
 		break;
+	case WM_LBUTTONUP:
+		if (gMainScene)
+			gMainScene->SetAxisPicked(gAxisXComp, gAxisYComp, gAxisZComp, EAxisColor::NONE);
+		break;
+	case WM_SIZE:
+	{
+		if (CRenderer::Instance()->GetGraphics() && CRenderer::Instance()->GetGraphics()->GetDevice() && CRenderer::Instance()->GetGraphics()->GetDeviceContext()) {
+			SCR_WIDTH = LOWORD(lParam);
+			SCR_HEIGHT = HIWORD(lParam);
+			CRenderer::Instance()->GetGraphics()->ResizeBuffers(SCR_WIDTH, SCR_HEIGHT);
+			UCameraComponent* camera = CRenderer::Instance()->GetMainCamera();
+			if(camera){
+				float aspectRatio = static_cast<float>(SCR_WIDTH) / static_cast<float>(SCR_HEIGHT);
+				camera->UpdateRatio(aspectRatio);
+			}
+			Input::Instance()->ResizeScreen(SCR_WIDTH, SCR_WIDTH);
+
+		}
+		break;
+	}
 	default:
 		return DefWindowProc(hWnd, message, wParam, lParam);
 	}
@@ -65,10 +88,15 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	USphereComponent* sphere = mainScene->SpawnSphereActor();
 	UCoordArrowComponent* arrow = mainScene->SpawnCoordArrowActor();
 	UCoordArrowComponent* worldArrow = mainScene->SpawnCoordArrowActor();
+	//USphereComponent* sphere = mainScene->SpawnSphereACtor();
+	sphere->SetRelativeScale3D({ 2,2,2 });
 
 	UArrowComponent* AxisXComp = new UArrowComponent(EAxisColor::RED_X);
 	UArrowComponent* AxisYComp = new UArrowComponent(EAxisColor::GREEN_Y);
 	UArrowComponent* AxisZComp = new UArrowComponent(EAxisColor::BLUE_Z);
+	UGizmoComponent* Gizmo = new UGizmoComponent(AxisXComp, AxisYComp, AxisZComp);
+
+	Gizmo->AttachToComponent(sphere);
 	AxisXComp->SetRelativeRotation({ 0,-M_PI/2,0 });
 	AxisYComp->SetRelativeRotation({ M_PI / 2 ,0,0});
 	AxisZComp->SetRelativeRotation({ 0,0,0 });
@@ -77,6 +105,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	gAxisXComp = AxisXComp;
 	gAxisYComp = AxisYComp;
 	gAxisZComp = AxisZComp;
+	gGizmo = Gizmo;
 
 	worldArrow->SetRelativeScale3D({ 100,100,100 });
 	ground->SetRelativeScale3D({ 10,5,10 });
@@ -147,14 +176,17 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 		// 테스트용
 		////////////////////////////////
+		//Input::Instance()->Frame();
 		guiController->NewFrame();
 		mainScene->Update();
 		CRenderer::Instance()->GetMainCamera()->Update();
 		CRenderer::Instance()->GetGraphics()->RenderBegin();
+		gGizmo->Update();
 		AxisXComp->Render();
 		AxisYComp->Render();
 		AxisZComp->Render();
-
+		//obj2->SetRelativeLocationX(obj2->GetRelativeLocation().x + 0.1);
+		gGizmo->Render();
 		mainScene->Render();
 		ImGui::Begin("statics");
 		ImGui::Text("UObject Count: %d", CEngineStatics::TotalAllocationCount);
