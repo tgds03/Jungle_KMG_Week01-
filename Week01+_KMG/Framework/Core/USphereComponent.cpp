@@ -1,10 +1,10 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "USphereComponent.h"
 
 USphereComponent::USphereComponent()
 {
-	vertices = 
-	{ 
+	vertices =
+	{
 		{ 0.0f, 1.0f, 0.0f, 0.5f, 1.0f, 0.5f, 1.0 },
 		{0.148778f, 0.987688f, 0.048341f, 0.574389f, 0.993844f, 0.52417f, 1.0},
 		{0.156434f, 0.987688f, 0.0f, 0.578217f, 0.993844f, 0.5f, 1.0},
@@ -2423,4 +2423,37 @@ USphereComponent::~USphereComponent()
 
 void USphereComponent::Update()
 {
+}
+
+bool USphereComponent::IntersectsRay(const FVector& rayOrigin, const FVector& rayDir, float& dist)
+{
+	// L = rayOrigin - sphereCenter
+	FVector sphereCenter{ 0,0,0 };
+	float sphereRadius = 1.f;
+	FVector L = rayOrigin - sphereCenter;
+	FVector rayDirection = rayDir;
+	float a = 1.0f;
+	float b = 2.0f * (rayDirection.Dot(L));
+	float c = L.Dot(L) - sphereRadius * sphereRadius;
+
+	float discriminant = b * b - 4 * a * c;
+	if (discriminant < 0)
+		return false;  // 교차 없음
+
+	float sqrtDiscriminant = sqrt(discriminant);
+	// 두 근 계산
+	float t0 = (-b - sqrtDiscriminant) / (2.0f * a);
+	float t1 = (-b + sqrtDiscriminant) / (2.0f * a);
+
+	// 양의 값 중 작은 t를 선택
+	if (t0 > 0 && t1 > 0)
+		dist = (t0 < t1) ? t0 : t1;
+	else if (t0 > 0)
+		dist = t0;
+	else if (t1 > 0)
+		dist = t1;
+	else
+		return false;
+
+	return true;
 }
