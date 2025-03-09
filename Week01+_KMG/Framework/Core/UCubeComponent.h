@@ -5,4 +5,6 @@ public:
 	UCubeComponent();
 	virtual ~UCubeComponent();
 	virtual void Update();
+
+	bool Intersects(FVector rayOrigin, FVector rayDirection);
 };
