@@ -35,7 +35,7 @@ FMatrix::FMatrix(const FMatrix& other)
 {
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
-			m[i][j] = other.m[i][j];  // ±íÀº º¹»ç
+			m[i][j] = other.m[i][j];  // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		}
 	}
 }
@@ -81,10 +81,10 @@ FMatrix FMatrix::operator*(const FMatrix& rhs) const {
 
 FMatrix& FMatrix::operator=(const FMatrix& other)
 {
-	if (this != &other) {  // ÀÚ±â ÀÚ½ÅÀ» º¹»çÇÏ´Â °æ¿ì ¹æÁö
+	if (this != &other) {  // ï¿½Ú±ï¿½ ï¿½Ú½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {
-				m[i][j] = other.m[i][j];  // ±íÀº º¹»ç ¼öÇà
+				m[i][j] = other.m[i][j];  // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 			}
 		}
 	}
@@ -128,29 +128,29 @@ FMatrix FMatrix::Inverse() const
 {
 	FMatrix A = *this;
 	FMatrix inv = FMatrix::Identity;
-	// °¡¿ì½º-Á¶´ø ¼Ò°Å¹ý
+	// ï¿½ï¿½ï¿½ì½º-ï¿½ï¿½ï¿½ï¿½ ï¿½Ò°Å¹ï¿½
 	for (int i = 0; i < 4; i++) {
-		// ÇÇ¹þÀÌ 0ÀÌ¸é Çà ±³È¯
+		// ï¿½Ç¹ï¿½ï¿½ï¿½ 0ï¿½Ì¸ï¿½ ï¿½ï¿½ ï¿½ï¿½È¯
 		if (A[i][i] == 0) {
 			int swapRow = i + 1;
 			while (swapRow < 4 && fabs(A.m[swapRow][i]) < FLT_EPSILON) swapRow++;
 			if (swapRow == 4)
 			{
-				UE_LOG(L"¿ªÇà·ÄÀÌ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
-				return FMatrix::Identity; // ¿ªÇà·Ä ¾øÀ½
+				UE_LOG(L"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê½ï¿½ï¿½Ï´ï¿½.");
+				return FMatrix::Identity; // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 			}
 			A = A.Swap(i, swapRow);
 			inv = inv.Swap(i, swapRow);
 		}
 
-		// ÇÇ¹þÀ» 1·Î ¸¸µé±â
+		// ï¿½Ç¹ï¿½ï¿½ï¿½ 1ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
 		float pivot = A.m[i][i];
 		for (int j = 0; j < 4; j++) {
 			A.m[i][j] /= pivot;
 			inv.m[i][j] /= pivot;
 		}
 
-		// ´Ù¸¥ ÇàÀÇ i¿­À» 0À¸·Î ¸¸µé±â
+		// ï¿½Ù¸ï¿½ ï¿½ï¿½ï¿½ï¿½ iï¿½ï¿½ï¿½ï¿½ 0ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
 		for (int k = 0; k < 4; k++) {
 			if (i == k) continue;
 			float factor = A.m[k][i];
@@ -162,7 +162,6 @@ FMatrix FMatrix::Inverse() const
 	}
 	return inv;
 }
-
 
 FVector FMatrix::GetScaledAxis(EAxis axis) const
 {
