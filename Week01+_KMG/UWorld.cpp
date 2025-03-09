@@ -48,7 +48,7 @@ void UWorld::PickingByRay()
 	UCameraComponent* mainCamera = CRenderer::Instance()->GetMainCamera();
 	
 	FMatrix viewMatrix = mainCamera->GetComponentTransform().Inverse();
-	FMatrix projectionMatrix = mainCamera->PerspectiveProjection();
+	FMatrix projectionMatrix = mainCamera->Projection();
 	D3D11_VIEWPORT viewport = CRenderer::Instance()->GetGraphics()->GetViewport();
 
 	int mouse_X;

@@ -7,6 +7,7 @@ public:
 
 	void NewFrame();
 	void RenderFrame();
+	void RenderEditor();
 private:
 	ImGuiContext* _context;
 	ImGuiIO* _io;

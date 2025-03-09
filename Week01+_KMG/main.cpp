@@ -111,12 +111,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		mainScene->Update();
 		CRenderer::Instance()->GetGraphics()->RenderBegin();
 		mainScene->Render();
-
-		ImGui::Begin("statics");
-		ImGui::Text("UObject Count: %d", CEngineStatics::TotalAllocationCount);
-		ImGui::Text("UObject Bytes: %d", CEngineStatics::TotalAllocationBytes);
-		ImGui::End();
-
+		guiController->RenderEditor();
 		guiController->RenderFrame();
 		CRenderer::Instance()->GetGraphics()->RenderEnd();
 		Time::Instance()->_query_frame_end_time();

@@ -41,8 +41,13 @@ void UCameraComponent::Update() {
 
 void UCameraComponent::Render() {
 	ImGui::Begin("Camera");
-	ImGui::Text(("position: " + static_cast<std::string>(RelativeLocation)).c_str());
-	ImGui::Text(("rotation: " + static_cast<std::string>(RelativeRotation)).c_str());
+	//ImGui::Text(("position: " + static_cast<std::string>(RelativeLocation)).c_str());
+	//ImGui::Text(("rotation: " + static_cast<std::string>(RelativeRotation)).c_str());
+	ImGui::Checkbox("Orthogonal", &orthogonal);
+	ImGui::SliderFloat("FOV", &fieldOfView, 10.f, 90.f);
+	ImGui::SliderFloat3("position", &RelativeLocation.x, -50.f, 50.f);
+	ImGui::SliderFloat3("rotation", &RelativeRotation.x, -M_PI, M_PI);
+
 	ImGui::End();
 }
 
@@ -103,6 +108,23 @@ FMatrix UCameraComponent::View()
 	return mat;
 }
 
+FMatrix UCameraComponent::Projection() {
+	if ( orthogonal )
+		return OrthgonalProjection();
+	else
+		return PerspectiveProjection();
+}
+
+FMatrix UCameraComponent::OrthgonalProjection() {
+	float zRange = farDistance - nearDistance;
+	return FMatrix({ 
+		2.f / aspectRatio, 0.f, 0.f, 0.f, 
+		0.f, 2.f, 0.f, 0.f,
+		0.f, 0.f, 1.f / zRange, - nearDistance / zRange,
+		0.f, 0.f, 0.f, 1.f
+	});
+}
+
 //FMatrix UCameraComponent::InverseTransformation() {
 //	FMatrix m = FMatrix::Translate(-RelativeLocation.x, -RelativeLocation.y, -RelativeLocation.z);
 //	m = m * FMatrix::RotateZ(-RelativeRotation.z);
@@ -113,8 +135,6 @@ FMatrix UCameraComponent::View()
 //}
 
 FMatrix UCameraComponent::PerspectiveProjection() {
-	float t = tan(degToRad(fieldOfView / 2));
-
 	float yScale = 1.0f / tanf(degToRad(fieldOfView * 0.5f)); // cot(FOV/2)
 	float xScale = yScale / aspectRatio;
 	float zRange = farDistance - nearDistance;
@@ -125,10 +145,10 @@ FMatrix UCameraComponent::PerspectiveProjection() {
 		 0.0f,    0.0f,   farDistance / zRange,                1.0f ,
 		 0.0f,    0.0f,  -nearDistance * farDistance / zRange,        0.0f 
 		});
-	return FMatrix({
-		1 / (t * aspectRatio), 0, 0, 0,
-		0, 1 / t, 0, 0,
-		0, 0, (farDistance + nearDistance) / (farDistance - nearDistance), -farDistance * nearDistance / (farDistance - nearDistance),
-		0, 0, 1, 0
-		});
+	//return FMatrix({
+	//	1 / (t * aspectRatio), 0, 0, 0,
+	//	0, 1 / t, 0, 0,
+	//	0, 0, (farDistance + nearDistance) / (farDistance - nearDistance), -farDistance * nearDistance / (farDistance - nearDistance),
+	//	0, 0, 1, 0
+	//	});
 }

@@ -67,7 +67,7 @@ void CRenderer::SetRasterzierState() {
 void CRenderer::SetConstantBuffer(FMatrix matrix) {
 	//FMatrix view = matrix * _mainCamera->GetRelativeTransform().Inverse();
 	FMatrix view = _mainCamera->View();
-	FMatrix projection = _mainCamera->PerspectiveProjection();
+	FMatrix projection = _mainCamera->Projection();
 	matrix = matrix * view;
 	matrix = matrix * projection;
 	_constantBuffer->CopyData(matrix);

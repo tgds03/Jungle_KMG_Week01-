@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "GuiController.h"
 #include "Framework/DirectXWrapper/CGraphics.h"
+#include "Framework/Core/CEngineStatics.h"
+#include "Framework/Core/Time.h"
 
 GuiController::GuiController(HWND hWnd, CGraphics* graphics): hWnd(hWnd) {
 	IMGUI_CHECKVERSION();
@@ -39,4 +41,37 @@ void GuiController::RenderFrame()
 {
 	ImGui::Render();
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+}
+
+void GuiController::RenderEditor() {
+	const char* primitiveItems[] = { "Cube", "Sphere", "Plane" };
+	char sceneNameBuffer[256] = "";
+	int selectedPrimitive = 0, spawnNumber = 0;
+
+	ImGui::Begin("Control Panel");
+
+	ImGui::Text("FPS: %.2f (%.2fms)", 1/Time::GetDeltaTime(), 1000.f * Time::GetDeltaTime());
+	ImGui::Text("UObject Count: %d", CEngineStatics::TotalAllocationCount);
+	ImGui::Text("UObject Bytes: %d", CEngineStatics::TotalAllocationBytes);
+	ImGui::Separator();
+	
+	ImGui::Combo("Primitive", &selectedPrimitive, primitiveItems, ARRAYSIZE(primitiveItems));
+	if ( ImGui::Button("Create") ) {
+	}
+	ImGui::SameLine(0.f, 5.f);
+	ImGui::InputInt("Number of Spawn", &spawnNumber, 1, 50);
+	ImGui::Separator();
+
+	ImGui::InputText("Scene Name", sceneNameBuffer, ARRAYSIZE(sceneNameBuffer));
+	if (ImGui::Button("New Scene")) {
+	}
+	if (ImGui::Button("Save Scene")) {
+	}
+	if (ImGui::Button("Load Scene")) {
+	}
+	ImGui::Separator();
+
+
+
+	ImGui::End();
 }
