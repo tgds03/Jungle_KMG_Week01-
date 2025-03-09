@@ -10,8 +10,6 @@ protected:
 	FVector RelativeRotation = FVector::Zero;
 	FVector RelativeScale3D = FVector::One;
 
-	//FMatrix Transformation();
-
 public:
 	FVector Right();
 	FVector Up();
@@ -55,6 +53,9 @@ public:
 	//void SetWorldScale3D(const FVector NewWorldScale3D);
 	//void SetWorldVelocity(const FVector NewWorldVelocity);
 
+public:
+	// 주의!! hierarchy는 바뀌지 않음 
+	void SetValuesFromMatrix(const FMatrix mat);
 	//void UpdateComponentVelocity();
 
 // ��� ����
@@ -76,5 +77,11 @@ public:
 // �����
 public:
 	void PrintLoc(std::wstring msg) const;
+
+
+public:
+	FMatrix DEBUG_TRANSFORMATION_OVERRIDE = FMatrix::Identity;
+	bool ISDEBUG = false;
+
 };
 
