@@ -51,44 +51,19 @@ void UWorld::PickingByRay(LPARAM lParam)
 	FMatrix projectionMatrix = mainCamera->PerspectiveProjection();
 	D3D11_VIEWPORT viewport = CRenderer::Instance()->GetGraphics()->GetViewport();
 
-	float size_x = LOWORD(lParam);
-	float size_y = HIWORD(lParam);
+	int mouse_X;
+	int mouse_Y;
+	Input::Instance()->GetMouseLocation(mouse_X, mouse_Y);
 
-	FVector ndcPosition;
-	ndcPosition.x = (2.0f * size_x / viewport.Width) - 1.0f;
-	ndcPosition.y = 1.0f - (2.0f * size_y / viewport.Height); // DX11은 Y축 반전 없음
-	ndcPosition.z = 1.0f; // Near Plane
-
-
-	FVector nearPoint = FVector(ndcPosition.x, ndcPosition.y, 0.0f); // Near Plane
-	FVector farPoint = FVector(ndcPosition.x, ndcPosition.y, 1.0f);  // Far Plane
-
-
-	FMatrix invProjMatrix = projectionMatrix.Inverse();
-	FVector nearPointView = invProjMatrix.TransformCoord(FVector4(nearPoint, 1.0f));
-	FVector farPointView = invProjMatrix.TransformCoord(FVector4(farPoint, 1.0f));
-
-
-
-	FMatrix invViewMatrix = viewMatrix.Inverse();
-	FVector nearPointWorld = invViewMatrix.TransformCoord(FVector4(nearPointView, 1.0f));
-	FVector farPointWorld = invViewMatrix.TransformCoord(FVector4(farPointView, 1.0f));
-
-
-	FVector rayOrigin = nearPointWorld; //
-	FVector rayDirection = (farPointWorld - nearPointWorld).Normalized(); // Ray 방향
-
-	// 디버깅 출력
-	OutputDebugString((L"Ray Origin (World): x=" + std::to_wstring(rayOrigin.x) +
-		L", y=" + std::to_wstring(rayOrigin.y) +
-		L", z=" + std::to_wstring(rayOrigin.z) + L"\n").c_str());
-
-	OutputDebugString((L"Ray Direction (World): x=" + std::to_wstring(rayDirection.x) +
-		L", y=" + std::to_wstring(rayDirection.y) +
-		L", z=" + std::to_wstring(rayDirection.z) + L"\n").c_str());
-
+	FVector pickPosition;
+    pickPosition.x = ((2.0f * mouse_X / viewport.Width) - 1.0f) / projectionMatrix[0][0];
+    pickPosition.y = - ((2.0f * mouse_Y / viewport.Height)- 1.f) / projectionMatrix[1][1];
+    pickPosition.z = 1.0f; // Near Plane
+    float hitDistance = FLT_MAX;
+    float nearestDistance = FLT_MAX;
+   
 	for (const auto& actorComp : actorList) {
-		actorComp->GenerateRayForPicking(rayOrigin, rayDirection, viewMatrix);
+		actorComp->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitDistance);
 	}
 }
 

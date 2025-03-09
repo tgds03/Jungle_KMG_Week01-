@@ -11,7 +11,8 @@ public:
 	virtual void Update() {};
 	virtual void Render() {};
 
-	virtual void GenerateRayForPicking(const FVector& pickPosition,const FVector& rayDirection,const FMatrix& viewMatrix) {}
+	virtual void GenerateRayForPicking(FVector& pickPosition, FMatrix& viewMatrix, FVector* pickRayOrigin, FVector* rayDirection) {};
+	virtual void PickObjectByRayIntersection(const FVector& pickPosition,const FMatrix& viewMatrix, float* hitDistance) {}
 
 private:
 	UWorld* motherScene;

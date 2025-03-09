@@ -10,6 +10,7 @@ public:
 	TArray<uint32> indices;
 
 	virtual void Render();
+	virtual void GenerateRayForPicking(const FVector& pickPosition, const FMatrix& viewMatrix, FVector* pickRayOrigin, FVector* rayDirection);
 protected:
 	CVertexBuffer<FVertexSimple>* _vertexBuffer;
 	CIndexBuffer* _indexBuffer;
