@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "GuiConsole.h"
+#include "UWorld.h"
 
 int GuiConsole::Stricmp(const char* s1, const char* s2) { 
     int d; 
@@ -31,6 +32,23 @@ void GuiConsole::Strtrim(char* s) {
 	*str_end = 0; 
 }
 
+TArray<FString> GuiConsole::StrSplit(FString s) {
+    size_t pos_start = 0, pos_end, delim_len = 1;
+    std::string token;
+    std::vector<std::string> res;
+
+    while ( (pos_end = s.find(" ", pos_start)) != std::string::npos ) {
+        token = s.substr(pos_start, pos_end - pos_start);
+        pos_start = pos_end + delim_len;
+        res.push_back(token);
+    }
+
+    res.push_back(s.substr(pos_start));
+    return res;
+}
+
+GuiConsole::GuiConsole(GuiController* g): _controller(g) {}
+
 void GuiConsole::Render() {
 	const float footer_height_to_reserve = ImGui::GetStyle().ItemSpacing.y + ImGui::GetFrameHeightWithSpacing();
 
@@ -38,18 +56,15 @@ void GuiConsole::Render() {
 
 	ImGui::BeginChild("ScrollingRegion", ImVec2(0, -footer_height_to_reserve), ImGuiChildFlags_NavFlattened, ImGuiWindowFlags_HorizontalScrollbar);
 	for (const char* item: _items) {
-		if ( _filter.PassFilter(item) )
-			continue;
+		//if ( _filter.PassFilter(item) )
+		//	continue;
 		ImGui::TextUnformatted(item);
 	}
 	ImGui::EndChild();
 	ImGui::Separator();
 
-    ImGuiInputTextFlags input_text_flags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_EscapeClearsAll | ImGuiInputTextFlags_CallbackCompletion; // | ImGuiInputTextFlags_CallbackHistory;
-    if ( ImGui::InputText("Input", _inputBuffer, IM_ARRAYSIZE(_inputBuffer), input_text_flags, [](ImGuiInputTextCallbackData* data) -> int {
-        GuiConsole* console = (GuiConsole*)(data->UserData);
-        return console->TextEditCallback(data);
-    }, (void*)this) ) {
+    ImGuiInputTextFlags input_text_flags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_EscapeClearsAll;
+    if ( ImGui::InputText("Input", _inputBuffer, IM_ARRAYSIZE(_inputBuffer), input_text_flags, 0, (void*)this) ) {
         //OutputDebugString(L"console");
 		char* s = _inputBuffer;
 		Strtrim(s);
@@ -81,93 +96,28 @@ void GuiConsole::ClearLog() {
 	_items.clear();
 }
 
-int GuiConsole::TextEditCallback(ImGuiInputTextCallbackData* data) {
-    //AddLog("cursor: %d, selection: %d-%d", data->CursorPos, data->SelectionStart, data->SelectionEnd);
-    switch ( data->EventFlag ) {
-    case ImGuiInputTextFlags_CallbackCompletion:
-    {
-        // Example of TEXT COMPLETION
-
-        // Locate beginning of current word
-        const char* word_end = data->Buf + data->CursorPos;
-        const char* word_start = word_end;
-        while ( word_start > data->Buf ) {
-            const char c = word_start[-1];
-            if ( c == ' ' || c == '\t' || c == ',' || c == ';' )
-                break;
-            word_start--;
-        }
-
-        // Build a list of candidates
-        ImVector<const char*> candidates;
-        for ( int i = 0; i < _commands.Size; i++ )
-            if ( Strnicmp(_commands[i], word_start, (int)(word_end - word_start)) == 0 )
-                candidates.push_back(_commands[i]);
-
-        if ( candidates.Size == 0 ) {
-            // No match
-            AddLog("No match for \"%.*s\"!\n", (int)(word_end - word_start), word_start);
-        } else if ( candidates.Size == 1 ) {
-            // Single match. Delete the beginning of the word and replace it entirely so we've got nice casing.
-            data->DeleteChars((int)(word_start - data->Buf), (int)(word_end - word_start));
-            data->InsertChars(data->CursorPos, candidates[0]);
-            data->InsertChars(data->CursorPos, " ");
-        } else {
-            // Multiple matches. Complete as much as we can..
-            // So inputing "C"+Tab will complete to "CL" then display "CLEAR" and "CLASSIFY" as matches.
-            int match_len = (int)(word_end - word_start);
-            for ( ;;) {
-                int c = 0;
-                bool all_candidates_matches = true;
-                for ( int i = 0; i < candidates.Size && all_candidates_matches; i++ )
-                    if ( i == 0 )
-                        c = toupper(candidates[i][match_len]);
-                    else if ( c == 0 || c != toupper(candidates[i][match_len]) )
-                        all_candidates_matches = false;
-                if ( !all_candidates_matches )
-                    break;
-                match_len++;
-            }
-
-            if ( match_len > 0 ) {
-                data->DeleteChars((int)(word_start - data->Buf), (int)(word_end - word_start));
-                data->InsertChars(data->CursorPos, candidates[0], candidates[0] + match_len);
-            }
-
-            // List matches
-            AddLog("Possible matches:\n");
-            for ( int i = 0; i < candidates.Size; i++ )
-                AddLog("- %s\n", candidates[i]);
-        }
-
-        break;
-    }
-    //case ImGuiInputTextFlags_CallbackHistory:
-    //{
-    //    // Example of HISTORY
-    //    const int prev_history_pos = HistoryPos;
-    //    if ( data->EventKey == ImGuiKey_UpArrow ) {
-    //        if ( HistoryPos == -1 )
-    //            HistoryPos = History.Size - 1;
-    //        else if ( HistoryPos > 0 )
-    //            HistoryPos--;
-    //    } else if ( data->EventKey == ImGuiKey_DownArrow ) {
-    //        if ( HistoryPos != -1 )
-    //            if ( ++HistoryPos >= History.Size )
-    //                HistoryPos = -1;
-    //    }
-
-    //    // A better implementation would preserve the data on the current input line along with cursor position.
-    //    if ( prev_history_pos != HistoryPos ) {
-    //        const char* history_str = (HistoryPos >= 0) ? History[HistoryPos] : "";
-    //        data->DeleteChars(0, data->BufTextLen);
-    //        data->InsertChars(0, history_str);
-    //    }
-    //}
-    }
-    return 0;
-}
-
 void GuiConsole::ExecCommand(const char* command_line) {
     AddLog("# %s\n", command_line);
+    FString str(command_line);
+    TArray<FString> commands = StrSplit(str);
+    if (commands[0] == "spawn") {
+        UWorld* world = _controller->world;
+        if (commands.size() < 2) {
+            AddLog("Invalid argument.");
+        } else if (commands[1] == "cube") {
+            world->AddActor(world->SpawnCubeActor());
+            AddLog("Successed");
+        } else if (commands[1] == "sphere") {
+            world->AddActor(world->SpawnSphereActor());
+            AddLog("Successed");
+        } else if (commands[1] == "plane") {
+            world->AddActor(world->SpawnPlaneActor());
+            AddLog("Successed");
+        } else {
+            AddLog("Invalid argument.");
+        }
+    } else if (commands[0] == "") {
+    } else {
+        AddLog("Invaild command.");
+    }
 }

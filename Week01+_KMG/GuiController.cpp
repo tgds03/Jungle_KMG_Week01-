@@ -12,7 +12,7 @@ GuiController::GuiController(HWND hWnd, CGraphics* graphics): hWnd(hWnd) {
 	//_io->ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 	ImGui_ImplDX11_Init(graphics->GetDevice(), graphics->GetDeviceContext());
 	ImGui_ImplWin32_Init(hWnd);
-	_console = new GuiConsole();
+	_console = new GuiConsole(this);
 }
 
 GuiController::~GuiController() {
@@ -124,5 +124,5 @@ void GuiController::RenderEditor() {
 
 	_console->Render();
 	//ImGui::ShowDemoWindow();
-	ImGui::ShowDebugLogWindow();
+	//ImGui::ShowDebugLogWindow();
 }
