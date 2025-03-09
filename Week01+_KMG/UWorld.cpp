@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include "UWorld.h"
+#include "Framework/Core/UGizmoComponent.h"
+
+extern UGizmoComponent* gGizmo;
 
 UWorld::UWorld()
 {
@@ -42,6 +45,7 @@ void UWorld::RemoveActor(UActorComponent* comp)
 
 void UWorld::ClearWorld()
 {
+    gGizmo->Detach();
     while (!actorList.empty()) // 리스트가 빌 때까지 반복
     {
         delete actorList.front();
@@ -155,7 +159,7 @@ UPlaneComponent* UWorld::SpawnPlaneActor()
 
 UCoordArrowComponent* UWorld::SpawnCoordArrowActor()
 {
-    return SpawnActor<UCoordArrowComponent>();
+    return SpawnActor<UCoordArrowComponent>(false);
 }
 
 void UWorld::SaveWorld(const FString& fileName)
