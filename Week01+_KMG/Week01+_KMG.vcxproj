@@ -178,7 +178,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Math\FMatrix.cpp" />
     <ClCompile Include="Math\FVector.cpp" />
-    <ClCompile Include="Framework\Core\UArrowComponent.cpp" />
     <ClCompile Include="Framework\Core\UGizmoComponent.cpp" />
     <ClCompile Include="USphereComponent.cpp" />
     <ClCompile Include="UWorld.cpp" />
@@ -223,7 +222,6 @@
     <ClInclude Include="Math\FMatrix.h" />
     <ClInclude Include="Math\FVector.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="Framework\Core\UArrowComponent.h" />
     <ClInclude Include="Framework\Core\UGizmoComponent.h" />
     <ClInclude Include="Framework\Core\USphereComponent.h" />
     <ClInclude Include="UWorld.h" />
