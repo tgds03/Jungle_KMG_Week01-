@@ -3,6 +3,7 @@
 #include "Framework/DirectXWrapper/CGraphics.h"
 #include "Framework/Core/CEngineStatics.h"
 #include "Framework/Core/Time.h"
+#include "UWorld.h"
 
 GuiController::GuiController(HWND hWnd, CGraphics* graphics): hWnd(hWnd) {
 	IMGUI_CHECKVERSION();
@@ -55,10 +56,27 @@ void GuiController::RenderEditor() {
 	
 	ImGui::Combo("Primitive", &_selectedPrimitive, primitiveItems, ARRAYSIZE(primitiveItems));
 	if ( ImGui::Button("Create") ) {
+		for (int i = 0; i < _spawnNumber; i++) {
+			switch ( _selectedPrimitive ) {
+			case 0:
+				_selected = world->SpawnCubeActor();
+				break;
+			case 1:
+				_selected = world->SpawnSphereActor();
+				break;
+			case 2:
+				_selected = world->SpawnPlaneActor();
+				break;
+			}
+			world->AddActor(_selected);
+		}
 	}
 	ImGui::SameLine(0.f, 5.f);
 	ImGui::InputInt("Number of Spawn", &_spawnNumber, 1, 50);
 	ImGui::Separator();
+
+	if ( _spawnNumber < 0 ) 
+		_spawnNumber = 0;
 
 	ImGui::InputText("Scene Name", _sceneNameBuffer, ARRAYSIZE(_sceneNameBuffer));
 	if (ImGui::Button("New Scene")) {
@@ -67,9 +85,15 @@ void GuiController::RenderEditor() {
 	}
 	if (ImGui::Button("Load Scene")) {
 	}
-	ImGui::Separator();
 
+	ImGui::End();
 
-
+	ImGui::Begin("Property");
+	USceneComponent* downcast = dynamic_cast<USceneComponent*>(_selected);
+	if (downcast != nullptr) {
+		ImGui::SliderFloat3("position", &downcast->RelativeLocation.x, -50.f, 50.f);
+		ImGui::SliderFloat3("rotation", &downcast->RelativeRotation.x, -M_PI, M_PI);
+		ImGui::SliderFloat3("scale", &downcast->RelativeScale3D.x, -M_PI, M_PI);
+	}
 	ImGui::End();
 }

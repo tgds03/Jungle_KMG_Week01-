@@ -5,7 +5,7 @@ public:
 	USceneComponent() {}
 	virtual void Update();
 	//virtual void Render();
-protected:
+public:
 	FVector RelativeLocation = FVector::Zero;
 	FVector RelativeRotation = FVector::Zero;
 	FVector RelativeScale3D = FVector::One;

@@ -27,7 +27,7 @@ public:
     void PickingByRay();
     UCameraComponent* SpawnCamera();
     UCubeComponent* SpawnCubeActor();
-    USphereComponent* SpawnSphereACtor();
+    USphereComponent* SpawnSphereActor();
     UPlaneComponent* SpawnPlaneActor();
     UCoordArrowComponent* SpawnCoordArrowActor();
 

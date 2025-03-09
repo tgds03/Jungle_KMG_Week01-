@@ -4,6 +4,7 @@
 UWorld::UWorld()
 {
     CRenderer::Instance()->SetCamera(SpawnCamera());
+    SpawnCoordArrowActor();
 }
 
 UWorld::~UWorld()
@@ -80,7 +81,7 @@ UCubeComponent* UWorld::SpawnCubeActor()
     return SpawnActor<UCubeComponent>();
 }
 
-USphereComponent* UWorld::SpawnSphereACtor()
+USphereComponent* UWorld::SpawnSphereActor()
 {
     return SpawnActor<USphereComponent>();
 }
