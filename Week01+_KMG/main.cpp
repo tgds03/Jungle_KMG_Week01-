@@ -26,17 +26,28 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 		break;
 	case WM_LBUTTONDOWN:
 		if(gMainScene)
-			
 			gMainScene->PickingByRay(LOWORD(lParam), HIWORD(lParam), gAxisXComp, gAxisYComp, gAxisZComp);
 		break;
-	//case WM_SIZE:
-	//{
-	//	//if (CRenderer::Instance()->GetGraphics() && CRenderer::Instance()->GetGraphics()->GetDevice() && CRenderer::Instance()->GetGraphics()->GetDeviceContext()) {
-	//		//SCR_WIDTH = LOWORD(lParam);
-	//		//SCR_HEIGHT = HIWORD(lParam);
-	//		//CRenderer::Instance()->GetGraphics()->ResizeBuffers(SCR_WIDTH, SCR_HEIGHT);
-	//	}
-	//}
+	case WM_LBUTTONUP:
+		if (gMainScene)
+			gMainScene->SetAxisPicked(gAxisXComp, gAxisYComp, gAxisZComp, EAxisColor::NONE);
+		break;
+	case WM_SIZE:
+	{
+		if (CRenderer::Instance()->GetGraphics() && CRenderer::Instance()->GetGraphics()->GetDevice() && CRenderer::Instance()->GetGraphics()->GetDeviceContext()) {
+			SCR_WIDTH = LOWORD(lParam);
+			SCR_HEIGHT = HIWORD(lParam);
+			CRenderer::Instance()->GetGraphics()->ResizeBuffers(SCR_WIDTH, SCR_HEIGHT);
+			UCameraComponent* camera = CRenderer::Instance()->GetMainCamera();
+			if(camera){
+				float aspectRatio = static_cast<float>(SCR_WIDTH) / static_cast<float>(SCR_HEIGHT);
+				camera->UpdateRatio(aspectRatio);
+			}
+			Input::Instance()->ResizeScreen(SCR_WIDTH, SCR_WIDTH);
+
+		}
+		break;
+	}
 	default:
 		return DefWindowProc(hWnd, message, wParam, lParam);
 	}

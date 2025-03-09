@@ -35,17 +35,57 @@ void CGraphics::Release() {
 
 void CGraphics::ResizeBuffers(int width, int height)
 {
-	//if (!_device || !_swapChain) return;
-	_width = width;
-	_height = height;
-	_swapChain->ResizeBuffers(1, _width, _height, DXGI_FORMAT_UNKNOWN, 0);
+	if (_device && _deviceContext)
+	{
+		// 기존 참조 모두 해제
+		if (_renderTargetView) { SafeRelease(&_renderTargetView); _renderTargetView = nullptr; }
+		if (depthStencilView) { SafeRelease(&depthStencilView); depthStencilView = nullptr; }
+		if (_backBuffer) { SafeRelease(&_backBuffer); _backBuffer = nullptr; }
 
-	CreateRenderTargetView();
+		_width = width;
+		_height = height;
 
-	SetViewport(width, height);
-	
+		HRESULT hr = _swapChain->ResizeBuffers(1, _width, _height, DXGI_FORMAT_UNKNOWN, 0);
+		if (FAILED(hr))
+		{
+			OutputDebugString(L"ERROR: ResizeBuffers failed\n");
+			return;
+		}
 
+		// 새 백 버퍼 얻기
+		hr = _swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&_backBuffer);
+		if (FAILED(hr))
+		{
+			OutputDebugString(L"ERROR: GetBuffer failed\n");
+			return;
+		}
+
+		// 새 렌더 타겟 뷰 생성
+		hr = _device->CreateRenderTargetView(_backBuffer, nullptr, &_renderTargetView);
+		if (FAILED(hr))
+		{
+			OutputDebugString(L"ERROR: CreateRenderTargetView failed\n");
+			return;
+		}
+
+		// 새 해상도에 맞게 깊이 스텐실 버퍼 및 뷰 재생성
+		CreateDepthStencilBuffer();
+
+		// 뷰포트 업데이트
+		SetViewport(width, height);
+		_deviceContext->RSSetViewports(1, &_viewPort);
+
+		// 렌더 타겟과 깊이 스텐실 뷰 설정
+		_deviceContext->OMSetRenderTargets(1, &_renderTargetView, depthStencilView);
+
+		// 새 백버퍼를 클리어하여 이전 내용 제거
+		_deviceContext->ClearRenderTargetView(_renderTargetView, _clearColor);
+		if (depthStencilView)
+			_deviceContext->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+	}
 }
+
+
 
 void CGraphics::CreateDeviceAndSwapChain() {
 	D3D_FEATURE_LEVEL featureLevels[] = { D3D_FEATURE_LEVEL_11_0 };

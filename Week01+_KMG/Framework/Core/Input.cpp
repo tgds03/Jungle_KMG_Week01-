@@ -70,6 +70,12 @@ void Input::Shutdown() {
 	return;
 }
 
+void Input::ResizeScreen(int sWidth, int sHeight)
+{
+	m_screenHeight = sHeight;
+	m_screenWidth = sWidth;
+}
+
 bool Input::Frame() {
 	bool result;
 

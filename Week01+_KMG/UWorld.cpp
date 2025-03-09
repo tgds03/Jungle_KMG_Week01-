@@ -57,30 +57,42 @@ void UWorld::PickingByRay(int mouse_X, int mouse_Y, UArrowComponent* AxisXComp, 
     pickPosition.x = ((2.0f * mouse_X / viewport.Width) - 1) / projectionMatrix[0][0];
     pickPosition.y = -((2.0f * mouse_Y / viewport.Height) - 1) / projectionMatrix[1][1];
     pickPosition.z = 1.0f; // Near Plane
+    float hitAxisXDistance = FLT_MAX;
+    float hitAxisYDistance = FLT_MAX;
+    float hitAxisZDistance = FLT_MAX;
+    float minDistance = FLT_MAX;
+    EAxisColor pickedAxis = EAxisColor::NONE; 
+
+    if (AxisXComp->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitAxisXDistance)) {
+        if (hitAxisXDistance < minDistance) {
+            minDistance = hitAxisXDistance;
+            pickedAxis = EAxisColor::RED_X;
+        }
+    }
+    if (AxisYComp->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitAxisYDistance)) {
+        if (hitAxisYDistance < minDistance) {
+            minDistance = hitAxisYDistance;
+            pickedAxis = EAxisColor::GREEN_Y;
+        }
+    }
+    if (AxisZComp->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitAxisZDistance)) {
+        if (hitAxisZDistance < minDistance) {
+            minDistance = hitAxisZDistance;
+            pickedAxis = EAxisColor::BLUE_Z;
+        }
+    }
+    if (pickedAxis != EAxisColor::NONE) {
+        SetAxisPicked(AxisXComp, AxisYComp, AxisZComp, pickedAxis);
+        return;
+    }
+
     float hitDistance = FLT_MAX;
     float nearestDistance = FLT_MAX;
     UActorComponent* nearestActorComp = nullptr;
 
-    if (AxisXComp->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitDistance)) {
 
-        UE_LOG(L"X__AXIS \n");
-        SetAxisPicked(AxisXComp, AxisYComp, AxisZComp, EAxisColor::RED_X);
-        return;
-    }
-    if (AxisYComp->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitDistance)) {
-        UE_LOG(L"Y__AXIS \n");
-        SetAxisPicked(AxisXComp, AxisYComp, AxisZComp, EAxisColor::GREEN_Y);
-        return;
-    }
-    if (AxisZComp->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitDistance)) {
-        UE_LOG(L"Z__AXIS \n");
-        SetAxisPicked(AxisXComp, AxisYComp, AxisZComp, EAxisColor::BLUE_Z);
-        return;
-    }
     SetAxisPicked(AxisXComp, AxisYComp, AxisZComp, static_cast<EAxisColor>(-1));
-    AxisXComp->SetPicked(false);
-    AxisYComp->SetPicked(false);
-    AxisZComp->SetPicked(false);
+ 
 	for (const auto& actorComp : actorList) {
 		bool bRes = actorComp->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitDistance);
        if (bRes && hitDistance < nearestDistance) {
