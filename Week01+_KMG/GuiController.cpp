@@ -50,10 +50,14 @@ void GuiController::NewFrame()
 	_io->MouseDown[1] = Input::Instance()->IsMouseButtonDown(1);
 
 	if (Input::Instance()->IsKeyDown(DIK_RETURN)) {
-		UE_LOG(L"Enter");
+		_io->AddInputCharacter('\n');
 	}
-
-	//_io->SetKeyEventNativeData
+	if ( Input::Instance()->IsKeyDown(DIK_BACKSPACE) ) {
+		_io->AddInputCharacter('\b');
+	}
+	//if ( Input::Instance()->IsKeyDown(DIK_SPACE) ) {
+	//	_io->AddInputCharacter('s');
+	//}
 	
 }
 
@@ -121,4 +125,6 @@ void GuiController::RenderEditor() {
 	//_console->Render();
 	ImGui::ShowDemoWindow();
 	ImGui::ShowDebugLogWindow();
+	if ( ImGui::IsKeyPressed(ImGuiKey_Enter) )
+		UE_LOG(L"Enter\n");
 }

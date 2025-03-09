@@ -47,8 +47,10 @@ void UCameraComponent::Render() {
 	//ImGui::Text(("rotation: " + static_cast<std::string>(RelativeRotation)).c_str());
 	ImGui::Checkbox("Orthogonal", &orthogonal);
 	ImGui::SliderFloat("FOV", &fieldOfView, 10.f, 90.f);
-	ImGui::SliderFloat3("position", &RelativeLocation.x, -50.f, 50.f);
-	ImGui::SliderFloat3("rotation", &RelativeRotation.x, -M_PI, M_PI);
+	/*ImGui::SliderFloat3("position", &RelativeLocation.x, -50.f, 50.f);
+	ImGui::SliderFloat3("rotation", &RelativeRotation.x, -M_PI, M_PI);*/
+	ImGui::DragFloat3("position", &RelativeLocation.x, 0.1f);
+	ImGui::DragFloat3("rotation", &RelativeRotation.x, 0.1f);
 
 	ImGui::End();
 }

@@ -146,10 +146,11 @@ bool Input::ReadKeyboard() {
 	HRESULT result = 0;
 
 	memcpy(m_keyboardStatePrevious, m_keyboardState, sizeof(m_keyboardState));
-	if (!ImGui::GetIO().WantTextInput)
+	result = m_keyboard->GetDeviceState(sizeof(m_keyboardState), (LPVOID)&m_keyboardState);
+	/*if (!ImGui::GetIO().WantTextInput)
 		result = m_keyboard->GetDeviceState(sizeof(m_keyboardState), (LPVOID)&m_keyboardState);
 	else
-		m_keyboard->Unacquire();
+		m_keyboard->Unacquire();*/
 	if ( FAILED(result) ) {
 		if ( (result == DIERR_INPUTLOST) || (result == DIERR_NOTACQUIRED) ) {
 			m_keyboard->Acquire();

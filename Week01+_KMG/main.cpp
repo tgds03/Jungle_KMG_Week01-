@@ -19,7 +19,11 @@ UArrowComponent* gAxisYComp;
 UArrowComponent* gAxisZComp;
 UGizmoComponent* gGizmo;
 
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
+	if ( ImGui_ImplWin32_WndProcHandler(hWnd, message, wParam, lParam) )
+		return true;
 	switch (message) {
 	case WM_DESTROY:
 		PostQuitMessage(0);
