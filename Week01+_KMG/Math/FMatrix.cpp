@@ -91,13 +91,30 @@ FMatrix& FMatrix::operator=(const FMatrix& other)
 	return *this;
 }
 
+bool FMatrix::operator==(const FMatrix& other) const
+{
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 4; j++) {
+			if(m[i][j] != other.m[i][j]) return false;  // 깊은 복사 수행
+		}
+	}
+	return true;
+}
+
+bool FMatrix::operator!=(const FMatrix& other) const
+{
+	return !(*this == other);
+}
+
 //FVector4 FMatrix::operator*(const FVector4& rhs) const {
 //	return FVector4(rhs.Dot(c1()), rhs.Dot(c2()), rhs.Dot(c3()), rhs.Dot(c4()));
 //}
 
 FVector4 operator*(const FVector4& lhs, const FMatrix& rhs) {
 	return FVector4(lhs.Dot(rhs.c1()), lhs.Dot(rhs.c2()), lhs.Dot(rhs.c3()), lhs.Dot(rhs.c4()));
-};
+}
+
+;
 
 FVector4 FMatrix::r1() const { return FVector4(m[0][0], m[0][1], m[0][2], m[0][3]); }
 
@@ -176,6 +193,22 @@ FVector FMatrix::GetScaledAxis(EAxis axis) const
 	default:
 		return FVector(0.0f, 0.0f, 0.0f);
 	}
+}
+
+std::string FMatrix::to_string() const
+{
+	std::string str;
+	std::string sep(" ");
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			str += std::to_string(m[i][j]);
+			str += sep;
+		}
+		str += std::string("\n");
+	}
+	return str;
 }
 
 FMatrix FMatrix::Scale(float sx, float sy, float sz) {

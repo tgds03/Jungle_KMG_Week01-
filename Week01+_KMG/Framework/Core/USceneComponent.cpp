@@ -8,7 +8,7 @@ void USceneComponent::Update()
 }
 
 FVector USceneComponent::Right() {
-	FVector4 r = GetComponentTransform().r1();
+	FVector4 r = GetComponentTransform().r1(); // (1,0,0,0) * getcomponenttransform
 	return FVector(r.x, r.y, r.z).Normalized();
 }
 
@@ -48,6 +48,10 @@ FVector USceneComponent::GetRelativeScale3D() const
 
 FMatrix USceneComponent::GetRelativeTransform() const
 {
+	if (ISDEBUG)
+	{
+		return DEBUG_TRANSFORMATION_OVERRIDE;
+	}
 	//FMatrix origin = FMatrix(FVector4::Zero, FVector4::Zero, FVector4::Zero, FVector4(0, 0, 0, 1));
 	FMatrix origin = FMatrix::Identity;
 
@@ -212,6 +216,51 @@ void USceneComponent::SetWorldLocationAndRotation(const FVector NewWorldLocation
 	SetRelativeLocation((GetRelativeLocation4() * invTrans).xyz());
 	SetRelativeRotation((FVector4(GetRelativeRotation(), 0) * invTrans).xyz());
 }
+
+// Scale은 xyz uniform하다고 가정
+// Scale factor of xyz is assumed to be uniform
+// 확인안해봄 not tested yet
+void USceneComponent::SetValuesFromMatrix(const FMatrix mat)
+{
+	// 1 for linear transform, nonlinear otherwise(not SRT transform)
+	assert(mat.m[3][3] == 1); // 1일경우 projection, 아닐경우 비선형변환(SRT가 아님)
+
+	RelativeLocation = { mat.m[0][3] ,mat.m[1][3],mat.m[2][3] };
+	RelativeScale3D = sqrt(mat.m[0][0] * mat.m[0][0] + mat.m[0][1] * mat.m[0][1] * mat.m[0][2]*mat.m[0][2]);
+
+	// https://www.geometrictools.com/Documentation/EulerAngles.pdf
+	FMatrix r = mat * (1.0 / RelativeScale3D.x);
+	float x, y, z;
+	if (r[0][2] < 1)
+	{
+		if (r[0][2] > -1)
+		{
+			y = asin(r[0][2]);
+			x = atan2(-r[1][2], r[2][2]);
+			z = atan2(-r[0][1], r[0][0]);
+		}
+		else // r02 = -1; not a unique solution : z - x = atan2(r[1][0], r[1][1])
+		{
+			y = -M_PI / 2;
+			x = -atan2(r[1][0], r[1][1]);
+			z = 0;
+		}
+	}
+	else // r02 = +1; not a unique solution : z+x = atan2(r10,r11)
+	{
+		y = M_PI / 2;
+		x = atan2(r[1][0], r[1][1]);
+		z = 0;
+	}
+	RelativeRotation = { x,y,z };
+	// column vector일때
+	//float x = atan2(rotationMatrix[2][1], rotationMatrix[2][2]);
+	//float y = atan2(-rotationMatrix[2][0], sqrt(rotationMatrix[2][1] * rotationMatrix[2][1] + rotationMatrix[2][2] * rotationMatrix[2][2]));
+	//float z = atan2(rotationMatrix[1][0], rotationMatrix[0][0]);
+}
+
+
+
 
 //void USceneComponent::SetWorldScale3D(const FVector NewWorldScale3D)
 //{

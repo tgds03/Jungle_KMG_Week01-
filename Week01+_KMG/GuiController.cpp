@@ -26,7 +26,15 @@ void GuiController::NewFrame()
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
-
+	ImGui::Begin("MousePos");
+	POINT cursorPos;
+	GetCursorPos(&cursorPos);
+	ScreenToClient(hWnd, &cursorPos);
+	ImGui::Text("X : %d, Y : %d", cursorPos.x, cursorPos.y);
+	static RECT rect;
+	GetClientRect(hWnd, &rect);
+	ImGui::Text("Width : %d, Height : %d", rect.right - rect.left, rect.bottom - rect.top);
+	ImGui::End();
 	//POINT p;
 	//GetCursorPos(&p);
 	//ScreenToClient(hWnd, &p);

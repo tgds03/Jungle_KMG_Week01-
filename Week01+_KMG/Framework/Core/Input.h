@@ -3,6 +3,9 @@
 #pragma comment(lib, "dxguid.lib")
 #define DIRECTINPUT_VERSION 0x0800
 #include <dinput.h>
+//#include "Framework/Core/UCoordArrowComponent.h"
+
+class UCoordArrowComponent;
 
 // https://blog.nullbus.net/24
 // https://hwan-shell.tistory.com/227
@@ -33,7 +36,8 @@ public:
 	bool IsMouseButtonReleased(char button);
 	void GetMouseLocation(int& mouse_x, int& mouse_y);
 	void GetMouseDelta(int& mouse_x, int& mouse_y);
-	//void GetMouseRay(FVector& rayOrigin, FVector& rayDirection, const FVector& viewMatrix, const FVector& projectionMatrix);
+	void GetMouseRay(FVector& rayOrigin, FVector& rayDirection, const FMatrix& viewMatrix, const FMatrix& projectionMatrix);
+	UCoordArrowComponent* SpawnMouseRay(const FMatrix& viewMatrix, const FMatrix& projectionMatrix, const FMatrix& debugMatrix = FMatrix::Identity);
 
 private:
 	bool ReadKeyboard();

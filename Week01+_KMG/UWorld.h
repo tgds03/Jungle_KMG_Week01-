@@ -4,6 +4,7 @@
 //#include "Framework/Core/UActorComponent.h"
 #include "Framework/Core/UCubeComponent.h"
 #include "Framework/Core/UPlaneComponent.h"
+#include "Framework/Core/UArrowComponent.h"
 #include "Framework/Core/UCoordArrowComponent.h"
 
 class UActorComponent;
@@ -24,13 +25,13 @@ public:
 
     void AddActor(UActorComponent* comp);
     void RemoveActor(UActorComponent* comp);
-    void PickingByRay();
+    void PickingByRay(int mouse_X, int mouse_Y, UArrowComponent* AxisXComp, UArrowComponent* AxisYComp, UArrowComponent* AxisZComp);
+    void SetAxisPicked(UArrowComponent* axisX, UArrowComponent* axisY, UArrowComponent* axisZ, EAxisColor pickedAxis);
     UCameraComponent* SpawnCamera();
     UCubeComponent* SpawnCubeActor();
     USphereComponent* SpawnSphereActor();
     UPlaneComponent* SpawnPlaneActor();
     UCoordArrowComponent* SpawnCoordArrowActor();
-
 private:
     TLinkedList<UActorComponent*> actorList = {};
 

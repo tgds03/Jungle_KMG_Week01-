@@ -8,5 +8,8 @@ public:
     USphereComponent();
     virtual ~USphereComponent();
     virtual void Update();
+
+    //debug
+    virtual bool IntersectsRay(const FVector& rayOrigin, const FVector& rayDir, float& dist);
 };
 

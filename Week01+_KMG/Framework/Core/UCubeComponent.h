@@ -5,7 +5,7 @@ public:
 	UCubeComponent();
 	virtual ~UCubeComponent();
 	virtual void Update();
-	virtual bool IntersectsRay(const FVector& rayOrigin, const FVector& rayDir, float& dist);
-    virtual void PickObjectByRayIntersection(const FVector& pickPosition, const FMatrix& viewMatrix, float* hitDistance) override;
 
+	bool Intersects(FVector rayOrigin, FVector rayDirection);
+	virtual bool IntersectsRay(const FVector& rayOrigin, const FVector& rayDir, float& dist);
 };

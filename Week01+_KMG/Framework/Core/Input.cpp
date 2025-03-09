@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Input.h"
+#include "Framework/Core/UCoordArrowComponent.h"
 
 Input* Input::_instance = nullptr;
 
@@ -179,27 +180,129 @@ void Input::ProcessInput() {
 
 	return;
 }
-//void Input::GetMouseRay(FVector& rayOrigin, FVector& rayDirection,
-//	const FMatrix& viewMatrix, const FMatrix& projectionMatrix) {
-//	POINT cursorPos;
-//	GetCursorPos(&cursorPos);
-//	ScreenToClient(m_hWnd, &cursorPos);
-//
-//	float ndcX = ((float)cursorPos.x / m_screenWidth) * 2.0f - 1.0f;
-//	float ndcY = 1.0f - ((float)cursorPos.y / m_screenHeight) * 2.0f;
-//
-//	// **직교 투영에서는 레이 방향이 항상 카메라의 전방 방향이어야 함**
-//	FMatrix invView = XMMatrixInverse(nullptr, viewMatrix);
-//	FVector forward;
-//	XMStoreFloat3(&forward, invView.r[2]); // Z축 방향 (카메라의 전방 방향)
-//
-//	rayDirection = forward; // **직교 투영에서는 방향이 항상 일정**
-//
-//	// **직교 투영에서는 레이 시작점을 마우스 클릭 위치에서 변환해야 함**
-//	FMatrix invProj = XMMatrixInverse(nullptr, projectionMatrix);
-//	FVector rayClip = XMVectorSet(ndcX, ndcY, 0.0f, 1.0f); // z=0으로 설정
-//	FVector rayWorld = XMVector4Transform(rayClip, invProj);
-//	rayWorld = XMVector4Transform(rayWorld, invView);
-//
-//	XMStoreFloat3(&rayOrigin, rayWorld); // 마우스 위치를 `rayOrigin`으로 설정
-//}
+void Input::GetMouseRay(FVector& rayOrigin, FVector& rayDirection,
+	const FMatrix& viewMatrix, const FMatrix& projectionMatrix) {
+	POINT cursorPos;
+	GetCursorPos(&cursorPos);
+	ScreenToClient(m_hWnd, &cursorPos);
+
+	float ndcX = ((float)cursorPos.x / m_screenWidth) * 2.0f - 1.0f;
+	float ndcY = 1.0f - ((float)cursorPos.y / m_screenHeight) * 2.0f;
+
+	FVector4 nearPoint = FVector4(ndcX, ndcY, 0.f, 1.f);
+	FVector4 farPoint = FVector4(ndcX, ndcY, 1.f, 1.f);
+	ImGui::Begin("GetMouseRay");
+	ImGui::Text("nearPoint : %f %f %f \nfarPoint : %f %f %f", nearPoint.x, nearPoint.y, nearPoint.z, farPoint.x, farPoint.y, farPoint.z);
+	ImGui::End();
+	FMatrix invProj = projectionMatrix.Inverse();
+
+	nearPoint = nearPoint * invProj;
+	farPoint = farPoint * invProj;
+
+	FMatrix invView = viewMatrix.Inverse();
+	nearPoint = nearPoint * invView;
+	farPoint = farPoint * invView;
+
+	rayOrigin = nearPoint.xyz()/nearPoint.w;
+	
+	rayDirection = (farPoint / farPoint.w - nearPoint/ nearPoint.w).xyz();
+
+}
+
+UCoordArrowComponent* Input::SpawnMouseRay(const FMatrix& viewMatrix, const FMatrix& projectionMatrix, const FMatrix& debugMatrix)
+{
+	FVector o, d;
+	FMatrix viewProjInv = (viewMatrix * projectionMatrix).Inverse();
+	GetMouseRay(o, d, viewMatrix, projectionMatrix);
+
+	auto a = new UCoordArrowComponent;
+	auto s = d.Magnitude();
+	//auto x = -asin(d.y);
+	auto x = atan2(d.y, d.z);
+	//auto x = -asin(d.y);
+
+	auto y = -atan2(d.x, d.z);
+	auto z = atan2(124, 3212);
+
+	z = atan2(d.z, d.x);
+	x = atan2(d.y, sqrt(d.x * d.x + d.z * d.z));
+
+
+	a->SetRelativeRotation({ x, y, 0 });
+	a->SetRelativeLocation(o);
+	a->SetRelativeScale3D({ s ,s,s});
+	
+	ImGui::Begin("SpawnMouseRay");
+	ImGui::Text("spawn ray's info (loc rot scale)%f, %f, %f, %f, %f, %f, %f", a->GetRelativeLocation().x, a->GetRelativeLocation().y, a->GetRelativeLocation().z, a->GetRelativeRotation().x, a->GetRelativeRotation().y, 0, a->GetRelativeScale3D().x);
+	ImGui::Text("spawn ray's info (front right up)%f, %f, %f, %f, %f, %f, %f", a->Front().x, a->Front().y, a->Front().z, a->Right().x, a->Right().y, 0, a->Right().x);
+	ImGui::End();
+	
+	return a;
+
+
+
+
+
+	//FVector o, d;
+	//FMatrix viewProjInv = (viewMatrix * projectionMatrix).Inverse();
+
+	//// world coordinate에서의 ray
+	//GetMouseRay(o, d, viewMatrix, projectionMatrix);
+
+	//// d가 Front이고 o가 Position인 View Matrix 만들고 분해
+	//// 가 아니라 그냥 
+	//auto translateInv = FMatrix({
+	//	1,0,0,0,
+	//	0,1,0,0,
+	//	0,0,1,0,
+	//	-d.x, -d.y, -d.z, 1
+	//	});
+
+	//float denom = 1 / d.Magnitude();
+	//auto scaleInv = FMatrix({
+	//	denom,0,0,0,
+	//	0,denom,0,0,
+	//	0,0,denom,0,
+	//	0,0,0,1
+	//	});
+
+	////auto rotate = scaleInv *
+	//auto a = new UCoordArrowComponent;
+
+	//auto x = -asin(d.y);
+	//auto y = atan2(d.x, d.z);
+	//a->SetRelativeRotation({ x, y, 0 });
+	//
+	////a->SetRelativeLocation(o);
+	////a->SetRelativeScale3D(s);
+
+
+	//auto s = d.Magnitude();
+	////a->SetRelativeLocation(o);
+	//a->SetRelativeScale3D(s);
+
+	//return;
+	////auto x = -asin(d.y);
+	////auto y = atan2(d.x, d.z);
+	////a->SetRelativeRotation({x, y, 0});
+
+
+	//	//a->SetValuesFromMatrix(viewProjInv);
+	//
+	////a->SetRelativeLocation(o);
+	//// 오일러 변환으로 변경(x,y,z)
+
+	///*auto pitch = std::atan2(d.y, sqrt(d.x * d.x + d.z * d.z));
+	//auto yaw = std::atan2(d.z,d.x);
+
+	//a->SetRelativeRotationX(pitch);
+	//a->SetRelativeRotationY(yaw);*/
+
+
+	//if(0 && debugMatrix != FMatrix::Identity)
+	//{
+	//	a->ISDEBUG = true;
+	//	a->DEBUG_TRANSFORMATION_OVERRIDE = debugMatrix;
+	//}
+	
+}
