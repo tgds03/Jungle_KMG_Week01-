@@ -30,3 +30,23 @@ void UPrimitiveComponent::GenerateRayForPicking(const FVector& pickPosition, con
 	//광선의 방향 벡터를 구한다. 
 	*rayDirection = (*rayDirection - *pickRayOrigin).Normalized();
 }
+
+bool UPrimitiveComponent::PickObjectByRayIntersection(const FVector& pickPosition, const FMatrix& viewMatrix, float* hitDistance)
+{
+
+		FVector pickRayOrigin, pickRayDirection;
+		GenerateRayForPicking(pickPosition, viewMatrix, &pickRayOrigin, &pickRayDirection);
+
+		bool bHit = IntersectsRay(pickRayOrigin, pickRayDirection, *hitDistance);
+
+		if (bHit)
+		{
+			OutputDebugString(L"Res :: hit!!!!-----------------\n");
+		}
+		else
+		{
+			//OutputDebugString(L"Res :: NOT!!!!-----------------\n");
+			//OutputDebugString(L"Ray did not hit the cube\n");
+		}
+		return bHit;
+}
