@@ -39,6 +39,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	CRenderer::Instance()->Init(hWnd); // maincamera ����
 	Time::Instance()->Init();
 	Input::Instance()->Init(hInstance, hWnd, 800, 600);
+	Input::Instance()->Init(hInstance, hWnd, SCR_WIDTH, SCR_HEIGHT);
 	GuiController* guiController = new GuiController(hWnd, CRenderer::Instance()->GetGraphics());
 
 
