@@ -50,6 +50,12 @@ struct FVector {
 		z -= rhs.z;
 		return *this;
 	}
+	bool operator ==(const FVector& rhs) const {
+		return (x == rhs.x) && (y == rhs.y) && (z == rhs.z);
+	}
+	bool operator !=(const FVector& rhs) const {
+		return !(*this == rhs);
+	}
 	float Dot(const FVector& rhs) {
 		return x * rhs.x + y * rhs.y + z * rhs.z;
 	}
@@ -147,6 +153,12 @@ struct FVector4 {
 		z -= rhs.z;
 		w -= rhs.w;
 		return *this;
+	}
+	bool operator ==(const FVector4& rhs) const {
+		return (x == rhs.x) && (y == rhs.y) && (z == rhs.z) && (w == rhs.w);
+	}
+	bool operator !=(const FVector4& rhs) const {
+		return !(*this == rhs);
 	}
 	float operator[] (int index){
 		switch (index)
