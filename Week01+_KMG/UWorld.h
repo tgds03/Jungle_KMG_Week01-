@@ -6,6 +6,9 @@
 #include "Framework/Core/UPlaneComponent.h"
 #include "Framework/Core/UArrowComponent.h"
 #include "Framework/Core/UCoordArrowComponent.h"
+#include "Framework/Core/UDiscComponent.h"
+#include "Framework/Core/UDiscHollowComponent.h"
+
 
 class UActorComponent;
 class UCubeComponent;
@@ -26,12 +29,15 @@ public:
     void AddActor(UActorComponent* comp);
     void RemoveActor(UActorComponent* comp);
     void PickingByRay(int mouse_X, int mouse_Y, UArrowComponent* AxisXComp, UArrowComponent* AxisYComp, UArrowComponent* AxisZComp);
-    void SetAxisPicked(UArrowComponent* axisX, UArrowComponent* axisY, UArrowComponent* axisZ, EAxisColor pickedAxis);
+    void SetAxisPicked(UArrowComponent* axisX, UArrowComponent* axisY, UArrowComponent* axisZ, EPrimitiveColor pickedAxis);
     UCameraComponent* SpawnCamera();
     UCubeComponent* SpawnCubeActor();
     USphereComponent* SpawnSphereACtor();
     UPlaneComponent* SpawnPlaneActor();
     UCoordArrowComponent* SpawnCoordArrowActor();
+    UDiscComponent* SpawnDiscActor();
+    UDiscHollowComponent* SpawnDiscHollowActor();
+
 private:
     TLinkedList<UActorComponent*> actorList = {};
 

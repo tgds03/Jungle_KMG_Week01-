@@ -5,7 +5,7 @@ public:
 	USceneComponent() {}
 	virtual void Update();
 	//virtual void Render();
-protected:
+private:
 	FVector RelativeLocation = FVector::Zero;
 	FVector RelativeRotation = FVector::Zero;
 	FVector RelativeScale3D = FVector::One;
@@ -32,6 +32,7 @@ public:
 	FVector GetComponentX() const;
 	FVector GetComponentY() const;
 	FVector GetComponentZ() const;
+	FVector GetComponentInverseRotation() const;
 
 	void SetRelativeLocation(const FVector NewLocation);
 	void SetRelativeLocationX(const float NewLocX);
@@ -80,8 +81,19 @@ public:
 
 
 public:
-	FMatrix DEBUG_TRANSFORMATION_OVERRIDE = FMatrix::Identity;
-	bool ISDEBUG = false;
+	//FMatrix DEBUG_TRANSFORMATION_OVERRIDE = FMatrix::Identity;
+	// flag 설정시 강제로 이 상태로 렌더
+	FVector OverrideLocation = FVector::Zero;
+	FVector OverrideRotation = FVector::Zero;
+	FVector OverrideScale3D = FVector::One;
+	FMatrix OverrideTransform = FMatrix::Identity;
+
+	//bool ISDEBUG = false;
+
+	bool IsOverrideTransform = false;
+	bool IsOverrideLocation = false;
+	bool IsOverrideRotation = false;
+	bool IsOverrideScale3D = false;
 
 };
 

@@ -64,20 +64,20 @@ void UWorld::PickingByRay(int mouse_X, int mouse_Y, UArrowComponent* AxisXComp, 
     if (AxisXComp->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitDistance)) {
 
         UE_LOG(L"X__AXIS \n");
-        SetAxisPicked(AxisXComp, AxisYComp, AxisZComp, EAxisColor::RED_X);
+        SetAxisPicked(AxisXComp, AxisYComp, AxisZComp, EPrimitiveColor::RED_X);
         return;
     }
     if (AxisYComp->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitDistance)) {
         UE_LOG(L"Y__AXIS \n");
-        SetAxisPicked(AxisXComp, AxisYComp, AxisZComp, EAxisColor::GREEN_Y);
+        SetAxisPicked(AxisXComp, AxisYComp, AxisZComp, EPrimitiveColor::GREEN_Y);
         return;
     }
     if (AxisZComp->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitDistance)) {
         UE_LOG(L"Z__AXIS \n");
-        SetAxisPicked(AxisXComp, AxisYComp, AxisZComp, EAxisColor::BLUE_Z);
+        SetAxisPicked(AxisXComp, AxisYComp, AxisZComp, EPrimitiveColor::BLUE_Z);
         return;
     }
-    SetAxisPicked(AxisXComp, AxisYComp, AxisZComp, static_cast<EAxisColor>(-1));
+    SetAxisPicked(AxisXComp, AxisYComp, AxisZComp, static_cast<EPrimitiveColor>(-1));
     AxisXComp->SetPicked(false);
     AxisYComp->SetPicked(false);
     AxisZComp->SetPicked(false);
@@ -103,11 +103,11 @@ UCameraComponent* UWorld::SpawnCamera()
     return newCamera;
 }
 
-void UWorld::SetAxisPicked(UArrowComponent* axisX, UArrowComponent* axisY, UArrowComponent* axisZ, EAxisColor pickedAxis)
+void UWorld::SetAxisPicked(UArrowComponent* axisX, UArrowComponent* axisY, UArrowComponent* axisZ, EPrimitiveColor pickedAxis)
 {
-    axisX->SetPicked(pickedAxis == EAxisColor::RED_X);
-    axisY->SetPicked(pickedAxis == EAxisColor::GREEN_Y);
-    axisZ->SetPicked(pickedAxis == EAxisColor::BLUE_Z);
+    axisX->SetPicked(pickedAxis == EPrimitiveColor::RED_X);
+    axisY->SetPicked(pickedAxis == EPrimitiveColor::GREEN_Y);
+    axisZ->SetPicked(pickedAxis == EPrimitiveColor::BLUE_Z);
 }
 
 UCubeComponent* UWorld::SpawnCubeActor()
@@ -128,4 +128,14 @@ UPlaneComponent* UWorld::SpawnPlaneActor()
 UCoordArrowComponent* UWorld::SpawnCoordArrowActor()
 {
     return SpawnActor<UCoordArrowComponent>();
+}
+
+UDiscComponent* UWorld::SpawnDiscActor()
+{
+    return SpawnActor<UDiscComponent>();
+}
+
+UDiscHollowComponent* UWorld::SpawnDiscHollowActor()
+{
+    return SpawnActor<UDiscHollowComponent>();
 }

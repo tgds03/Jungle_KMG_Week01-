@@ -8,6 +8,7 @@
 #include "Framework/Core/UCoordArrowComponent.h"
 #include "Framework/Core/UArrowComponent.h"
 #include "Framework/Core/UGizmoComponent.h"
+#include "Framework/Core/UDiscHollowComponent.h"
 extern int SCR_WIDTH;
 extern int SCR_HEIGHT;
 const int TARGET_FPS = 60;
@@ -26,8 +27,11 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 		break;
 	case WM_LBUTTONDOWN:
 		if(gMainScene)
-			
+		{
 			gMainScene->PickingByRay(LOWORD(lParam), HIWORD(lParam), gAxisXComp, gAxisYComp, gAxisZComp);
+			auto cam = CRenderer::Instance()->GetMainCamera();
+			Input::Instance()->SpawnMouseRay(cam->View(), cam->PerspectiveProjection());
+		}
 		break;
 	//case WM_SIZE:
 	//{
@@ -71,21 +75,26 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 	UWorld* mainScene = new UWorld();
 	gMainScene = mainScene;
-	UPlaneComponent* ground = mainScene->SpawnPlaneActor();
+	//UPlaneComponent* ground = mainScene->SpawnPlaneActor();
 	UCubeComponent* obj = mainScene->SpawnCubeActor();
 	UCubeComponent* obj2 = mainScene->SpawnCubeActor();
-	USphereComponent* sphere = mainScene->SpawnSphereACtor();
+	//USphereComponent* sphere = mainScene->SpawnSphereACtor();
 	UCoordArrowComponent* arrow = mainScene->SpawnCoordArrowActor();
 	UCoordArrowComponent* worldArrow = mainScene->SpawnCoordArrowActor();
 	//USphereComponent* sphere = mainScene->SpawnSphereACtor();
-	sphere->SetRelativeScale3D({ 1,1,1 });
+	//UDiscComponent* disc = mainScene->SpawnDiscActor();
+	UDiscHollowComponent* disc = new UDiscHollowComponent(RED_X, 0.9);
 
-	UArrowComponent* AxisXComp = new UArrowComponent(EAxisColor::RED_X);
-	UArrowComponent* AxisYComp = new UArrowComponent(EAxisColor::GREEN_Y);
-	UArrowComponent* AxisZComp = new UArrowComponent(EAxisColor::BLUE_Z);
+	disc->SetRelativeRotation({ 10,10,10 });
+	//sphere->SetRelativeScale3D({ 1,1,1 });
+	//sphere->SetRelativeRotation({ 1,2,3 });
+
+	UArrowComponent* AxisXComp = new UArrowComponent(EPrimitiveColor::RED_X);
+	UArrowComponent* AxisYComp = new UArrowComponent(EPrimitiveColor::GREEN_Y);
+	UArrowComponent* AxisZComp = new UArrowComponent(EPrimitiveColor::BLUE_Z);
 	UGizmoComponent* Gizmo = new UGizmoComponent(AxisXComp, AxisYComp, AxisZComp);
 
-	Gizmo->AttachToComponent(sphere);
+	Gizmo->AttachToComponent(obj2);
 	AxisXComp->SetRelativeRotation({ 0,-M_PI/2,0 });
 	AxisYComp->SetRelativeRotation({ M_PI / 2 ,0,0});
 	AxisZComp->SetRelativeRotation({ 0,0,0 });
@@ -103,7 +112,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	gGizmo = Gizmo;
 
 	worldArrow->SetRelativeScale3D({ 100,100,100 });
-	ground->SetRelativeScale3D({ 10,5,3 });
+	//ground->SetRelativeScale3D({ 10,5,3 });
 	//ground->SetRelativeLocation({ 0,-10,0 });
 	arrow->SetRelativeScale3D({ 3,3,3 });
 
@@ -158,7 +167,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		mainScene->Update();
 		CRenderer::Instance()->GetGraphics()->RenderBegin();
 		gGizmo->Update();
-		//obj2->SetRelativeLocationX(obj2->GetRelativeLocation().x + 0.1);
+		disc->Render();
+		obj2->SetRelativeRotation(obj2->GetRelativeRotation() + FVector{0.1, 0.2, 0.3});
 		gGizmo->Render();
 		mainScene->Render();
 		AxisXComp->Render();

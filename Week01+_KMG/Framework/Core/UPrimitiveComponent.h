@@ -3,7 +3,12 @@
 #include "./Framework/DirectXWrapper/CBuffer.h"
 #include "./Framework/DirectXWrapper/CInputLayout.h"
 #include "./Framework/Core/CRenderer.h"
-
+enum EPrimitiveColor
+{
+	RED_X,
+	GREEN_Y,
+	BLUE_Z
+};
 class UPrimitiveComponent: public USceneComponent {
 public:
 	UPrimitiveComponent() {}
@@ -15,6 +20,6 @@ public:
 	virtual void GenerateRayForPicking(const FVector& pickPosition, const FMatrix& viewMatrix, FVector* pickRayOrigin, FVector* rayDirection) override;
 	virtual bool PickObjectByRayIntersection(const FVector& pickPosition, const FMatrix& viewMatrix, float* hitDistance) override;
 protected:
-	CVertexBuffer<FVertexSimple>* _vertexBuffer;
-	CIndexBuffer* _indexBuffer;
+	CVertexBuffer<FVertexSimple>* _vertexBuffer = nullptr;
+	CIndexBuffer* _indexBuffer = nullptr;
 };
