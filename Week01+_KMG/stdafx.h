@@ -22,7 +22,7 @@ using FWString = std::wstring;
 
 #include "Math/FVector.h"
 #include "Math/FMatrix.h"
-# define M_PI           3.14159265358979323846
+#define M_PI           3.14159265358979323846
 
 #define SCR_WIDTH 1200
 #define SCR_HEIGHT 800

@@ -163,22 +163,6 @@ FMatrix FMatrix::Inverse() const
 	return inv;
 }
 
-inline std::wstring FMatrix::to_wstring() const
-{
-	std::wstring str;
-	std::wstring sep(L" ");
-	for (int i = 0; i < 4; i++)
-	{
-		for (int j = 0; j < 4; j++)
-		{
-			str += std::to_wstring(m[i][j]);
-			str += sep;
-		}
-		str += std::wstring(L"\n");
-	}
-	return str;
-}
-
 FMatrix FMatrix::Scale(float sx, float sy, float sz) {
 	return FMatrix({
 		sx, 0.f, 0.f, 0.f,
