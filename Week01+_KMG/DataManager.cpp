@@ -49,6 +49,8 @@ FString DataManager::GenerateWorldJson(UWorld* world)
     json::JSON primitivesJson = json::Object();
     int index = 0;
 
+    jsonData["Version"] = 1;
+    jsonData["NextUUID"] = CEngineStatics::TotalAllocationCount;
     for (auto* comp : world->GetActors())
     {
         if (!comp) continue;
@@ -74,10 +76,8 @@ FString DataManager::GenerateWorldJson(UWorld* world)
 
         primitivesJson[std::to_string(index++)] = primitive;
     }
-
-    jsonData["AVersion"] = 1;
-    jsonData["NextUUID"] = CEngineStatics::TotalAllocationCount;
     jsonData["Primitives"] = primitivesJson;
+
 
     return jsonData.dump();
 }
