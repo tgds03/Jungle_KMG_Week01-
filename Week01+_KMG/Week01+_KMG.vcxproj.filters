@@ -90,12 +90,6 @@
     <ClCompile Include="Framework\Core\UPrimitiveComponent.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="UCubeComponent.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="UCameraComponent.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="Framework\Core\Time.cpp">
       <Filter>소스 파일\Framework\Core</Filter>
     </ClCompile>
@@ -126,10 +120,16 @@
     <ClCompile Include="ImGui\imgui_widgets.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="UPlaneComponent.cpp">
+    <ClCompile Include="Framework\Core\UCameraComponent.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="UCoordArrowComponent.cpp">
+    <ClCompile Include="Framework\Core\UCoordArrowComponent.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Core\UCubeComponent.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Core\UPlaneComponent.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -182,12 +182,6 @@
     <ClInclude Include="Framework\Core\UPrimitiveComponent.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="UCubeComponent.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="UCameraComponent.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Framework\Core\Time.h">
       <Filter>헤더 파일\Framework\Core</Filter>
     </ClInclude>
@@ -221,10 +215,16 @@
     <ClInclude Include="ImGui\imstb_truetype.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="UPlaneComponent.h">
+    <ClInclude Include="Framework\Core\UCameraComponent.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="UCoordArrowComponent.h">
+    <ClInclude Include="Framework\Core\UCoordArrowComponent.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Core\UCubeComponent.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Core\UPlaneComponent.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

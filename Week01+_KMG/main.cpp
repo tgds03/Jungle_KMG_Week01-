@@ -98,18 +98,14 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		{
 			obj->SetRelativeLocation(obj->GetRelativeLocation() - obj->Up());
 		}
-		CRenderer::Instance()->GetCamera()->PrintLoc(L"CAM");
-		obj->PrintLoc(L"obj");
+		//CRenderer::Instance()->GetCamera()->PrintLoc(L"CAM");
+		//obj->PrintLoc(L"obj");
 		
 		// 테스트용
 		////////////////////////////////
 		
 		UActorComponent::UpdateAll();
 		CRenderer::Instance()->GetGraphics()->RenderBegin();
-
-		obj->PrintLoc(L"OBJ");
-		CRenderer::Instance()->GetCamera()->PrintLoc(L"CAM");
-
 		guiController->NewFrame();
 		UActorComponent::RenderAll();
 		guiController->RenderFrame();

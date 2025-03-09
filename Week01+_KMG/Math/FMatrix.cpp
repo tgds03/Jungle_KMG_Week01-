@@ -308,6 +308,20 @@ inline std::wstring FMatrix::to_wstring() const
 //    return inv;
 //}
 
+FVector FMatrix::GetScaledAxis(EAxis axis) const
+{
+	switch (axis)
+	{
+	case EAxis::X:
+		return FVector(m[0][0], m[0][1], m[0][2]);
+	case EAxis::Y:
+		return FVector(m[1][0], m[1][1], m[1][2]);
+	case EAxis::Z:
+		return FVector(m[2][0], m[2][1], m[2][2]);
+	default:
+		return FVector(0.0f, 0.0f, 0.0f);
+	}
+}
 FMatrix FMatrix::Scale(float sx, float sy, float sz) {
 	return FMatrix({
 		sx, 0.f, 0.f, 0.f,
@@ -330,7 +344,6 @@ FMatrix FMatrix::RotateX(float rx) {
 		0.f, 0.f, 0.f, 1.f
 	});
 }
-
 FMatrix FMatrix::RotateY(float ry) {
 	return FMatrix({
 		cos(ry), 0.f, sin(ry), 0.f,

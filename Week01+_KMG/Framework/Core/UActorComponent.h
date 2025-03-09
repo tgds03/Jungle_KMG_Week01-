@@ -16,7 +16,7 @@ public:
 		const  FVector boxAxes[3], float& hitDistance) {
 		return false;
 	}
-	virtual void GenerateRayForPicking(FVector& pickPosition, FMatrix& viewMatrix, FVector* pickRayOrigin, FVector* pickRayDirection) {}
-	static void GenerateAllRayForPicking(FVector& pickPosition, FMatrix& viewMatrix);
+	virtual void GenerateRayForPicking(const FVector& pickPosition,const FVector& rayDirection,const FMatrix& viewMatrix) {}
+	static void GenerateAllRayForPicking(FVector& pickPosition, FVector& rayDirection, const FMatrix& viewMatrix);
 };
 

@@ -2,6 +2,12 @@
 #include <cmath>
 #include <initializer_list>
 #include "FVector.h"
+enum class EAxis
+{
+	X,
+	Y,
+	Z
+};
 
 struct FMatrix {
 public:
@@ -44,6 +50,7 @@ public:
 
 public:
 	static const FMatrix Identity;
+	FVector GetScaledAxis(EAxis axis) const;
 	static FMatrix Scale(float sx, float sy, float sz);
 	static FMatrix Scale(FVector xyz);
 	static FMatrix RotateX(float rx);
