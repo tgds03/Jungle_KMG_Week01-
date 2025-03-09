@@ -37,9 +37,6 @@
     <Filter Include="헤더 파일\Math">
       <UniqueIdentifier>{706658a1-ca8e-496f-ac6c-e44f88a26aff}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Shader">
-      <UniqueIdentifier>{3492a764-7518-4c73-a2f4-59a06b7b2c3f}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -90,7 +87,7 @@
     <ClCompile Include="Math\FVector.cpp">
       <Filter>소스 파일\Math</Filter>
     </ClCompile>
-    <ClCompile Include="UWorld.cpp">
+    <ClCompile Include="Framework\Core\UPrimitiveComponent.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Core\Time.cpp">
@@ -98,17 +95,6 @@
     </ClCompile>
     <ClCompile Include="Framework\Core\Input.cpp">
       <Filter>소스 파일\Framework\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="UCameraComponent.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="UCubeComponent.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Framework\Core\UPrimitiveComponent.cpp">
-      <Filter>소스 파일\Framework\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="USphereComponent.cpp">
     </ClCompile>
     <ClCompile Include="GuiController.cpp">
       <Filter>소스 파일</Filter>
@@ -134,10 +120,16 @@
     <ClCompile Include="ImGui\imgui_widgets.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="UPlaneComponent.cpp">
+    <ClCompile Include="Framework\Core\UCameraComponent.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="UCoordArrowComponent.cpp">
+    <ClCompile Include="Framework\Core\UCoordArrowComponent.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Core\UCubeComponent.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Core\UPlaneComponent.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -187,28 +179,13 @@
     <ClInclude Include="Math\FVector.h">
       <Filter>헤더 파일\Math</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="UWorld.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Framework\Core\Input.h">
-      <Filter>헤더 파일\Framework\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="UCameraComponent.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="UCubeComponent.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Framework\Core\UPrimitiveComponent.h">
-      <Filter>헤더 파일\Framework\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="USphereComponent.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Core\Time.h">
+      <Filter>헤더 파일\Framework\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Core\Input.h">
       <Filter>헤더 파일\Framework\Core</Filter>
     </ClInclude>
     <ClInclude Include="GuiController.h">
@@ -238,16 +215,22 @@
     <ClInclude Include="ImGui\imstb_truetype.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="UPlaneComponent.h">
+    <ClInclude Include="Framework\Core\UCameraComponent.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="UCoordArrowComponent.h">
+    <ClInclude Include="Framework\Core\UCoordArrowComponent.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Core\UCubeComponent.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Core\UPlaneComponent.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader.hlsl">
-      <Filter>Shader</Filter>
+      <Filter>소스 파일</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

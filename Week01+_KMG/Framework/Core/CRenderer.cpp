@@ -85,4 +85,50 @@ void CRenderer::SetCamera(UCameraComponent* camera)
 	_mainCamera = camera;
 }
 
+void CRenderer::PickingByRay(LPARAM lParam)
+{
+	
+	FMatrix viewMatrix = _mainCamera->GetComponentTransform().Inverse();
+	FMatrix projectionMatrix = _mainCamera->PerspectiveProjection();
+	D3D11_VIEWPORT viewport = _graphics->GetViewport();
 
+	
+	float size_x = LOWORD(lParam);
+	float size_y = HIWORD(lParam);
+
+	FVector ndcPosition;
+	ndcPosition.x = (2.0f * size_x / viewport.Width) - 1.0f;
+	ndcPosition.y = 1.0f - (2.0f * size_y / viewport.Height); // DX11�� Y�� ���� ����
+	ndcPosition.z = 1.0f; // Near Plane
+
+	
+	FVector nearPoint = FVector(ndcPosition.x, ndcPosition.y, 0.0f); // Near Plane
+	FVector farPoint = FVector(ndcPosition.x, ndcPosition.y, 1.0f);  // Far Plane
+
+	
+	FMatrix invProjMatrix = projectionMatrix.Inverse();
+	FVector nearPointView = invProjMatrix.TransformCoord(FVector4(nearPoint, 1.0f));
+	FVector farPointView = invProjMatrix.TransformCoord(FVector4(farPoint, 1.0f));
+
+
+
+	FMatrix invViewMatrix = viewMatrix.Inverse();
+	FVector nearPointWorld = invViewMatrix.TransformCoord(FVector4(nearPointView, 1.0f));
+	FVector farPointWorld = invViewMatrix.TransformCoord(FVector4(farPointView, 1.0f));
+
+	
+	FVector rayOrigin = nearPointWorld; //
+	FVector rayDirection = (farPointWorld - nearPointWorld).Normalized(); // Ray ����
+
+	// ����� ���
+	OutputDebugString((L"Ray Origin (World): x=" + std::to_wstring(rayOrigin.x) +
+		L", y=" + std::to_wstring(rayOrigin.y) +
+		L", z=" + std::to_wstring(rayOrigin.z) + L"\n").c_str());
+
+	OutputDebugString((L"Ray Direction (World): x=" + std::to_wstring(rayDirection.x) +
+		L", y=" + std::to_wstring(rayDirection.y) +
+		L", z=" + std::to_wstring(rayDirection.z) + L"\n").c_str());
+
+	
+	UActorComponent::GenerateAllRayForPicking(rayOrigin, rayDirection,viewMatrix);
+}

@@ -46,5 +46,10 @@ private:
 	CRasterzierState* _rasterizerState = nullptr;
 	CConstantBuffer<FMatrix>* _constantBuffer = nullptr;
 	UCameraComponent* _mainCamera = nullptr;
+
+
+public: //for picking (Temp)
+	void PickingByRay(LPARAM lParam);
+
 };
 
