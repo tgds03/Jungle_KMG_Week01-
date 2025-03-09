@@ -10,7 +10,9 @@ public:
 	TArray<uint32> indices;
 
 	virtual void Render();
-	virtual void GenerateRayForPicking(const FVector& pickPosition, const FMatrix& viewMatrix, FVector* pickRayOrigin, FVector* rayDirection);
+	virtual bool IntersectsRay(const FVector& rayOrigin, const FVector& rayDir, float& dist) { return false; }
+	virtual void GenerateRayForPicking(const FVector& pickPosition, const FMatrix& viewMatrix, FVector* pickRayOrigin, FVector* rayDirection) override;
+	virtual bool PickObjectByRayIntersection(const FVector& pickPosition, const FMatrix& viewMatrix, float* hitDistance) override;
 protected:
 	CVertexBuffer<FVertexSimple>* _vertexBuffer;
 	CIndexBuffer* _indexBuffer;

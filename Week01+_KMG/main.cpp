@@ -6,19 +6,24 @@
 #include "UWorld.h"
 #include "Framework/Core/UPlaneComponent.h"
 #include "Framework/Core/UCoordArrowComponent.h"
+#include "Framework/Core/UArrowComponent.h"
 
 const int TARGET_FPS = 60;
 const double TARGET_FRAMERATE = 1000.0 / TARGET_FPS;
+
 UWorld* gMainScene;
+UArrowComponent* gAxisXComp;
+UArrowComponent* gAxisYComp;
+UArrowComponent* gAxisZComp;
+
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
 	switch (message) {
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
 	case WM_LBUTTONDOWN:
-	case WM_LBUTTONUP:
 		if(gMainScene)
-			gMainScene->PickingByRay();
+			gMainScene->PickingByRay(LOWORD(lParam), HIWORD(lParam), gAxisXComp, gAxisYComp, gAxisZComp);
 		break;
 	default:
 		return DefWindowProc(hWnd, message, wParam, lParam);
@@ -36,9 +41,13 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	winClass.lpfnWndProc = WinProc;
 	RegisterClass(&winClass);
 
+
+
+	RECT rc = { 0, 0, SCR_WIDTH, SCR_HEIGHT };
+	AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
 	HWND hWnd = CreateWindow(winClassName, winTitleName,
 		WS_POPUP | WS_VISIBLE | WS_OVERLAPPEDWINDOW,
-		CW_USEDEFAULT, CW_USEDEFAULT, SCR_WIDTH, SCR_HEIGHT,
+		CW_USEDEFAULT, CW_USEDEFAULT, rc.right - rc.left, rc.bottom - rc.top,
 		nullptr, nullptr, hInstance, nullptr
 	);
 
@@ -52,10 +61,22 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	gMainScene = mainScene;
 	UPlaneComponent* ground = mainScene->SpawnPlaneActor();
 	UCubeComponent* obj = mainScene->SpawnCubeActor();
+	UCubeComponent* obj2 = mainScene->SpawnCubeActor();
+	USphereComponent* sphere = mainScene->SpawnSphereACtor();
 	UCoordArrowComponent* arrow = mainScene->SpawnCoordArrowActor();
 	UCoordArrowComponent* worldArrow = mainScene->SpawnCoordArrowActor();
 
+	UArrowComponent* AxisXComp = new UArrowComponent(EAxisColor::RED_X);
+	UArrowComponent* AxisYComp = new UArrowComponent(EAxisColor::GREEN_Y);
+	UArrowComponent* AxisZComp = new UArrowComponent(EAxisColor::BLUE_Z);
+	AxisXComp->SetRelativeRotation({ 0,-M_PI/2,0 });
+	AxisYComp->SetRelativeRotation({ M_PI / 2 ,0,0});
+	AxisZComp->SetRelativeRotation({ 0,0,0 });
 	CRenderer::Instance()->GetMainCamera()->SetRelativeLocation(FVector(0, 0, -5));
+
+	gAxisXComp = AxisXComp;
+	gAxisYComp = AxisYComp;
+	gAxisZComp = AxisZComp;
 
 	worldArrow->SetRelativeScale3D({ 100,100,100 });
 	ground->SetRelativeScale3D({ 10,5,10 });
@@ -64,7 +85,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 	arrow->SetRelativeLocation({ 0,0,0 });
 	arrow->AttachToComponent(obj);
-	obj->SetRelativeRotation({ 0,1,0 });
+	obj->SetRelativeLocation({ 10,1,1 });
+	obj2->SetRelativeLocation({ 0,0,10 });
 
 	USphereComponent* sphere = mainScene->SpawnSphereACtor();
 	sphere->SetRelativeScale3D({ 1.5f, 1.5f, 1.5f });
@@ -126,8 +148,11 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		guiController->NewFrame();
 		mainScene->Update();
 		CRenderer::Instance()->GetGraphics()->RenderBegin();
-		mainScene->Render();
+		AxisXComp->Render();
+		AxisYComp->Render();
+		AxisZComp->Render();
 
+		mainScene->Render();
 		ImGui::Begin("statics");
 		ImGui::Text("UObject Count: %d", CEngineStatics::TotalAllocationCount);
 		ImGui::Text("UObject Bytes: %d", CEngineStatics::TotalAllocationBytes);
