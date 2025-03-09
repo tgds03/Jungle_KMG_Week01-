@@ -78,7 +78,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	UCoordArrowComponent* arrow = mainScene->SpawnCoordArrowActor();
 	UCoordArrowComponent* worldArrow = mainScene->SpawnCoordArrowActor();
 	//USphereComponent* sphere = mainScene->SpawnSphereACtor();
-	sphere->SetRelativeScale3D({ 2,2,2 });
+	sphere->SetRelativeScale3D({ 1,1,1 });
 
 	UArrowComponent* AxisXComp = new UArrowComponent(EAxisColor::RED_X);
 	UArrowComponent* AxisYComp = new UArrowComponent(EAxisColor::GREEN_Y);
@@ -89,6 +89,12 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	AxisXComp->SetRelativeRotation({ 0,-M_PI/2,0 });
 	AxisYComp->SetRelativeRotation({ M_PI / 2 ,0,0});
 	AxisZComp->SetRelativeRotation({ 0,0,0 });
+
+	AxisXComp->SetRelativeScale3D({ 0.8, 0.8 ,0.8 });
+	AxisYComp->SetRelativeScale3D({ 0.8, 0.8 ,0.8 });
+	AxisZComp->SetRelativeScale3D({ 0.8, 0.8 ,0.8 });
+
+
 	CRenderer::Instance()->GetMainCamera()->SetRelativeLocation(FVector(0, 0, -5));
 
 	gAxisXComp = AxisXComp;
@@ -152,12 +158,13 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		mainScene->Update();
 		CRenderer::Instance()->GetGraphics()->RenderBegin();
 		gGizmo->Update();
-		AxisXComp->Render();
-		AxisYComp->Render();
-		AxisZComp->Render();
 		//obj2->SetRelativeLocationX(obj2->GetRelativeLocation().x + 0.1);
 		gGizmo->Render();
 		mainScene->Render();
+		AxisXComp->Render();
+		AxisYComp->Render();
+		AxisZComp->Render();
+		ImGui::ShowDebugLogWindow();
 		ImGui::Begin("statics");
 		ImGui::Text("UObject Count: %d", CEngineStatics::TotalAllocationCount);
 		ImGui::Text("UObject Bytes: %d", CEngineStatics::TotalAllocationBytes);
