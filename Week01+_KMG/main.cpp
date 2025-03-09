@@ -62,7 +62,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	UPlaneComponent* ground = mainScene->SpawnPlaneActor();
 	UCubeComponent* obj = mainScene->SpawnCubeActor();
 	UCubeComponent* obj2 = mainScene->SpawnCubeActor();
-	USphereComponent* sphere = mainScene->SpawnSphereACtor();
+	USphereComponent* sphere = mainScene->SpawnSphereActor();
 	UCoordArrowComponent* arrow = mainScene->SpawnCoordArrowActor();
 	UCoordArrowComponent* worldArrow = mainScene->SpawnCoordArrowActor();
 
@@ -88,7 +88,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	obj->SetRelativeLocation({ 10,1,1 });
 	obj2->SetRelativeLocation({ 0,0,10 });
 
-	USphereComponent* sphere = mainScene->SpawnSphereACtor();
 	sphere->SetRelativeScale3D({ 1.5f, 1.5f, 1.5f });
 
 	//FString jsonOutput = DataManager::Instance().GenerateWorldJson(mainScene);
@@ -105,12 +104,13 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 		////////////////////////////////
 		// CUBE - ARROW 따라가는지 
-		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_P))
+		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_N))
 		{
 			mainScene->SaveWorld("TestLevel");
+			//mainScene->RemoveActor(sphere);
 		}
 
-		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_P))
+		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_M))
 		{
 			mainScene->LoadWorld("TestLevel");
 		}

@@ -14,10 +14,10 @@ class UPlaneComponent;
 class UCoordArrowComponent;
 
 struct PrimitiveData {
-    FString Type;
     FVector Location;
     FVector Rotation;
     FVector Scale;
+    FString Type;
 };
 
 class UWorld :
@@ -42,7 +42,7 @@ public:
 
     UCameraComponent* SpawnCamera();
     UCubeComponent* SpawnCubeActor();
-    USphereComponent* SpawnSphereACtor();
+    USphereComponent* SpawnSphereActor();
     UPlaneComponent* SpawnPlaneActor();
     UCoordArrowComponent* SpawnCoordArrowActor();
 

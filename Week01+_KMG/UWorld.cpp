@@ -8,11 +8,7 @@ UWorld::UWorld()
 
 UWorld::~UWorld()
 {
-    for (auto* comp : actorList)
-    {
-        delete comp;
-    }
-    actorList.clear();
+    ClearWorld();
 }
 
 void UWorld::Update()
@@ -41,6 +37,16 @@ void UWorld::AddActor(UActorComponent* comp)
 void UWorld::RemoveActor(UActorComponent* comp)
 {
     actorList.remove(comp);
+    delete comp;
+}
+
+void UWorld::ClearWorld()
+{
+    while (!actorList.empty()) // 리스트가 빌 때까지 반복
+    {
+        delete actorList.front();
+        actorList.pop_front();
+    }
 }
 
 void UWorld::PickingByRay(int mouse_X, int mouse_Y, UArrowComponent* AxisXComp, UArrowComponent* AxisYComp, UArrowComponent* AxisZComp)
@@ -124,7 +130,7 @@ UCubeComponent* UWorld::SpawnCubeActor()
     return SpawnActor<UCubeComponent>();
 }
 
-USphereComponent* UWorld::SpawnSphereACtor()
+USphereComponent* UWorld::SpawnSphereActor()
 {
     return SpawnActor<USphereComponent>();
 }
@@ -141,10 +147,37 @@ UCoordArrowComponent* UWorld::SpawnCoordArrowActor()
 
 void UWorld::SaveWorld(const FString& fileName)
 {
+    auto actorListCopy = actorList;  // 복사본 유지
     DataManager::Instance()->SaveWorldToJson(this, fileName);
+    //DataManager::Instance()->SaveWorldToJson(this, fileName);
 }
 
 void UWorld::LoadWorld(const FString& fileName)
 {
-    FString jsonData = DataManager::Instance()->LoadWorldFromJson(this, fileName);
+    TArray<PrimitiveData> primitives = DataManager::Instance()->LoadWorldFromJson(fileName);
+
+    for (const auto& primitive : primitives)
+    {
+        if (primitive.Type == "Cube") 
+        {
+            UCubeComponent* cube = SpawnCubeActor();
+            cube->SetRelativeLocation(primitive.Location);
+            cube->SetRelativeRotation(primitive.Rotation);
+            cube->SetRelativeScale3D(primitive.Scale);
+        }
+        else if (primitive.Type == "Sphere")
+        {
+            USphereComponent* sphere = SpawnSphereActor();
+            sphere->SetRelativeLocation(primitive.Location);
+            sphere->SetRelativeRotation(primitive.Rotation);
+            sphere->SetRelativeScale3D(primitive.Scale);
+        }
+        else if (primitive.Type == "Plane") 
+        {
+            UPlaneComponent* plane = SpawnPlaneActor();
+            plane->SetRelativeLocation(primitive.Location);
+            plane->SetRelativeRotation(primitive.Rotation);
+            plane->SetRelativeScale3D(primitive.Scale);
+        }
+    }
 }

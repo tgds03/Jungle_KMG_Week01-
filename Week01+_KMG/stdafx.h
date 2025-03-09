@@ -40,6 +40,7 @@ using FWString = std::wstring;
 #include "ImGui/imgui_impl_win32.h"
 #include "GuiController.h"
 
+
 template <typename T> void SafeRelease(T** ppT) {
 	if (*ppT) {
 		(*ppT)->Release();

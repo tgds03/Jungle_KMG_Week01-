@@ -3,7 +3,11 @@
 #include "Framework/Core/CEngineStatics.h"
 
 class UWorld;
-struct Primitives;
+struct PrimitiveData;
+namespace json {
+	class JSON;
+}
+
 
 class DataManager
 {
@@ -24,7 +28,11 @@ public:
 	void SaveWorldToJson(UWorld* world, const FString& fileName);
 	TArray<PrimitiveData> LoadWorldFromJson(const FString& fileName);
 
-	FString GenerateWorldJson(UWorld* world);
+	FString GenerateWorldJson(UWorld* world); 
+	
+
+	json::JSON SerializeFVector(const FVector& vec);
+	FVector DeserializeFVector(const json::JSON& jsonArray) {};
 
 private:
 	DataManager() = default;
@@ -33,7 +41,7 @@ private:
 	DataManager(const DataManager&) = delete;
 	DataManager& operator=(const DataManager&) = delete;
 
-	
+
 
 	static DataManager* _instance;
 	const FString scenePath = "Scenes/";
