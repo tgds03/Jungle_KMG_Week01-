@@ -163,150 +163,6 @@ FMatrix FMatrix::Inverse() const
 	return inv;
 }
 
-inline std::wstring FMatrix::to_wstring() const
-{
-	std::wstring str;
-	std::wstring sep(L" ");
-	for (int i = 0; i < 4; i++)
-	{
-		for (int j = 0; j < 4; j++)
-		{
-			str += std::to_wstring(m[i][j]);
-			str += sep;
-		}
-		str += std::wstring(L"\n");
-	}
-	return str;
-}
-//FMatrix FMatrix::Inverse() const {
-//    FMatrix inv = FMatrix::Identity;
-//    float det;
-//
-//    inv.m[0][0] = m[1][1] * m[2][2] * m[3][3] -
-//        m[1][1] * m[2][3] * m[3][2] -
-//        m[2][1] * m[1][2] * m[3][3] +
-//        m[2][1] * m[1][3] * m[3][2] +
-//        m[3][1] * m[1][2] * m[2][3] -
-//        m[3][1] * m[1][3] * m[2][2];
-//
-//    inv.m[0][1] = -m[0][1] * m[2][2] * m[3][3] +
-//        m[0][1] * m[2][3] * m[3][2] +
-//        m[2][1] * m[0][2] * m[3][3] -
-//        m[2][1] * m[0][3] * m[3][2] -
-//        m[3][1] * m[0][2] * m[2][3] +
-//        m[3][1] * m[0][3] * m[2][2];
-//
-//    inv.m[0][2] = m[0][1] * m[1][2] * m[3][3] -
-//        m[0][1] * m[1][3] * m[3][2] -
-//        m[1][1] * m[0][2] * m[3][3] +
-//        m[1][1] * m[0][3] * m[3][2] +
-//        m[3][1] * m[0][2] * m[1][3] -
-//        m[3][1] * m[0][3] * m[1][2];
-//
-//    inv.m[0][3] = -m[0][1] * m[1][2] * m[2][3] +
-//        m[0][1] * m[1][3] * m[2][2] +
-//        m[1][1] * m[0][2] * m[2][3] -
-//        m[1][1] * m[0][3] * m[2][2] -
-//        m[2][1] * m[0][2] * m[1][3] +
-//        m[2][1] * m[0][3] * m[1][2];
-//
-//    inv.m[1][0] = -m[1][0] * m[2][2] * m[3][3] +
-//        m[1][0] * m[2][3] * m[3][2] +
-//        m[2][0] * m[1][2] * m[3][3] -
-//        m[2][0] * m[1][3] * m[3][2] -
-//        m[3][0] * m[1][2] * m[2][3] +
-//        m[3][0] * m[1][3] * m[2][2];
-//
-//    inv.m[1][1] = m[0][0] * m[2][2] * m[3][3] -
-//        m[0][0] * m[2][3] * m[3][2] -
-//        m[2][0] * m[0][2] * m[3][3] +
-//        m[2][0] * m[0][3] * m[3][2] +
-//        m[3][0] * m[0][2] * m[2][3] -
-//        m[3][0] * m[0][3] * m[2][2];
-//
-//    inv.m[1][2] = -m[0][0] * m[1][2] * m[3][3] +
-//        m[0][0] * m[1][3] * m[3][2] +
-//        m[1][0] * m[0][2] * m[3][3] -
-//        m[1][0] * m[0][3] * m[3][2] -
-//        m[3][0] * m[0][2] * m[1][3] +
-//        m[3][0] * m[0][3] * m[1][2];
-//
-//    inv.m[1][3] = m[0][0] * m[1][2] * m[2][3] -
-//        m[0][0] * m[1][3] * m[2][2] -
-//        m[1][0] * m[0][2] * m[2][3] +
-//        m[1][0] * m[0][3] * m[2][2] +
-//        m[2][0] * m[0][2] * m[1][3] -
-//        m[2][0] * m[0][3] * m[1][2];
-//
-//    inv.m[2][0] = m[1][0] * m[2][1] * m[3][3] -
-//        m[1][0] * m[2][3] * m[3][1] -
-//        m[2][0] * m[1][1] * m[3][3] +
-//        m[2][0] * m[1][3] * m[3][1] +
-//        m[3][0] * m[1][1] * m[2][3] -
-//        m[3][0] * m[1][3] * m[2][1];
-//
-//    inv.m[2][1] = -m[0][0] * m[2][1] * m[3][3] +
-//        m[0][0] * m[2][3] * m[3][1] +
-//        m[2][0] * m[0][1] * m[3][3] -
-//        m[2][0] * m[0][3] * m[3][1] -
-//        m[3][0] * m[0][1] * m[2][3] +
-//        m[3][0] * m[0][3] * m[2][1];
-//
-//    inv.m[2][2] = m[0][0] * m[1][1] * m[3][3] -
-//        m[0][0] * m[1][3] * m[3][1] -
-//        m[1][0] * m[0][1] * m[3][3] +
-//        m[1][0] * m[0][3] * m[3][1] +
-//        m[3][0] * m[0][1] * m[1][3] -
-//        m[3][0] * m[0][3] * m[1][1];
-//
-//    inv.m[2][3] = -m[0][0] * m[1][1] * m[2][3] +
-//        m[0][0] * m[1][3] * m[2][1] +
-//        m[1][0] * m[0][1] * m[2][3] -
-//        m[1][0] * m[0][3] * m[2][1] -
-//        m[2][0] * m[0][1] * m[1][3] +
-//        m[2][0] * m[0][3] * m[1][1];
-//
-//    inv.m[3][0] = -m[1][0] * m[2][1] * m[3][2] +
-//        m[1][0] * m[2][2] * m[3][1] +
-//        m[2][0] * m[1][1] * m[3][2] -
-//        m[2][0] * m[1][2] * m[3][1] -
-//        m[3][0] * m[1][1] * m[2][2] +
-//        m[3][0] * m[1][2] * m[2][1];
-//
-//    inv.m[3][1] = m[0][0] * m[2][1] * m[3][2] -
-//        m[0][0] * m[2][2] * m[3][1] -
-//        m[2][0] * m[0][1] * m[3][2] +
-//        m[2][0] * m[0][2] * m[3][1] +
-//        m[3][0] * m[0][1] * m[2][2] -
-//        m[3][0] * m[0][2] * m[2][1];
-//
-//    inv.m[3][2] = -m[0][0] * m[1][1] * m[3][2] +
-//        m[0][0] * m[1][2] * m[3][1] +
-//        m[1][0] * m[0][1] * m[3][2] -
-//        m[1][0] * m[0][2] * m[3][1] -
-//        m[3][0] * m[0][1] * m[1][2] +
-//        m[3][0] * m[0][2] * m[1][1];
-//
-//    inv.m[3][3] = m[0][0] * m[1][1] * m[2][2] -
-//        m[0][0] * m[1][2] * m[2][1] -
-//        m[1][0] * m[0][1] * m[2][2] +
-//        m[1][0] * m[0][2] * m[2][1] +
-//        m[2][0] * m[0][1] * m[1][2] -
-//        m[2][0] * m[0][2] * m[1][1];
-//
-//    det = m[0][0] * inv.m[0][0] + m[0][1] * inv.m[1][0] + m[0][2] * inv.m[2][0] + m[0][3] * inv.m[3][0];
-//
-//    if (fabs(det) < 1e-10f) {
-//        return FMatrix(Identity); 
-//    }
-//
-//    det = 1.0f / det;
-//    for (int i = 0; i < 4; i++)
-//        for (int j = 0; j < 4; j++)
-//            inv.m[i][j] *= det;
-//
-//    return inv;
-//}
 
 FVector FMatrix::GetScaledAxis(EAxis axis) const
 {
@@ -322,6 +178,7 @@ FVector FMatrix::GetScaledAxis(EAxis axis) const
 		return FVector(0.0f, 0.0f, 0.0f);
 	}
 }
+
 FMatrix FMatrix::Scale(float sx, float sy, float sz) {
 	return FMatrix({
 		sx, 0.f, 0.f, 0.f,
@@ -384,6 +241,45 @@ FMatrix FMatrix::Translate(float tx, float ty, float tz) {
 FMatrix FMatrix::Translate(FVector xyz)
 {
 	return Translate(xyz.x, xyz.y, xyz.z);
+}
+
+FMatrix FMatrix::MakeFromX(FVector xaxis) {
+	const FVector newX = xaxis.Normalized();
+	const FVector up = abs(xaxis.z) < 1.f ? FVector::Up : FVector::Right;
+	const FVector newY = (up ^ newX).Normalized();
+	const FVector newZ = newX ^ newY;
+	return FMatrix({
+		newX.x, newX.y, newX.z, 0.0f,
+		newY.x, newY.y, newY.z, 0.0f,
+		newZ.x, newZ.y, newZ.z, 0.0f,
+		0.0f, 0.0f, 0.0f, 0.0f,
+	});
+}
+
+FMatrix FMatrix::MakeFromY(FVector yaxis) {
+	const FVector newY = yaxis.Normalized();
+	const FVector up = abs(yaxis.z) < 1.f ? FVector::Up : FVector::Right;
+	const FVector newZ = (up ^ newY).Normalized();
+	const FVector newX = newY ^ newZ;
+	return FMatrix({
+		newX.x, newX.y, newX.z, 0.0f,
+		newY.x, newY.y, newY.z, 0.0f,
+		newZ.x, newZ.y, newZ.z, 0.0f,
+		0.0f, 0.0f, 0.0f, 0.0f,
+	});
+}
+
+FMatrix FMatrix::MakeFromZ(FVector zaxis) {
+	const FVector newZ = zaxis.Normalized();
+	const FVector up = abs(zaxis.z) < 1.f ? FVector::Up : FVector::Right;
+	const FVector newX = (up ^ newZ).Normalized();
+	const FVector newY = newZ ^ newX;
+	return FMatrix({
+		newX.x, newX.y, newX.z, 0.0f,
+		newY.x, newY.y, newY.z, 0.0f,
+		newZ.x, newZ.y, newZ.z, 0.0f,
+		0.0f, 0.0f, 0.0f, 0.0f,
+	});
 }
 
 FMatrix FMatrix::Swap(UINT r1, UINT r2)

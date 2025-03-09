@@ -107,11 +107,16 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 		// 테스트용
 		////////////////////////////////
-		
+		guiController->NewFrame();
 		mainScene->Update();
 		CRenderer::Instance()->GetGraphics()->RenderBegin();
-		guiController->NewFrame();
 		mainScene->Render();
+
+		ImGui::Begin("profile");
+		ImGui::Text("UObject Count: %d", CEngineStatics::TotalAllocationCount);
+		ImGui::Text("UObject Bytes: %d", CEngineStatics::TotalAllocationBytes);
+		ImGui::End();
+
 		guiController->RenderFrame();
 		CRenderer::Instance()->GetGraphics()->RenderEnd();
 		Time::Instance()->_query_frame_end_time();

@@ -26,6 +26,9 @@ void UCameraComponent::Update() {
 		//RelativeLocation.y -= 1.0f * Time::GetDeltaTime();
 		RelativeLocation -= Up() * Time::GetDeltaTime();
 	}
+	if ( Input::Instance()->IsKeyDown(DIK_Q) ) {
+		UE_LOG(FMatrix::MakeFromZ(Front()).to_wstring().c_str());
+	}
 	if ( Input::Instance()->IsMouseButtonDown(1) ) {
 		int dx, dy;
 		Input::Instance()->GetMouseDelta(dx, dy);

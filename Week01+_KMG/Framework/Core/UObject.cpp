@@ -3,6 +3,8 @@
 
 TArray<UObject*> GUObjectArray;
 
+std::unordered_map<void*, size_t> UObject::_allocationMap = std::unordered_map<void*, size_t>();
+
 UObject::UObject() {
 	_internalIndex = GUObjectArray.size();
 	GUObjectArray.push_back(this);
