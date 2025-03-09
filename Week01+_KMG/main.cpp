@@ -6,7 +6,9 @@
 #include "UWorld.h"
 #include "Framework/Core/UPlaneComponent.h"
 #include "Framework/Core/UCoordArrowComponent.h"
-
+#include "Framework/Core/UArrowComponent.h"
+extern int SCR_WIDTH;
+extern int SCR_HEIGHT;
 const int TARGET_FPS = 60;
 const double TARGET_FRAMERATE = 1000.0 / TARGET_FPS;
 UWorld* gMainScene;
@@ -18,8 +20,20 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 	case WM_LBUTTONDOWN:
 	case WM_LBUTTONUP:
 		if(gMainScene)
+		{
 			gMainScene->PickingByRay();
+			UCameraComponent* cam = CRenderer::Instance()->GetMainCamera();
+			Input::Instance()->SpawnMouseRay(cam->View(), cam->PerspectiveProjection());
+		}
 		break;
+	case WM_SIZE:
+	{
+		if (CRenderer::Instance()->GetGraphics() && CRenderer::Instance()->GetGraphics()->GetDevice() && CRenderer::Instance()->GetGraphics()->GetDeviceContext()) {
+			SCR_WIDTH = LOWORD(lParam);
+			SCR_HEIGHT = HIWORD(lParam);
+			CRenderer::Instance()->GetGraphics()->ResizeBuffers(SCR_WIDTH, SCR_HEIGHT);
+		}
+	}
 	default:
 		return DefWindowProc(hWnd, message, wParam, lParam);
 	}
@@ -35,10 +49,11 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	winClass.lpszClassName = winClassName;
 	winClass.lpfnWndProc = WinProc;
 	RegisterClass(&winClass);
-
+	RECT rc = { 0, 0, SCR_WIDTH, SCR_HEIGHT };
+	AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
 	HWND hWnd = CreateWindow(winClassName, winTitleName,
 		WS_POPUP | WS_VISIBLE | WS_OVERLAPPEDWINDOW,
-		CW_USEDEFAULT, CW_USEDEFAULT, SCR_WIDTH, SCR_HEIGHT,
+		CW_USEDEFAULT, CW_USEDEFAULT, rc.right - rc.left, rc.bottom - rc.top,
 		nullptr, nullptr, hInstance, nullptr
 	);
 
@@ -54,6 +69,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	UCubeComponent* obj = mainScene->SpawnCubeActor();
 	UCoordArrowComponent* arrow = mainScene->SpawnCoordArrowActor();
 	UCoordArrowComponent* worldArrow = mainScene->SpawnCoordArrowActor();
+	USphereComponent* sphere = mainScene->SpawnSphereACtor();
+	sphere->SetRelativeScale3D({ 2,2,2 });
 
 	CRenderer::Instance()->GetMainCamera()->SetRelativeLocation(FVector(0, 0, -5));
 

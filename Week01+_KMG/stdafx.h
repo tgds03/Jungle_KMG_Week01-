@@ -24,9 +24,11 @@ using FWString = std::wstring;
 #include "Math/FMatrix.h"
 #define M_PI           3.14159265358979323846
 
-#define SCR_WIDTH 1200
-#define SCR_HEIGHT 800
+//#define SCR_WIDTH 1200
+//#define SCR_HEIGHT 800
 
+extern int SCR_WIDTH;
+extern int SCR_HEIGHT;
 
 #include "Framework/Core/Time.h"
 #include "Framework/Core/Input.h"

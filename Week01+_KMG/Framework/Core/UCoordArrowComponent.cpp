@@ -63,6 +63,29 @@ void UCoordArrowComponent::Update()
 {
 }
 
+void UCoordArrowComponent::Set(FVector origin, FVector direction)
+{
+	if (OriginWhenSpawned == FVector(0, 0, 0) && DirectionWhenSpawned == FVector(0, 0, 0))
+	{
+		OriginWhenSpawned = origin;
+		DirectionWhenSpawned = direction;
+	}
+	else
+	{
+		// 여기 오면 안됨
+	}
+}
+
+FVector UCoordArrowComponent::GetOrigin()
+{
+	return OriginWhenSpawned;
+}
+
+FVector UCoordArrowComponent::GetDirection()
+{
+	return DirectionWhenSpawned;
+}
+
 void UCoordArrowComponent::Render()
 {
 	//if(RelativeLocation)

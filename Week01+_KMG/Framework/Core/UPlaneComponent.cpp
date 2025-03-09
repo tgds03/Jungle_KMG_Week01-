@@ -41,3 +41,29 @@ UPlaneComponent::~UPlaneComponent() {
 	delete _vertexBuffer;
 	delete _indexBuffer;
 }
+
+bool UPlaneComponent::IntersectsRay(const FVector& rayOrigin, const FVector& rayDir, float& dist)
+{
+	// y=0일때 (x,z)는 를 지남 (-1,-1), (1,1)
+	// y=0일떄의 (x,z)
+	FVector4 o(rayOrigin, 1.f);
+	FVector4 d(rayDir, 0.f);
+
+	float x = o.x - d.x * (o.y / d.y);
+	//float y = 0;
+	float z = o.z - d.z * (o.y / d.y);
+
+	return (-1 < x && x < 1 && -1 < z && z < 1);
+}
+
+void UPlaneComponent::PickObjectByRayIntersection(const FVector& pickPosition, const FMatrix& viewMatrix, float* hitDistance)
+{
+
+}
+
+FVector UPlaneComponent::GetComponentNormal()
+{
+	FVector4 normal(0, 0, 1, 0);
+	normal = normal * GetComponentTransform();
+	return FVector(normal.xyz());
+}

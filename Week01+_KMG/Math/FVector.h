@@ -204,4 +204,7 @@ struct FVector4 {
 	FVector xyz() const {
 		return FVector(x, y, z);
 	}
+	FVector GetCoord() const {
+		return xyz() / w;
+	}
 };

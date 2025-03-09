@@ -1,6 +1,6 @@
 #pragma once
 #include "Framework/Core/UObject.h"
-#include "USphereComponent.h"
+#include "Framework/Core/USphereComponent.h"
 //#include "Framework/Core/UActorComponent.h"
 #include "Framework/Core/UCubeComponent.h"
 #include "Framework/Core/UPlaneComponent.h"

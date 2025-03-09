@@ -8,5 +8,12 @@ public:
     ~UCoordArrowComponent();
     void Render();
     void Update();
+
+    void Set(FVector origin, FVector direction);
+    FVector GetOrigin();
+    FVector GetDirection();
+private:
+    FVector OriginWhenSpawned = { 0,0,0 };
+    FVector DirectionWhenSpawned = { 0,0,0 };
 };
 
