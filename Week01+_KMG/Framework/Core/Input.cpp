@@ -131,13 +131,14 @@ void Input::GetMouseDelta(int& mouse_x, int& mouse_y) {
 	mouse_y = m_mouseState.lY;
 }
 
-
-
 bool Input::ReadKeyboard() {
-	HRESULT result;
+	HRESULT result = 0;
 
 	memcpy(m_keyboardStatePrevious, m_keyboardState, sizeof(m_keyboardState));
-	result = m_keyboard->GetDeviceState(sizeof(m_keyboardState), (LPVOID)&m_keyboardState);
+	if (!ImGui::GetIO().WantCaptureKeyboard)
+		result = m_keyboard->GetDeviceState(sizeof(m_keyboardState), (LPVOID)&m_keyboardState);
+	else
+		m_keyboard->Unacquire();
 	if ( FAILED(result) ) {
 		if ( (result == DIERR_INPUTLOST) || (result == DIERR_NOTACQUIRED) ) {
 			m_keyboard->Acquire();

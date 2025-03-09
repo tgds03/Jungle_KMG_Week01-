@@ -20,6 +20,9 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 		if(gMainScene)
 			gMainScene->PickingByRay();
 		break;
+	case WM_CHAR:
+		ImGui::GetIO().AddInputCharacter((unsigned int)wParam);
+		break;
 	default:
 		return DefWindowProc(hWnd, message, wParam, lParam);
 	}

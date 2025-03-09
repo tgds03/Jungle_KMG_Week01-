@@ -8,6 +8,7 @@ GuiController::GuiController(HWND hWnd, CGraphics* graphics): hWnd(hWnd) {
 	IMGUI_CHECKVERSION();
 	_context = ImGui::CreateContext();
 	_io = &ImGui::GetIO();
+	_io->ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 	ImGui_ImplDX11_Init(graphics->GetDevice(), graphics->GetDeviceContext());
 	ImGui_ImplWin32_Init(hWnd);
 }
@@ -45,9 +46,6 @@ void GuiController::RenderFrame()
 
 void GuiController::RenderEditor() {
 	const char* primitiveItems[] = { "Cube", "Sphere", "Plane" };
-	char sceneNameBuffer[256] = "";
-	int selectedPrimitive = 0, spawnNumber = 0;
-
 	ImGui::Begin("Control Panel");
 
 	ImGui::Text("FPS: %.2f (%.2fms)", 1/Time::GetDeltaTime(), 1000.f * Time::GetDeltaTime());
@@ -55,14 +53,14 @@ void GuiController::RenderEditor() {
 	ImGui::Text("UObject Bytes: %d", CEngineStatics::TotalAllocationBytes);
 	ImGui::Separator();
 	
-	ImGui::Combo("Primitive", &selectedPrimitive, primitiveItems, ARRAYSIZE(primitiveItems));
+	ImGui::Combo("Primitive", &_selectedPrimitive, primitiveItems, ARRAYSIZE(primitiveItems));
 	if ( ImGui::Button("Create") ) {
 	}
 	ImGui::SameLine(0.f, 5.f);
-	ImGui::InputInt("Number of Spawn", &spawnNumber, 1, 50);
+	ImGui::InputInt("Number of Spawn", &_spawnNumber, 1, 50);
 	ImGui::Separator();
 
-	ImGui::InputText("Scene Name", sceneNameBuffer, ARRAYSIZE(sceneNameBuffer));
+	ImGui::InputText("Scene Name", _sceneNameBuffer, ARRAYSIZE(_sceneNameBuffer));
 	if (ImGui::Button("New Scene")) {
 	}
 	if (ImGui::Button("Save Scene")) {
