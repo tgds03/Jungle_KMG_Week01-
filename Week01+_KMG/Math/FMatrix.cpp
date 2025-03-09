@@ -81,7 +81,7 @@ FMatrix FMatrix::operator*(const FMatrix& rhs) const {
 
 FMatrix& FMatrix::operator=(const FMatrix& other)
 {
-	if (this != &other) {  // �ڱ� �ڽ��� �����ϴ� ��� ����
+	if (this != &other) {  // �ڱ� �ڽ��� �����ϴ� ���?����
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {
 				m[i][j] = other.m[i][j];  // ���� ���� ����
@@ -153,21 +153,21 @@ FMatrix FMatrix::Inverse() const
 			while (swapRow < 4 && fabs(A.m[swapRow][i]) < FLT_EPSILON) swapRow++;
 			if (swapRow == 4)
 			{
-				UE_LOG(L"������� �������� �ʽ��ϴ�.");
-				return FMatrix::Identity; // ����� ����
+				UE_LOG(L"�������?�������� �ʽ��ϴ�.");
+				return FMatrix::Identity; // �����?����
 			}
 			A = A.Swap(i, swapRow);
 			inv = inv.Swap(i, swapRow);
 		}
 
-		// �ǹ��� 1�� �����
+		// �ǹ��� 1�� �����?
 		float pivot = A.m[i][i];
 		for (int j = 0; j < 4; j++) {
 			A.m[i][j] /= pivot;
 			inv.m[i][j] /= pivot;
 		}
 
-		// �ٸ� ���� i���� 0���� �����
+		// �ٸ� ���� i���� 0���� �����?
 		for (int k = 0; k < 4; k++) {
 			if (i == k) continue;
 			float factor = A.m[k][i];
