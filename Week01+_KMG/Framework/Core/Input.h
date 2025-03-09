@@ -35,8 +35,10 @@ public:
 	bool IsMouseButtonPressed(char button);
 	bool IsMouseButtonReleased(char button);
 	void GetMouseLocation(int& mouse_x, int& mouse_y);
+	void GetMouseWheel(int& mouse_w);
 	void GetMouseDelta(int& mouse_x, int& mouse_y);
 	void GetMouseRay(FVector& rayOrigin, FVector& rayDirection, const FMatrix& viewMatrix, const FMatrix& projectionMatrix);
+
 	UCoordArrowComponent* SpawnMouseRay(const FMatrix& viewMatrix, const FMatrix& projectionMatrix, const FMatrix& debugMatrix = FMatrix::Identity);
 
 private:

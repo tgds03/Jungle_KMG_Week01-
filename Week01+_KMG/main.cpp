@@ -79,7 +79,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	UArrowComponent* AxisZComp = new UArrowComponent(EAxisColor::BLUE_Z);
 	UGizmoComponent* Gizmo = new UGizmoComponent(AxisXComp, AxisYComp, AxisZComp);
 
-	Gizmo->AttachToComponent(sphere);
+	//Gizmo->AttachToComponent(sphere);
 	AxisXComp->SetRelativeRotation({ 0,-M_PI/2,0 });
 	AxisYComp->SetRelativeRotation({ M_PI / 2 ,0,0});
 	AxisZComp->SetRelativeRotation({ 0,0,0 });
@@ -94,7 +94,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	MSG msg = {};
 	while (msg.message != WM_QUIT) {
 		Time::Instance()->_query_frame_update_time();
-		Input::Instance()->Frame();
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
@@ -133,6 +132,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		// 테스트용
 		////////////////////////////////
 		//Input::Instance()->Frame();
+		Input::Instance()->Frame();
+		//Input::Instance()->Unacquire();
 		guiController->NewFrame();
 		guiController->world->Update();
 		CRenderer::Instance()->GetGraphics()->RenderBegin();
@@ -144,6 +145,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		guiController->RenderFrame();
 		CRenderer::Instance()->GetGraphics()->RenderEnd();
 		Time::Instance()->_query_frame_end_time();
+		//if (!SUCCEEDED(Input::Instance()->Acquire()))
+		//	assert(0);
 		
 	}
 	Input::Instance()->Shutdown();

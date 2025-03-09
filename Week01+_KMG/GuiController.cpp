@@ -40,12 +40,21 @@ void GuiController::NewFrame()
 	//ScreenToClient(hWnd, &p);
 	//_io->MousePos.x = static_cast<float>(p.x);
 	//_io->MousePos.y = static_cast<float>(p.y);
-	int x, y;
+	int x, y, w;
 	Input::Instance()->GetMouseLocation(x, y);
+	Input::Instance()->GetMouseWheel(w);
 	_io->MousePos.x = static_cast<float>(x);
 	_io->MousePos.y = static_cast<float>(y);
+	_io->MouseWheel = static_cast<float>(w);
 	_io->MouseDown[0] = Input::Instance()->IsMouseButtonDown(0);
 	_io->MouseDown[1] = Input::Instance()->IsMouseButtonDown(1);
+
+	if (Input::Instance()->IsKeyDown(DIK_RETURN)) {
+		UE_LOG(L"Enter");
+	}
+
+	//_io->SetKeyEventNativeData
+	
 }
 
 void GuiController::RenderFrame()
@@ -109,5 +118,7 @@ void GuiController::RenderEditor() {
 	}
 	ImGui::End();
 
-	_console->Render();
+	//_console->Render();
+	ImGui::ShowDemoWindow();
+	ImGui::ShowDebugLogWindow();
 }
