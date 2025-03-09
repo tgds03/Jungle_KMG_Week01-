@@ -141,7 +141,6 @@
     <ClCompile Include="Framework\Core\Input.cpp" />
     <ClCompile Include="Framework\Core\Time.cpp" />
     <ClCompile Include="Framework\Core\UActorComponent.cpp" />
-    <ClCompile Include="Framework\Core\UArrowComponent.cpp" />
     <ClCompile Include="Framework\Core\UCameraComponent.cpp" />
     <ClCompile Include="Framework\Core\UCoordArrowComponent.cpp" />
     <ClCompile Include="Framework\Core\UCubeComponent.cpp" />
@@ -181,7 +180,7 @@
     <ClCompile Include="Math\FVector.cpp" />
     <ClCompile Include="Framework\Core\UArrowComponent.cpp" />
     <ClCompile Include="Framework\Core\UGizmoComponent.cpp" />
-    <ClCompile Include="Framework\Core\USphereComponent.cpp" />
+    <ClCompile Include="USphereComponent.cpp" />
     <ClCompile Include="UWorld.cpp" />
     <FxCompile Include="Shader.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -200,7 +199,6 @@
     <ClInclude Include="Framework\Core\Input.h" />
     <ClInclude Include="Framework\Core\Time.h" />
     <ClInclude Include="Framework\Core\UActorComponent.h" />
-    <ClInclude Include="Framework\Core\UArrowComponent.h" />
     <ClInclude Include="Framework\Core\UCameraComponent.h" />
     <ClInclude Include="Framework\Core\UCoordArrowComponent.h" />
     <ClInclude Include="Framework\Core\UCubeComponent.h" />

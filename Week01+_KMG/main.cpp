@@ -74,7 +74,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	USphereComponent* sphere = mainScene->SpawnSphereACtor();
 	UCoordArrowComponent* arrow = mainScene->SpawnCoordArrowActor();
 	UCoordArrowComponent* worldArrow = mainScene->SpawnCoordArrowActor();
-	USphereComponent* sphere = mainScene->SpawnSphereACtor();
 	sphere->SetRelativeScale3D({ 2,2,2 });
 
 	UArrowComponent* AxisXComp = new UArrowComponent(EAxisColor::RED_X);

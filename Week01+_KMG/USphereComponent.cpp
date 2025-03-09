@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "USphereComponent.h"
+#include "Framework/Core/USphereComponent.h"
 
 USphereComponent::USphereComponent()
 {
