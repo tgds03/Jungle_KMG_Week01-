@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "UCubeComponent.h"
-#include "./Framework/Core/CRenderer.h"
 
 UCubeComponent::UCubeComponent() {
 	vertices =

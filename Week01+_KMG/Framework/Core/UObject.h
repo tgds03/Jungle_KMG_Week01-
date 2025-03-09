@@ -1,4 +1,5 @@
 #pragma once
+#include "stdafx.h"
 #include "Framework/Core/CEngineStatics.h"
 #include "Framework/Core/CObjectMeta.h"
 
@@ -15,6 +16,7 @@ public:
 		//CEngineStatics::TotalAllocationBytes += size;
 		return ::operator new(size);
 	}
+
 	void operator delete(void* p) {
 		--CEngineStatics::TotalAllocationCount;
 		//CEngineStatics::TotalAllocationBytes -= size; // ???

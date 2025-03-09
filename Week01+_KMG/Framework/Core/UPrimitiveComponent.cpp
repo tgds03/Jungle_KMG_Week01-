@@ -11,5 +11,8 @@ void UPrimitiveComponent::Render() {
 	graphics->GetDeviceContext()->IASetIndexBuffer(_indexBuffer->Get(), DXGI_FORMAT_R32_UINT, 0);
 	FMatrix m = GetComponentTransform();
 	CRenderer::Instance()->SetConstantBuffer(m);
-	graphics->GetDeviceContext()->DrawIndexed(indices.size(), 0, 0);
+	if (indices.size() > 0)
+		graphics->GetDeviceContext()->DrawIndexed(indices.size(), 0, 0);
+	else
+		graphics->GetDeviceContext()->Draw(vertices.size(), 0);
 }

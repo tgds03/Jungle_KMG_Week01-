@@ -12,3 +12,4 @@ UObject::UObject() {
 UObject::~UObject() {
 	GUObjectArray[_internalIndex] = nullptr;
 }
+  
