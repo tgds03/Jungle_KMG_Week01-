@@ -94,13 +94,7 @@ void UCubeComponent::Update() {
 	//RelativeRotation += FVector(1.f, 1.f, 1.f) * Time::GetDeltaTime();
 	//RelativeLocation.x = sin(Time::GetElapsedTime());
 }
-bool UCubeComponent::IntersectsRay(
-    const FVector& rayOrigin,
-    const FVector& rayDir,
-    const FVector& boxCenter,
-    FVector& boxHalfSize,
-    FVector boxAxes[3],
-    float& hitDistance)
+bool UCubeComponent::IntersectsRay(const FVector& rayOrigin, const FVector& rayDir, const FVector& boxCenter, FVector& boxHalfSize, FVector boxAxes[3], float& hitDistance)
 {
     const float epsilon = 1e-6f;
     float tMin = -FLT_MAX;
