@@ -339,6 +339,11 @@ void USceneComponent::SetupAttachment(TArray<USceneComponent*>& Children)
 
 bool USceneComponent::AttachToComponent(USceneComponent* Parent)
 {
+	if (Parent == nullptr)
+	{
+		AttachParent = nullptr;
+		return true;
+	}
 	if (Parent == this)
 	{
 		UE_LOG(L"USceneComponent::AttachToComponent::�ڱ� �ڽ��� Parent�� �� �� �����ϴ�.");
