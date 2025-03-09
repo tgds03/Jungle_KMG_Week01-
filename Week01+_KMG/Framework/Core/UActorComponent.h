@@ -11,6 +11,8 @@ public:
 	virtual void Update() {};
 	virtual void Render() {};
 
+	virtual void GenerateRayForPicking(const FVector& pickPosition,const FVector& rayDirection,const FMatrix& viewMatrix) {}
+
 private:
 	UWorld* motherScene;
 };

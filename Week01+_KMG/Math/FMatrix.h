@@ -2,6 +2,12 @@
 #include <cmath>
 #include <initializer_list>
 #include "FVector.h"
+enum class EAxis
+{
+	X,
+	Y,
+	Z
+};
 
 struct FMatrix {
 public:
@@ -37,8 +43,14 @@ public:
 	friend FVector4 operator*(const FVector4& lhs, const FMatrix& rhs);
 	std::wstring to_wstring() const;
 
+	FVector TransformCoord(FVector4 vec) {
+		FVector4 v = (vec * (*this));
+		return FVector(v.x / v.w, v.y / v.w, v.z / v.w);
+	}
+
 public:
 	static const FMatrix Identity;
+	FVector GetScaledAxis(EAxis axis) const;
 	static FMatrix Scale(float sx, float sy, float sz);
 	static FMatrix Scale(FVector xyz);
 	static FMatrix RotateX(float rx);

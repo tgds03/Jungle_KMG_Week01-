@@ -9,11 +9,16 @@
 
 const int TARGET_FPS = 60;
 const double TARGET_FRAMERATE = 1000.0 / TARGET_FPS;
-
+UWorld* gMainScene;
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
 	switch (message) {
 	case WM_DESTROY:
 		PostQuitMessage(0);
+		break;
+	case WM_LBUTTONDOWN:
+	case WM_LBUTTONUP:
+		if(gMainScene)
+			gMainScene->PickingByRay(lParam);
 		break;
 	default:
 		return DefWindowProc(hWnd, message, wParam, lParam);
@@ -44,7 +49,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	GuiController* guiController = new GuiController(hWnd, CRenderer::Instance()->GetGraphics());
 
 	UWorld* mainScene = new UWorld();
-
+	gMainScene = mainScene;
 	UPlaneComponent* ground = mainScene->SpawnPlaneActor();
 	UCubeComponent* obj = mainScene->SpawnCubeActor();
 	UCoordArrowComponent* arrow = mainScene->SpawnCoordArrowActor();
@@ -97,9 +102,9 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		{
 			obj->SetRelativeLocation(obj->GetRelativeLocation() - obj->Up());
 		}
-		CRenderer::Instance()->GetMainCamera()->PrintLoc(L"CAM");
-		obj->PrintLoc(L"obj");
-		
+		//CRenderer::Instance()->GetCamera()->PrintLoc(L"CAM");
+		//obj->PrintLoc(L"obj");
+
 		// 테스트용
 		////////////////////////////////
 		guiController->NewFrame();

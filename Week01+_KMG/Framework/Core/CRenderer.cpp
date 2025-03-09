@@ -84,5 +84,3 @@ void CRenderer::SetCamera(UCameraComponent* camera)
 {
 	_mainCamera = camera;
 }
-
-
