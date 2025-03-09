@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include "Include/jsonWrite.hpp"
 #include "Include/json.hpp"
 
 DataManager* DataManager::_instance = nullptr;
@@ -21,7 +22,7 @@ void DataManager::SaveWorldToJson(UWorld* world, const FString& fileName)
 
     FString fullPath = scenePath + saveFileName;
 
-    FString jsonData = GenerateWorldJson(world); // 월드 데이터를 json::JSON 문자열로 변환
+    FString jsonData = GenerateWorldJson(world); // 월드 데이터를 jsonWrite::JSON 문자열로 변환
 
     std::ofstream file(fullPath);
     if (!file.is_open()) {
@@ -29,13 +30,49 @@ void DataManager::SaveWorldToJson(UWorld* world, const FString& fileName)
         return;
     }
 
-    file << jsonData; // json::JSON 데이터 저장
+    file << jsonData; // jsonWrite::JSON 데이터 저장
     file.close();
 }
 
 TArray<PrimitiveData> DataManager::LoadWorldFromJson(const FString& fileName)
 {
     TArray<PrimitiveData> primitives;
+
+    FString loadFileName = fileName;
+    if (loadFileName.find(".Scene") == FString::npos)
+        loadFileName += ".Scene";
+
+    FString fullPath = scenePath + loadFileName;
+
+    std::ifstream file(fullPath);
+    if (!file.is_open()) {
+        std::cerr << "Failed to open file: " << fullPath << std::endl;
+        return primitives;
+    }
+
+    std::stringstream buffer;
+    buffer << file.rdbuf();
+    file.close();
+
+    json::JSON jsonData = json::JSON::Load(buffer.str());
+
+    if (!jsonData.hasKey("Primitives")) {
+        std::cerr << "Invalid JSON format: No 'Primitives' key found" << std::endl;
+        return primitives;
+    }
+
+    json::JSON primitivesJson = jsonData["Primitives"];
+    for (auto& item : primitivesJson.ObjectRange()) {
+        json::JSON obj = item.second;
+
+        PrimitiveData primitive;
+        primitive.Type = obj["Type"].ToString();
+        primitive.Location = DeserializeFVector(obj["Location"]);
+        primitive.Rotation = DeserializeFVector(obj["Rotation"]);
+        primitive.Scale = DeserializeFVector(obj["Scale"]);
+
+        primitives.push_back(primitive);
+    }
 
     return primitives;
 }
@@ -44,13 +81,13 @@ FString DataManager::GenerateWorldJson(UWorld* world)
 {
     if (!world) return "";
 
-    json::JSON jsonData = json::Object();
+    jsonWrite::JSON jsonData = jsonWrite::Object();
 
     jsonData["Version"] = 1;
     jsonData["NextUUID"] = CEngineStatics::TotalAllocationCount;
     int index = 0;
 
-    json::JSON primitivesJson = json::Object();
+    jsonWrite::JSON primitivesJson = jsonWrite::Object();
     for (auto* comp : world->GetActors())
     {
         if (!comp) continue;
@@ -68,7 +105,7 @@ FString DataManager::GenerateWorldJson(UWorld* world)
         else if (dynamic_cast<UPlaneComponent*>(comp)) type = "Plane";
         else continue;
 
-        json::JSON primitive = json::Object();
+        jsonWrite::JSON primitive = jsonWrite::Object();
         primitive["Location"] = SerializeFVector(loc);
         primitive["Rotation"] = SerializeFVector(rot);
         primitive["Scale"] = SerializeFVector(scale);
@@ -82,13 +119,16 @@ FString DataManager::GenerateWorldJson(UWorld* world)
     return jsonData.dump();
 }
 
-json::JSON DataManager::SerializeFVector(const FVector& vec)
+jsonWrite::JSON DataManager::SerializeFVector(const FVector& vec)
 {
-    return json::Array(vec.x, vec.y, vec.z);
+    return jsonWrite::Array(vec.x, vec.y, vec.z);
 }
 
-
-//FVector DataManager::DeserializeFVector(const json::JSON& jsonArray)
-//{
-//    //return FVector(jsonArray[0].ToFloat(), jsonArray[1].ToFloat(), jsonArray[2].ToFloat());
-//}
+FVector DataManager::DeserializeFVector(json::JSON& jsonObject)
+{
+    return FVector(
+        jsonObject[0].ToFloat(),
+        jsonObject[1].ToFloat(),
+        jsonObject[2].ToFloat()
+    );
+}

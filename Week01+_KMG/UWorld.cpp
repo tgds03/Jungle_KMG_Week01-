@@ -52,7 +52,7 @@ void UWorld::ClearWorld()
 void UWorld::PickingByRay(int mouse_X, int mouse_Y, UArrowComponent* AxisXComp, UArrowComponent* AxisYComp, UArrowComponent* AxisZComp)
 {
     UCameraComponent* mainCamera = CRenderer::Instance()->GetMainCamera();
-
+    if (!mainCamera) return;
     FMatrix viewMatrix = mainCamera->GetComponentTransform().Inverse();
     FMatrix projectionMatrix = mainCamera->PerspectiveProjection();
     D3D11_VIEWPORT viewport = CRenderer::Instance()->GetGraphics()->GetViewport();
@@ -88,6 +88,7 @@ void UWorld::PickingByRay(int mouse_X, int mouse_Y, UArrowComponent* AxisXComp, 
     AxisYComp->SetPicked(false);
     AxisZComp->SetPicked(false);
 	for (const auto& actorComp : actorList) {
+        if (!actorComp) continue;
 		bool bRes = actorComp->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitDistance);
        if (bRes && hitDistance < nearestDistance) {
             nearestActorComp = actorComp;
@@ -113,7 +114,7 @@ const TLinkedList<UActorComponent*>& UWorld::GetActors() const
 
 UCameraComponent* UWorld::SpawnCamera()
 {
-    UCameraComponent* newCamera = SpawnActor<UCameraComponent>();
+    UCameraComponent* newCamera = SpawnActor<UCameraComponent>(false);
     newCamera->SetRelativeLocation({ 0, 0, -5.0f });
     return newCamera;
 }

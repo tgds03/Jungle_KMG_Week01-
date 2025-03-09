@@ -104,12 +104,14 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 		////////////////////////////////
 		// CUBE - ARROW 따라가는지 
+		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_B))
+		{
+			mainScene->ClearWorld();
+		}
 		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_N))
 		{
 			mainScene->SaveWorld("TestLevel");
-			//mainScene->RemoveActor(sphere);
 		}
-
 		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_M))
 		{
 			mainScene->LoadWorld("TestLevel");
@@ -147,6 +149,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		////////////////////////////////
 		guiController->NewFrame();
 		mainScene->Update();
+		CRenderer::Instance()->GetMainCamera()->Update();
 		CRenderer::Instance()->GetGraphics()->RenderBegin();
 		AxisXComp->Render();
 		AxisYComp->Render();

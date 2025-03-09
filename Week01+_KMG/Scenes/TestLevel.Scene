@@ -1,4 +1,5 @@
 {
+  "Version" : 1,
   "NextUUID" : 11,
   "Primitives" : {
     "0" : {
@@ -25,6 +26,5 @@
       "Scale" : [1.500000, 1.500000, 1.500000],
       "Type" : "Sphere"
     }
-  },
-  "Version" : 1
+  }
 }
