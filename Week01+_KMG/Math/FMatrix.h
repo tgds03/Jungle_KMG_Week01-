@@ -19,6 +19,8 @@ public:
 		return FVector4(m[row][0], m[row][1], m[row][2], m[row][3]);
 	}
 	FMatrix& operator=(const FMatrix& other);
+	bool operator==(const FMatrix& other) const;
+	bool operator!=(const FMatrix& other) const;
 	
 //FVector4 operator*(const FVector4& rhs) const;
 
@@ -36,6 +38,7 @@ public:
 	FMatrix Inverse() const;
 	friend FVector4 operator*(const FVector4& lhs, const FMatrix& rhs);
 	std::wstring to_wstring() const;
+	std::string to_string() const;
 
 public:
 	static const FMatrix Identity;
