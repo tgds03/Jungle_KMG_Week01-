@@ -11,6 +11,7 @@ static const FVector Colors[] = {
 
 UDiscHollowComponent::UDiscHollowComponent(EPrimitiveColor color, float innerRadius) : inner(innerRadius)
 {
+    inner = innerRadius;
     FVector color3 = Colors[color];
 
     if (vertices.empty())
@@ -52,6 +53,7 @@ UDiscHollowComponent::UDiscHollowComponent(EPrimitiveColor color, float innerRad
 
 UDiscHollowComponent::UDiscHollowComponent()
 {
+    inner = 0.5;
     if (vertices.empty())
     {
         float angleStep = 2.0f * 3.1415926535f / DISC_RESOLUTION;
@@ -109,7 +111,8 @@ bool UDiscHollowComponent::IntersectsRay(const FVector& rayOrigin, const FVector
 
     FVector intersection = rayOrigin + rayDir * t;
 
-    FVector intersectionModelSpace = (FVector4(intersection, 0) * this->GetAttachParent()->GetComponentTransform().Inverse()).xyz();
+    FVector4 intersectionModelSpace4 = FVector4(intersection, 1) * this->GetComponentTransform().Inverse();
+    FVector intersectionModelSpace = (intersectionModelSpace4).xyz() / intersectionModelSpace4.w;
 
     return (inner < intersectionModelSpace.MagnitudeSquared() && intersectionModelSpace.MagnitudeSquared() < 1);
 }

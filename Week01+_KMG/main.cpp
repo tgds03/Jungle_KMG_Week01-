@@ -83,15 +83,16 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	UCoordArrowComponent* worldArrow = mainScene->SpawnCoordArrowActor();
 	//USphereComponent* sphere = mainScene->SpawnSphereACtor();
 	//UDiscComponent* disc = mainScene->SpawnDiscActor();
-	UDiscHollowComponent* disc = new UDiscHollowComponent(RED_X, 0.9);
-
-	disc->SetRelativeRotation({ 10,10,10 });
+	//UDiscHollowComponent* disc = new UDiscHollowComponent(RED_X, 0.9f);
+	UDiscHollowComponent* disc = mainScene->SpawnDiscHollowActor();
+	
+	//disc->SetRelativeRotation({ 10,10,10 });
 	//sphere->SetRelativeScale3D({ 1,1,1 });
 	//sphere->SetRelativeRotation({ 1,2,3 });
 
-	UArrowComponent* AxisXComp = new UArrowComponent(EPrimitiveColor::RED_X);
-	UArrowComponent* AxisYComp = new UArrowComponent(EPrimitiveColor::GREEN_Y);
-	UArrowComponent* AxisZComp = new UArrowComponent(EPrimitiveColor::BLUE_Z);
+	UArrowComponent* AxisXComp = new UArrowComponent(RED_X);
+	UArrowComponent* AxisYComp = new UArrowComponent(GREEN_Y);
+	UArrowComponent* AxisZComp = new UArrowComponent(BLUE_Z);
 	UGizmoComponent* Gizmo = new UGizmoComponent(AxisXComp, AxisYComp, AxisZComp);
 
 	Gizmo->AttachToComponent(obj2);

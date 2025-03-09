@@ -3,12 +3,7 @@
 #include "./Framework/DirectXWrapper/CBuffer.h"
 #include "./Framework/DirectXWrapper/CInputLayout.h"
 #include "./Framework/Core/CRenderer.h"
-enum EPrimitiveColor
-{
-	RED_X,
-	GREEN_Y,
-	BLUE_Z
-};
+
 class UPrimitiveComponent: public USceneComponent {
 public:
 	UPrimitiveComponent() {}
