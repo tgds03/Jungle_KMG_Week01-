@@ -12,6 +12,7 @@ GuiController::GuiController(HWND hWnd, CGraphics* graphics): hWnd(hWnd) {
 	_io->ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 	ImGui_ImplDX11_Init(graphics->GetDevice(), graphics->GetDeviceContext());
 	ImGui_ImplWin32_Init(hWnd);
+	_console = new GuiConsole();
 }
 
 GuiController::~GuiController() {
@@ -91,9 +92,14 @@ void GuiController::RenderEditor() {
 	ImGui::Begin("Property");
 	USceneComponent* downcast = dynamic_cast<USceneComponent*>(_selected);
 	if (downcast != nullptr) {
-		ImGui::SliderFloat3("position", &downcast->RelativeLocation.x, -50.f, 50.f);
+		/*ImGui::SliderFloat3("position", &downcast->RelativeLocation.x, -50.f, 50.f);
 		ImGui::SliderFloat3("rotation", &downcast->RelativeRotation.x, -M_PI, M_PI);
-		ImGui::SliderFloat3("scale", &downcast->RelativeScale3D.x, -5.f, 5.f);
+		ImGui::SliderFloat3("scale", &downcast->RelativeScale3D.x, -5.f, 5.f);*/
+		ImGui::DragFloat3("position", &downcast->RelativeLocation.x, 0.1f);
+		ImGui::DragFloat3("rotation", &downcast->RelativeRotation.x, 0.1f);
+		ImGui::DragFloat3("scale", &downcast->RelativeScale3D.x, 0.1f);
 	}
 	ImGui::End();
+
+	_console->Render();
 }

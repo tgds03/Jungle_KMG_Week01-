@@ -153,6 +153,7 @@
     <ClCompile Include="Framework\DirectXWrapper\CInputLayout.cpp" />
     <ClCompile Include="Framework\DirectXWrapper\CShader.cpp" />
     <ClCompile Include="Framework\DirectXWrapper\CState.cpp" />
+    <ClCompile Include="GuiConsole.cpp" />
     <ClCompile Include="GuiController.cpp" />
     <ClCompile Include="ImGui\imgui.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
@@ -209,6 +210,7 @@
     <ClInclude Include="Framework\DirectXWrapper\CInputLayout.h" />
     <ClInclude Include="Framework\DirectXWrapper\CShader.h" />
     <ClInclude Include="Framework\DirectXWrapper\CState.h" />
+    <ClInclude Include="GuiConsole.h" />
     <ClInclude Include="GuiController.h" />
     <ClInclude Include="ImGui\imconfig.h" />
     <ClInclude Include="ImGui\imgui.h" />

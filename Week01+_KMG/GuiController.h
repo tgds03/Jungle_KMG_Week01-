@@ -1,4 +1,6 @@
 #pragma once
+#include "GuiConsole.h"
+
 class CGraphics;
 class UActorComponent;
 class UWorld;
@@ -18,7 +20,7 @@ private:
 	ImGuiContext* _context;
 	ImGuiIO* _io;
 	HWND hWnd;
-	
+	GuiConsole* _console;
 
 	char _sceneNameBuffer[256] = "";
 	int _selectedPrimitive = 0, _spawnNumber = 1;
