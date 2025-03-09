@@ -42,7 +42,7 @@ void UGizmoComponent::Update()
 	float dy = -dyInt / (float)SCR_HEIGHT;
 		
  	FVector mouseDirOnScreen = { dx,dy,0 };
-	if (abs(dx) < FLT_EPSILON && abs(dx) < FLT_EPSILON) return;
+	if (abs(dx) < FLT_EPSILON && abs(dy) < FLT_EPSILON) return;
 	ImGui::Begin("MouseDelta");
 	ImGui::Text("MouseDelta: %f %f", dx, dy);
 	ImGui::End();
