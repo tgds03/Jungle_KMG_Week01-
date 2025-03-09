@@ -13,6 +13,13 @@ class USphereComponent;
 class UPlaneComponent;
 class UCoordArrowComponent;
 
+struct PrimitiveData {
+    FVector Location;
+    FVector Rotation;
+    FVector Scale;
+    FString Type;
+};
+
 class UWorld :
     public UObject
 {
@@ -25,18 +32,27 @@ public:
 
     void AddActor(UActorComponent* comp);
     void RemoveActor(UActorComponent* comp);
+    void ClearWorld();
+
+    int GetActorCount() const;
+    const TLinkedList<UActorComponent*>& GetActors() const;
+
     void PickingByRay(int mouse_X, int mouse_Y, UArrowComponent* AxisXComp, UArrowComponent* AxisYComp, UArrowComponent* AxisZComp);
     void SetAxisPicked(UArrowComponent* axisX, UArrowComponent* axisY, UArrowComponent* axisZ, EAxisColor pickedAxis);
+
     UCameraComponent* SpawnCamera();
     UCubeComponent* SpawnCubeActor();
     USphereComponent* SpawnSphereActor();
     UPlaneComponent* SpawnPlaneActor();
     UCoordArrowComponent* SpawnCoordArrowActor();
+
+    void SaveWorld(const FString& fileName);
+    void LoadWorld(const FString& fileName);
 private:
     TLinkedList<UActorComponent*> actorList = {};
 
     template <typename T>
-    T* SpawnActor(); // RTTI ���� �� public���� ����
+    T* SpawnActor(); 
     template <typename T>
     T* SpawnActor(FVector position, FVector rotation = FVector::Zero, FVector scal = FVector::One);
 };

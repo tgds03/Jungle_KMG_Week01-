@@ -90,6 +90,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	gAxisZComp = AxisZComp;
 	gGizmo = Gizmo;
 
+	//FString jsonOutput = DataManager::Instance().GenerateWorldJson(mainScene);
+
 
 	MSG msg = {};
 	while (msg.message != WM_QUIT) {
@@ -100,7 +102,18 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		}
 
 		////////////////////////////////
-		// CUBE - ARROW 따라가는지 테스트용
+		// CUBE - ARROW 따라가는지 
+		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_N))
+		{
+			mainScene->SaveWorld("TestLevel");
+			//mainScene->RemoveActor(sphere);
+		}
+
+		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_M))
+		{
+			mainScene->LoadWorld("TestLevel");
+		}
+
 
 		//if (Input::Instance()->IsKeyPressed(DIKEYBOARD_J))
 		//{

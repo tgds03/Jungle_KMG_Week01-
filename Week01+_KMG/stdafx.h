@@ -35,11 +35,13 @@ extern int SCR_HEIGHT;
 
 #include "Framework/Core/Time.h"
 #include "Framework/Core/Input.h"
+#include "DataManager.h"
 
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_dx11.h"
 #include "ImGui/imgui_impl_win32.h"
 #include "GuiController.h"
+
 
 template <typename T> void SafeRelease(T** ppT) {
 	if (*ppT) {
