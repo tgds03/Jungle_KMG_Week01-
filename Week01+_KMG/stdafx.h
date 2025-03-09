@@ -60,5 +60,6 @@ enum EPrimitiveColor
 {
 	RED_X,
 	GREEN_Y,
-	BLUE_Z
+	BLUE_Z,
+	NONE
 };
