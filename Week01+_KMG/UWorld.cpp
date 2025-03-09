@@ -71,27 +71,27 @@ void UWorld::PickingByRay(int mouse_X, int mouse_Y, UArrowComponent* AxisXComp, 
     float hitAxisYDistance = FLT_MAX;
     float hitAxisZDistance = FLT_MAX;
     float minDistance = FLT_MAX;
-    EAxisColor pickedAxis = EAxisColor::NONE; 
+    EPrimitiveColor pickedAxis = EPrimitiveColor::NONE; 
 
     if (AxisXComp->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitAxisXDistance)) {
         if (hitAxisXDistance < minDistance) {
             minDistance = hitAxisXDistance;
-            pickedAxis = EAxisColor::RED_X;
+            pickedAxis = EPrimitiveColor::RED_X;
         }
     }
     if (AxisYComp->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitAxisYDistance)) {
         if (hitAxisYDistance < minDistance) {
             minDistance = hitAxisYDistance;
-            pickedAxis = EAxisColor::GREEN_Y;
+            pickedAxis = EPrimitiveColor::GREEN_Y;
         }
     }
     if (AxisZComp->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitAxisZDistance)) {
         if (hitAxisZDistance < minDistance) {
             minDistance = hitAxisZDistance;
-            pickedAxis = EAxisColor::BLUE_Z;
+            pickedAxis = EPrimitiveColor::BLUE_Z;
         }
     }
-    if (pickedAxis != EAxisColor::NONE) {
+    if (pickedAxis != EPrimitiveColor::NONE) {
         SetAxisPicked(AxisXComp, AxisYComp, AxisZComp, pickedAxis);
         return;
     }
@@ -100,9 +100,6 @@ void UWorld::PickingByRay(int mouse_X, int mouse_Y, UArrowComponent* AxisXComp, 
     float nearestDistance = FLT_MAX;
     UActorComponent* nearestActorComp = nullptr;
 
-
-    SetAxisPicked(AxisXComp, AxisYComp, AxisZComp, static_cast<EAxisColor>(-1));
- 
 	for (const auto& actorComp : actorList) {
         if (!actorComp) continue;
 		bool bRes = actorComp->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitDistance);
@@ -135,11 +132,11 @@ UCameraComponent* UWorld::SpawnCamera()
     return newCamera;
 }
 
-void UWorld::SetAxisPicked(UArrowComponent* axisX, UArrowComponent* axisY, UArrowComponent* axisZ, EAxisColor pickedAxis)
+void UWorld::SetAxisPicked(UArrowComponent* axisX, UArrowComponent* axisY, UArrowComponent* axisZ, EPrimitiveColor pickedAxis)
 {
-    axisX->SetPicked(pickedAxis == EAxisColor::RED_X);
-    axisY->SetPicked(pickedAxis == EAxisColor::GREEN_Y);
-    axisZ->SetPicked(pickedAxis == EAxisColor::BLUE_Z);
+    axisX->SetPicked(pickedAxis == EPrimitiveColor::RED_X);
+    axisY->SetPicked(pickedAxis == EPrimitiveColor::GREEN_Y);
+    axisZ->SetPicked(pickedAxis == EPrimitiveColor::BLUE_Z);
 }
 
 UCubeComponent* UWorld::SpawnCubeActor()
@@ -159,42 +156,15 @@ UPlaneComponent* UWorld::SpawnPlaneActor()
 
 UCoordArrowComponent* UWorld::SpawnCoordArrowActor()
 {
-    return SpawnActor<UCoordArrowComponent>(false);
+    return SpawnActor<UCoordArrowComponent>();
 }
 
-void UWorld::SaveWorld(const FString& fileName)
+UDiscComponent* UWorld::SpawnDiscActor()
 {
-    auto actorListCopy = actorList;  // 복사본 유지
-    DataManager::Instance()->SaveWorldToJson(this, fileName);
-    //DataManager::Instance()->SaveWorldToJson(this, fileName);
+    return SpawnActor<UDiscComponent>();
 }
 
-void UWorld::LoadWorld(const FString& fileName)
+UDiscHollowComponent* UWorld::SpawnDiscHollowActor()
 {
-    TArray<PrimitiveData> primitives = DataManager::Instance()->LoadWorldFromJson(fileName);
-
-    for (const auto& primitive : primitives)
-    {
-        if (primitive.Type == "Cube") 
-        {
-            UCubeComponent* cube = SpawnCubeActor();
-            cube->SetRelativeLocation(primitive.Location);
-            cube->SetRelativeRotation(primitive.Rotation);
-            cube->SetRelativeScale3D(primitive.Scale);
-        }
-        else if (primitive.Type == "Sphere")
-        {
-            USphereComponent* sphere = SpawnSphereActor();
-            sphere->SetRelativeLocation(primitive.Location);
-            sphere->SetRelativeRotation(primitive.Rotation);
-            sphere->SetRelativeScale3D(primitive.Scale);
-        }
-        else if (primitive.Type == "Plane") 
-        {
-            UPlaneComponent* plane = SpawnPlaneActor();
-            plane->SetRelativeLocation(primitive.Location);
-            plane->SetRelativeRotation(primitive.Rotation);
-            plane->SetRelativeScale3D(primitive.Scale);
-        }
-    }
+    return SpawnActor<UDiscHollowComponent>();
 }

@@ -95,32 +95,32 @@ void UCubeComponent::Update() {
 	//RelativeLocation.x = sin(Time::GetElapsedTime());
 }
 
-bool UCubeComponent::Intersects(FVector rayOrigin, FVector rayDirection)
-{
-	FVector4 rayOrigin4(rayOrigin, 1.f);
-	rayOrigin4 = rayOrigin4 * GetComponentTransform().Inverse();
-	rayOrigin4 = rayOrigin4 / rayOrigin4.w;
-
-	FVector4 rayDirection4(rayDirection, 0.f);
-	rayDirection4 = rayDirection4 * GetComponentTransform().Inverse();
-
-	float t_min_x = (-1 - rayOrigin4.x) / rayDirection4.x;
-	float t_max_x = (1 - rayOrigin4.x) / rayDirection4.x;
-	if (rayDirection4.x < 0) std::swap(t_min_x, t_max_x);
-
-	float t_min_y = (-1 - rayOrigin4.y) / rayDirection4.y;
-	float t_max_y = (1 - rayOrigin4.y) / rayDirection4.y;
-	if (rayDirection4.y < 0) std::swap(t_min_y, t_max_y);
-
-	float t_min_z = (-1 - rayOrigin4.z) / rayDirection4.z;
-	float t_max_z = (1 - rayOrigin4.z) / rayDirection4.z;
-	if (rayDirection4.z < 0) std::swap(t_min_z, t_max_z);
-	
-	float max_of_t_min = max(max(t_min_x, t_min_y), t_min_z);
-	float min_of_t_max = min(min(t_max_x, t_max_y), t_max_z);
-
-	return (max_of_t_min <= min_of_t_max) && (min_of_t_max >= 0);
-}
+//bool UCubeComponent::Intersects(FVector rayOrigin, FVector rayDirection)
+//{
+//	FVector4 rayOrigin4(rayOrigin, 1.f);
+//	rayOrigin4 = rayOrigin4 * GetComponentTransform().Inverse();
+//	rayOrigin4 = rayOrigin4 / rayOrigin4.w;
+//
+//	FVector4 rayDirection4(rayDirection, 0.f);
+//	rayDirection4 = rayDirection4 * GetComponentTransform().Inverse();
+//
+//	float t_min_x = (-1 - rayOrigin4.x) / rayDirection4.x;
+//	float t_max_x = (1 - rayOrigin4.x) / rayDirection4.x;
+//	if (rayDirection4.x < 0) std::swap(t_min_x, t_max_x);
+//
+//	float t_min_y = (-1 - rayOrigin4.y) / rayDirection4.y;
+//	float t_max_y = (1 - rayOrigin4.y) / rayDirection4.y;
+//	if (rayDirection4.y < 0) std::swap(t_min_y, t_max_y);
+//
+//	float t_min_z = (-1 - rayOrigin4.z) / rayDirection4.z;
+//	float t_max_z = (1 - rayOrigin4.z) / rayDirection4.z;
+//	if (rayDirection4.z < 0) std::swap(t_min_z, t_max_z);
+//	
+//	float max_of_t_min = max(max(t_min_x, t_min_y), t_min_z);
+//	float min_of_t_max = min(min(t_max_x, t_max_y), t_max_z);
+//
+//	return (max_of_t_min <= min_of_t_max) && (min_of_t_max >= 0);
+//}
 bool UCubeComponent::IntersectsRay(const FVector& rayOrigin, const FVector& rayDir, float& Distance)
 {
 	// AABB �ּ�, �ִ� ��ǥ ����

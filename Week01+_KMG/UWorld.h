@@ -1,4 +1,5 @@
 #pragma once
+#include "stdafx.h"
 #include "Framework/Core/UObject.h"
 #include "Framework/Core/USphereComponent.h"
 //#include "Framework/Core/UActorComponent.h"
@@ -6,6 +7,9 @@
 #include "Framework/Core/UPlaneComponent.h"
 #include "Framework/Core/UArrowComponent.h"
 #include "Framework/Core/UCoordArrowComponent.h"
+#include "Framework/Core/UDiscComponent.h"
+#include "Framework/Core/UDiscHollowComponent.h"
+
 
 class UActorComponent;
 class UCubeComponent;
@@ -38,16 +42,18 @@ public:
     const TLinkedList<UActorComponent*>& GetActors() const;
 
     void PickingByRay(int mouse_X, int mouse_Y, UArrowComponent* AxisXComp, UArrowComponent* AxisYComp, UArrowComponent* AxisZComp);
-    void SetAxisPicked(UArrowComponent* axisX, UArrowComponent* axisY, UArrowComponent* axisZ, EAxisColor pickedAxis);
+    void SetAxisPicked(UArrowComponent* axisX, UArrowComponent* axisY, UArrowComponent* axisZ, EPrimitiveColor pickedAxis);
 
     UCameraComponent* SpawnCamera();
     UCubeComponent* SpawnCubeActor();
     USphereComponent* SpawnSphereActor();
     UPlaneComponent* SpawnPlaneActor();
     UCoordArrowComponent* SpawnCoordArrowActor();
-
     void SaveWorld(const FString& fileName);
     void LoadWorld(const FString& fileName);
+    UDiscComponent* SpawnDiscActor();
+    UDiscHollowComponent* SpawnDiscHollowActor();
+
 private:
     TLinkedList<UActorComponent*> actorList = {};
 

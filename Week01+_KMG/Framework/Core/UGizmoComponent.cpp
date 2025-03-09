@@ -17,16 +17,29 @@ UGizmoComponent::UGizmoComponent(UArrowComponent* axisX, UArrowComponent* axisY,
 
 void UGizmoComponent::Update()
 {
+	ArrowX->IsOverrideLocation = true;
+	ArrowY->IsOverrideLocation = true;
+	ArrowZ->IsOverrideLocation = true;
+
+	ArrowX->IsOverrideRotation = true;
+	ArrowY->IsOverrideRotation = true;
+	ArrowZ->IsOverrideRotation = true;
+
+	ArrowX->IsOverrideScale3D = true;
+	ArrowY->IsOverrideScale3D = true;
+	ArrowZ->IsOverrideScale3D = true;
+
 	// 기즈모가 아무것도 안붙어있음
  	if (GetAttachParent() == nullptr)
 		return;
 
 	ImGui::Begin("Gizmo");
-	ImGui::Text("Gizmo Rel Pos: %f %f %f", RelativeLocation.x, RelativeLocation.y, RelativeLocation.z);
+	//ImGui::Text("Gizmo Rel Pos: %f %f %f", RelativeLocation.x, RelativeLocation.y, RelativeLocation.z);
 	ImGui::Text("Gizmo Comp Pos: %f %f %f", GetComponentLocation().x, GetComponentLocation().y, GetComponentLocation().z);
 	ImGui::Text("Parent Rel Pos: %f %f %f", GetAttachParent()->GetRelativeLocation().x, GetAttachParent()->GetRelativeLocation().y, GetAttachParent()->GetRelativeLocation().z);
 	ImGui::Text("Parent Comp Pos: %f %f %f", GetAttachParent()->GetComponentLocation().x, GetAttachParent()->GetComponentLocation().y, GetAttachParent()->GetComponentLocation().z);
 	ImGui::End();
+
 
 	UArrowComponent* selectedArrow = nullptr;
 	if (ArrowX->IsPicked()) selectedArrow = ArrowX;

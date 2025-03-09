@@ -56,7 +56,7 @@ struct FVector {
 	bool operator !=(const FVector& rhs) const {
 		return !(*this == rhs);
 	}
-	float Dot(const FVector& rhs) {
+	float Dot(const FVector& rhs) const {
 		return x * rhs.x + y * rhs.y + z * rhs.z;
 	}
 
