@@ -1,8 +1,6 @@
 #pragma once
 #include "Framework/Core/UObject.h"
 
-class UWorld;
-
 class UActorComponent :public UObject {	
 public:
 	UActorComponent() {}
@@ -10,8 +8,5 @@ public:
 
 	virtual void Update() {};
 	virtual void Render() {};
-
-private:
-	UWorld* motherScene;
 };
 
