@@ -6,13 +6,16 @@
 
 #include <d3d11.h>
 #include <d3dcompiler.h>
+#include <comdef.h>
+
+#include <fstream>
 #include <assert.h>
-#include "comdef.h"
 #include <Windows.h>
 
 #include <vector>
 #include <list>
 #include <string>
+#include <sstream>
 template <typename T> using TArray = std::vector<T>;
 template <typename T> using TLinkedList = std::list<T>;
 using int32 = int;

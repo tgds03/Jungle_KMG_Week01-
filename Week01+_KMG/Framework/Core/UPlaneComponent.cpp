@@ -6,16 +6,16 @@ UPlaneComponent::UPlaneComponent() {
 	vertices = 
 	{
 		//   x,   y,   z       r,   g,   b,   a
-		{-1.0f, 0.0f, -1.0f, 1.0f, 0.0f, 0.0f, 1.0f }, // ÁÂÇÏ´Ü (»¡°­)
-		{ 1.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f, 1.0f }, // ¿ìÇÏ´Ü (ÃÊ·Ï)
-		{ 1.0f, 0.0f,  1.0f, 0.0f, 0.0f, 1.0f, 1.0f }, // ¿ì»ó´Ü (ÆÄ¶û)
-		{-1.0f, 0.0f,  1.0f, 1.0f, 1.0f, 1.0f, 1.0f }, // ÁÂ»ó´Ü (Èò»ö)
+		{-1.0f, 0.0f, -1.0f, 1.0f, 0.0f, 0.0f, 1.0f }, // ï¿½ï¿½ï¿½Ï´ï¿½ (ï¿½ï¿½ï¿½ï¿½)
+		{ 1.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f, 1.0f }, // ï¿½ï¿½ï¿½Ï´ï¿½ (ï¿½Ê·ï¿½)
+		{ 1.0f, 0.0f,  1.0f, 0.0f, 0.0f, 1.0f, 1.0f }, // ï¿½ï¿½ï¿½ï¿½ (ï¿½Ä¶ï¿½)
+		{-1.0f, 0.0f,  1.0f, 1.0f, 1.0f, 1.0f, 1.0f }, // ï¿½Â»ï¿½ï¿½ (ï¿½ï¿½ï¿½)
 	};
 	
 	indices = 
 	{
-		0, 2, 1,  // Ã¹ ¹øÂ° »ï°¢Çü
-		0, 3, 2   // µÎ ¹øÂ° »ï°¢Çü
+		0, 2, 1,  // Ã¹ ï¿½ï¿½Â° ï¿½ï°¢ï¿½ï¿½
+		0, 3, 2   // ï¿½ï¿½ ï¿½ï¿½Â° ï¿½ï°¢ï¿½ï¿½
 	};
 
 	//vertices = {
@@ -41,29 +41,57 @@ UPlaneComponent::~UPlaneComponent() {
 	delete _vertexBuffer;
 	delete _indexBuffer;
 }
-
-bool UPlaneComponent::IntersectsRay(const FVector& rayOrigin, const FVector& rayDir, float& dist)
+bool UPlaneComponent::IntersectsRay(const FVector& rayOrigin, const FVector& rayDir, float& Distance)
 {
-	// y=0ÀÏ¶§ (x,z)´Â ¸¦ Áö³² (-1,-1), (1,1)
-	// y=0ÀÏ‹šÀÇ (x,z)
-	FVector4 o(rayOrigin, 1.f);
-	FVector4 d(rayDir, 0.f);
+	FVector min = { -1.f, 0.f, -1.f };
+	FVector max = { 1.f,  0.f,  1.f };
 
-	float x = o.x - d.x * (o.y / d.y);
-	//float y = 0;
-	float z = o.z - d.z * (o.y / d.y);
+	double tMin = -FLT_MAX;
+	double tMax = FLT_MAX;
+	const double epsilon = FLT_EPSILON;
 
-	return (-1 < x && x < 1 && -1 < z && z < 1);
-}
+	if (fabs(rayDir.x) < epsilon) {
+		if (rayOrigin.x < min.x || rayOrigin.x > max.x)
+			return false;
+	}
+	else {
+		double t1 = (min.x - rayOrigin.x) / rayDir.x;
+		double t2 = (max.x - rayOrigin.x) / rayDir.x;
+		if (t1 > t2)
+			std::swap(t1, t2);
+		tMin = (tMin < t1) ? t1 : tMin;
+		tMax = (tMax < t2) ? tMax : t2;
+	}
 
-void UPlaneComponent::PickObjectByRayIntersection(const FVector& pickPosition, const FMatrix& viewMatrix, float* hitDistance)
-{
+	if (fabs(rayDir.y) < epsilon) {
+		if (rayOrigin.y < min.y || rayOrigin.y > max.y)
+			return false;
+	}
+	else {
+		double t1 = (min.y - rayOrigin.y) / rayDir.y;
+		double t2 = (max.y - rayOrigin.y) / rayDir.y;
+		if (t1 > t2) std::swap(t1, t2);
+		tMin = (tMin < t1) ? t1 : tMin;
+		tMax = (tMax < t2) ? tMax : t2;
+	}
 
-}
+	if (fabs(rayDir.z) < epsilon) {
+		if (rayOrigin.z < min.z || rayOrigin.z > max.z)
+			return false;
+	}
+	else
+	{
+		double t1 = (min.z - rayOrigin.z) / rayDir.z;
+		double t2 = (max.z - rayOrigin.z) / rayDir.z;
+		if (t1 > t2) std::swap(t1, t2);
+		tMin = (tMin < t1) ? t1 : tMin;
+		tMax = (tMax < t2) ? tMax : t2;
+	}
 
-FVector UPlaneComponent::GetComponentNormal()
-{
-	FVector4 normal(0, 0, 1, 0);
-	normal = normal * GetComponentTransform();
-	return FVector(normal.xyz());
+	if (tMax >= tMin && tMax >= 0) {
+		Distance = tMin;
+		return true;
+	}
+
+	return false;
 }
