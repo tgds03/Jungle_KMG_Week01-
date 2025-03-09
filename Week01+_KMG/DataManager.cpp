@@ -45,7 +45,8 @@ TArray<PrimitiveData> DataManager::LoadWorldFromJson(const FString& fileName)
     FString fullPath = scenePath + loadFileName;
 
     std::ifstream file(fullPath);
-    if (!file.is_open()) {
+    if (!file.is_open()) 
+    {
         std::cerr << "Failed to open file: " << fullPath << std::endl;
         return primitives;
     }
@@ -56,13 +57,15 @@ TArray<PrimitiveData> DataManager::LoadWorldFromJson(const FString& fileName)
 
     json::JSON jsonData = json::JSON::Load(buffer.str());
 
-    if (!jsonData.hasKey("Primitives")) {
+    if (!jsonData.hasKey("Primitives")) 
+    {
         std::cerr << "Invalid JSON format: No 'Primitives' key found" << std::endl;
         return primitives;
     }
 
     json::JSON primitivesJson = jsonData["Primitives"];
-    for (auto& item : primitivesJson.ObjectRange()) {
+    for (auto& item : primitivesJson.ObjectRange()) 
+    {
         json::JSON obj = item.second;
 
         PrimitiveData primitive;
