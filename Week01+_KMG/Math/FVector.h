@@ -25,6 +25,13 @@ struct FVector {
 		if ( scalar == 0 ) return FVector();
 		return FVector(x / scalar, y / scalar, z / scalar);
 	}
+	FVector operator^(const FVector& rhs) const {
+		return FVector(
+			y * rhs.z - z * rhs.y,
+			z * rhs.x - x * rhs.z,
+			x * rhs.y - y * rhs.x
+		);
+	}
 	FVector& operator*=(float scalar) {
 		x *= scalar;
 		y *= scalar;
@@ -45,6 +52,22 @@ struct FVector {
 	}
 	float Dot(const FVector& rhs) {
 		return x * rhs.x + y * rhs.y + z * rhs.z;
+	}
+
+	float operator[] (int index) {
+		switch (index)
+		{
+		case 0:
+			return x;
+		case 1:
+			return y;
+		case 2:
+			return z;
+		default:
+			OutputDebugString(L"FVector3 Error: Out of range");
+			assert(0);
+			return 0;
+		}
 	}
 	FVector Cross(const FVector& rhs) {
 		return FVector(

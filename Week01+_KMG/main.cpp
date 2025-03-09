@@ -3,16 +3,22 @@
 #include "Math\FVector.h"
 #include "Math\FMatrix.h"
 #include "Framework/Core/UCubeComponent.h"
+#include "UWorld.h"
 #include "Framework/Core/UPlaneComponent.h"
 #include "Framework/Core/UCoordArrowComponent.h"
 
 const int TARGET_FPS = 60;
 const double TARGET_FRAMERATE = 1000.0 / TARGET_FPS;
-
+UWorld* gMainScene;
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
 	switch (message) {
 	case WM_DESTROY:
 		PostQuitMessage(0);
+		break;
+	case WM_LBUTTONDOWN:
+	case WM_LBUTTONUP:
+		if(gMainScene)
+			gMainScene->PickingByRay();
 		break;
 	default:
 		return DefWindowProc(hWnd, message, wParam, lParam);
@@ -38,23 +44,23 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 	CRenderer::Instance()->Init(hWnd); // maincamera ����
 	Time::Instance()->Init();
-	Input::Instance()->Init(hInstance, hWnd, 800, 600);
 	Input::Instance()->Init(hInstance, hWnd, SCR_WIDTH, SCR_HEIGHT);
+
 	GuiController* guiController = new GuiController(hWnd, CRenderer::Instance()->GetGraphics());
 
+	UWorld* mainScene = new UWorld();
+	gMainScene = mainScene;
+	UPlaneComponent* ground = mainScene->SpawnPlaneActor();
+	UCubeComponent* obj = mainScene->SpawnCubeActor();
+	UCoordArrowComponent* arrow = mainScene->SpawnCoordArrowActor();
+	UCoordArrowComponent* worldArrow = mainScene->SpawnCoordArrowActor();
 
-	UPlaneComponent* ground = new UPlaneComponent();
-	UCubeComponent* obj = new UCubeComponent();
-	UCoordArrowComponent* arrow = new UCoordArrowComponent();
-	UCoordArrowComponent* worldArrow = new UCoordArrowComponent();
-
-	CRenderer::Instance()->GetCamera()->SetRelativeLocation(FVector(0, 0, -5));
+	CRenderer::Instance()->GetMainCamera()->SetRelativeLocation(FVector(0, 0, -5));
 
 	worldArrow->SetRelativeScale3D({ 100,100,100 });
 	ground->SetRelativeScale3D({ 10,5,3 });
 	//ground->SetRelativeLocation({ 0,-10,0 });
 	arrow->SetRelativeScale3D({ 3,3,3 });
-
 
 	arrow->SetRelativeLocation({ 0,0,0 });
 	arrow->AttachToComponent(obj);
@@ -68,6 +74,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
+
 		////////////////////////////////
 		// CUBE - ARROW 따라가는지 테스트용
 
@@ -95,23 +102,24 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		{
 			obj->SetRelativeLocation(obj->GetRelativeLocation() - obj->Up());
 		}
-		CRenderer::Instance()->GetCamera()->PrintLoc(L"CAM");
-		obj->PrintLoc(L"obj");
-		
+		//CRenderer::Instance()->GetCamera()->PrintLoc(L"CAM");
+		//obj->PrintLoc(L"obj");
+
 		// 테스트용
 		////////////////////////////////
-		
-		UActorComponent::UpdateAll();
-		CRenderer::Instance()->GetGraphics()->RenderBegin();
 		guiController->NewFrame();
-		UActorComponent::RenderAll();
+		mainScene->Update();
+		CRenderer::Instance()->GetGraphics()->RenderBegin();
+		mainScene->Render();
+
+		ImGui::Begin("statics");
+		ImGui::Text("UObject Count: %d", CEngineStatics::TotalAllocationCount);
+		ImGui::Text("UObject Bytes: %d", CEngineStatics::TotalAllocationBytes);
+		ImGui::End();
+
 		guiController->RenderFrame();
 		CRenderer::Instance()->GetGraphics()->RenderEnd();
 		Time::Instance()->_query_frame_end_time();
-		/*do {
-			Sleep(0);
-			Time::Instance()->_query_frame_end_time();
-		} while ( Time::GetDeltaTime() < TARGET_FRAMERATE );*/
 		
 	}
 	Input::Instance()->Shutdown();

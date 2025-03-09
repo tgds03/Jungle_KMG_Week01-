@@ -2,6 +2,12 @@
 #include <cmath>
 #include <initializer_list>
 #include "FVector.h"
+enum class EAxis
+{
+	X,
+	Y,
+	Z
+};
 
 struct FMatrix {
 public:
@@ -40,8 +46,19 @@ public:
 	std::wstring to_wstring() const;
 	std::string to_string() const;
 
+	FVector TransformCoord(FVector4 vec) {
+		FVector4 v = (vec * (*this));
+		return FVector(v.x / v.w, v.y / v.w, v.z / v.w);
+	}
+	FVector TransformCoord(const FVector& v) {
+		FVector4 v4 = FVector4(v, 1);
+		
+		return TransformCoord(v4);
+	}
+
 public:
 	static const FMatrix Identity;
+	FVector GetScaledAxis(EAxis axis) const;
 	static FMatrix Scale(float sx, float sy, float sz);
 	static FMatrix Scale(FVector xyz);
 	static FMatrix RotateX(float rx);
@@ -50,8 +67,25 @@ public:
 	static FMatrix RotateXYZ(FVector xyz);
 	static FMatrix Translate(float tx, float ty, float tz);
 	static FMatrix Translate(FVector xyz);
+	static FMatrix MakeFromX(FVector xaxis);
+	static FMatrix MakeFromY(FVector yaxis);
+	static FMatrix MakeFromZ(FVector zaxis);
 	FMatrix Swap(UINT r1, UINT r2);
 };
+
+inline std::wstring FMatrix::to_wstring() const {
+	std::wstring str;
+	std::wstring sep(L" ");
+	for ( int i = 0; i < 4; i++ ) {
+		for ( int j = 0; j < 4; j++ ) {
+			str += std::to_wstring(m[i][j]);
+			str += sep;
+		}
+		str += std::wstring(L"\n");
+	}
+	return str;
+}
+
 //#pragma once
 //#include <cmath>
 //#include <initializer_list>

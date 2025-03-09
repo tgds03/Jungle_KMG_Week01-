@@ -3,13 +3,12 @@
 
 class UActorComponent :public UObject {	
 public:
-	UActorComponent();
-	virtual ~UActorComponent();
+	UActorComponent() {}
+	virtual ~UActorComponent() {}
 
 	virtual void Update() {};
 	virtual void Render() {};
-
-	static void UpdateAll();
-	static void RenderAll();
+	virtual void GenerateRayForPicking(FVector& pickPosition, FMatrix& viewMatrix, FVector* pickRayOrigin, FVector* rayDirection) {};
+	virtual void PickObjectByRayIntersection(const FVector& pickPosition,const FMatrix& viewMatrix, float* hitDistance) {}
 };
 

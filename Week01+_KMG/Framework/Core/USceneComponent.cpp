@@ -370,11 +370,11 @@ bool USceneComponent::AttachToComponent(USceneComponent* Parent)
 void USceneComponent::PrintLoc(std::wstring msg) const
 {
 	FVector loc = GetRelativeLocation();
-	UE_LOG((std::wstring(L"\n") + msg + std::wstring(L"*************************\n")).c_str());
-	UE_LOG((std::wstring(L"Relative Location\nx :") + std::to_wstring(loc.x) + std::wstring(L" y :")
-		+ std::to_wstring(loc.y) + std::wstring(L" z :") + std::to_wstring(loc.z) + std::wstring(L"\n")).c_str());
+	//UE_LOG((std::wstring(L"\n") + msg + std::wstring(L"*************************\n")).c_str());
+	//UE_LOG((std::wstring(L"Relative Location\nx :") + std::to_wstring(loc.x) + std::wstring(L" y :")
+		//+ std::to_wstring(loc.y) + std::wstring(L" z :") + std::to_wstring(loc.z) + std::wstring(L"\n")).c_str());
 	loc = GetComponentLocation();
-	UE_LOG((std::wstring(L"Component Location\nx :") + std::to_wstring(loc.x) + std::wstring(L" y :")
-		+ std::to_wstring(loc.y) + std::wstring(L" z :") + std::to_wstring(loc.z) + std::wstring(L"\n")).c_str());
+	//UE_LOG((std::wstring(L"Component Location\nx :") + std::to_wstring(loc.x) + std::wstring(L" y :")
+		//+ std::to_wstring(loc.y) + std::wstring(L" z :") + std::to_wstring(loc.z) + std::wstring(L"\n")).c_str());
 }
 

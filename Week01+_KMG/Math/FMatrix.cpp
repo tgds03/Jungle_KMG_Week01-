@@ -35,7 +35,7 @@ FMatrix::FMatrix(const FMatrix& other)
 {
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
-			m[i][j] = other.m[i][j];  // ±íÀº º¹»ç
+			m[i][j] = other.m[i][j];  // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		}
 	}
 }
@@ -81,10 +81,10 @@ FMatrix FMatrix::operator*(const FMatrix& rhs) const {
 
 FMatrix& FMatrix::operator=(const FMatrix& other)
 {
-	if (this != &other) {  // ÀÚ±â ÀÚ½ÅÀ» º¹»çÇÏ´Â °æ¿ì ¹æÁö
+	if (this != &other) {  // ï¿½Ú±ï¿½ ï¿½Ú½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {
-				m[i][j] = other.m[i][j];  // ±íÀº º¹»ç ¼öÇà
+				m[i][j] = other.m[i][j];  // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 			}
 		}
 	}
@@ -145,29 +145,29 @@ FMatrix FMatrix::Inverse() const
 {
 	FMatrix A = *this;
 	FMatrix inv = FMatrix::Identity;
-	// °¡¿ì½º-Á¶´ø ¼Ò°Å¹ý
+	// ï¿½ï¿½ï¿½ì½º-ï¿½ï¿½ï¿½ï¿½ ï¿½Ò°Å¹ï¿½
 	for (int i = 0; i < 4; i++) {
-		// ÇÇ¹þÀÌ 0ÀÌ¸é Çà ±³È¯
+		// ï¿½Ç¹ï¿½ï¿½ï¿½ 0ï¿½Ì¸ï¿½ ï¿½ï¿½ ï¿½ï¿½È¯
 		if (A[i][i] == 0) {
 			int swapRow = i + 1;
-			while (swapRow < 4 && A.m[swapRow][i] == 0) swapRow++;
+			while (swapRow < 4 && fabs(A.m[swapRow][i]) < FLT_EPSILON) swapRow++;
 			if (swapRow == 4)
 			{
-				UE_LOG(L"¿ªÇà·ÄÀÌ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
-				return FMatrix::Identity; // ¿ªÇà·Ä ¾øÀ½
+				UE_LOG(L"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê½ï¿½ï¿½Ï´ï¿½.");
+				return FMatrix::Identity; // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 			}
 			A = A.Swap(i, swapRow);
 			inv = inv.Swap(i, swapRow);
 		}
 
-		// ÇÇ¹þÀ» 1·Î ¸¸µé±â
+		// ï¿½Ç¹ï¿½ï¿½ï¿½ 1ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
 		float pivot = A.m[i][i];
 		for (int j = 0; j < 4; j++) {
 			A.m[i][j] /= pivot;
 			inv.m[i][j] /= pivot;
 		}
 
-		// ´Ù¸¥ ÇàÀÇ i¿­À» 0À¸·Î ¸¸µé±â
+		// ï¿½Ù¸ï¿½ ï¿½ï¿½ï¿½ï¿½ iï¿½ï¿½ï¿½ï¿½ 0ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
 		for (int k = 0; k < 4; k++) {
 			if (i == k) continue;
 			float factor = A.m[k][i];
@@ -180,20 +180,19 @@ FMatrix FMatrix::Inverse() const
 	return inv;
 }
 
-inline std::wstring FMatrix::to_wstring() const
+FVector FMatrix::GetScaledAxis(EAxis axis) const
 {
-	std::wstring str;
-	std::wstring sep(L" ");
-	for (int i = 0; i < 4; i++)
+	switch (axis)
 	{
-		for (int j = 0; j < 4; j++)
-		{
-			str += std::to_wstring(m[i][j]);
-			str += sep;
-		}
-		str += std::wstring(L"\n");
+	case EAxis::X:
+		return FVector(m[0][0], m[0][1], m[0][2]);
+	case EAxis::Y:
+		return FVector(m[1][0], m[1][1], m[1][2]);
+	case EAxis::Z:
+		return FVector(m[2][0], m[2][1], m[2][2]);
+	default:
+		return FVector(0.0f, 0.0f, 0.0f);
 	}
-	return str;
 }
 
 std::string FMatrix::to_string() const
@@ -234,7 +233,6 @@ FMatrix FMatrix::RotateX(float rx) {
 		0.f, 0.f, 0.f, 1.f
 	});
 }
-
 FMatrix FMatrix::RotateY(float ry) {
 	return FMatrix({
 		cos(ry), 0.f, sin(ry), 0.f,
@@ -275,6 +273,45 @@ FMatrix FMatrix::Translate(float tx, float ty, float tz) {
 FMatrix FMatrix::Translate(FVector xyz)
 {
 	return Translate(xyz.x, xyz.y, xyz.z);
+}
+
+FMatrix FMatrix::MakeFromX(FVector xaxis) {
+	const FVector newX = xaxis.Normalized();
+	const FVector up = abs(xaxis.z) < 1.f ? FVector::Up : FVector::Right;
+	const FVector newY = (up ^ newX).Normalized();
+	const FVector newZ = newX ^ newY;
+	return FMatrix({
+		newX.x, newX.y, newX.z, 0.0f,
+		newY.x, newY.y, newY.z, 0.0f,
+		newZ.x, newZ.y, newZ.z, 0.0f,
+		0.0f, 0.0f, 0.0f, 0.0f,
+	});
+}
+
+FMatrix FMatrix::MakeFromY(FVector yaxis) {
+	const FVector newY = yaxis.Normalized();
+	const FVector up = abs(yaxis.z) < 1.f ? FVector::Up : FVector::Right;
+	const FVector newZ = (up ^ newY).Normalized();
+	const FVector newX = newY ^ newZ;
+	return FMatrix({
+		newX.x, newX.y, newX.z, 0.0f,
+		newY.x, newY.y, newY.z, 0.0f,
+		newZ.x, newZ.y, newZ.z, 0.0f,
+		0.0f, 0.0f, 0.0f, 0.0f,
+	});
+}
+
+FMatrix FMatrix::MakeFromZ(FVector zaxis) {
+	const FVector newZ = zaxis.Normalized();
+	const FVector up = abs(zaxis.z) < 1.f ? FVector::Up : FVector::Right;
+	const FVector newX = (up ^ newZ).Normalized();
+	const FVector newY = newZ ^ newX;
+	return FMatrix({
+		newX.x, newX.y, newX.z, 0.0f,
+		newY.x, newY.y, newY.z, 0.0f,
+		newZ.x, newZ.y, newZ.z, 0.0f,
+		0.0f, 0.0f, 0.0f, 0.0f,
+	});
 }
 
 FMatrix FMatrix::Swap(UINT r1, UINT r2)

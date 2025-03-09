@@ -1,17 +1,16 @@
 #include "stdafx.h"
 #include "UCubeComponent.h"
-#include "./Framework/Core/CRenderer.h"
 
 UCubeComponent::UCubeComponent() {
 	//vertices =
 	//{
-	//	// Front Face (¾Õ¸é)
+	//	// Front Face (ï¿½Õ¸ï¿½)
 	//	{ -0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f },
 	//	{ -0.5f,  0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f },
 	//	{ 0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 1.0f, 1.0f },
 	//	{ 0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 0.0f, 1.0f },
 
-	//	// Back Face (µÞ¸é)
+	//	// Back Face (ï¿½Þ¸ï¿½)
 	//	{ -0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 1.0f },
 	//	{ 0.5f, -0.5f,  -0.5f, 1.0f, 0.0f, 1.0f, 1.0f },
 	//	{ -0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f },
@@ -20,22 +19,22 @@ UCubeComponent::UCubeComponent() {
 
 	//indices =
 	//{
-	//	// Front Face (¾Õ¸é)
+	//	// Front Face (ï¿½Õ¸ï¿½)
 	//	0, 1, 2,  1, 3, 2,
 
-	//	// Back Face (µÞ¸é)
+	//	// Back Face (ï¿½Þ¸ï¿½)
 	//	4, 5, 6,  5, 7, 6,
 
-	//	// Left Face (¿ÞÂÊ¸é)
+	//	// Left Face (ï¿½ï¿½ï¿½Ê¸ï¿½)
 	//	4, 6, 0,  6, 1, 0,
 
-	//	// Right Face (¿À¸¥ÂÊ¸é)
+	//	// Right Face (ï¿½ï¿½ï¿½ï¿½ï¿½Ê¸ï¿½)
 	//	2, 3, 5,  3, 7, 5,
 
-	//	// Top Face (À­¸é)
+	//	// Top Face (ï¿½ï¿½ï¿½ï¿½)
 	//	1, 6, 3,  6, 7, 3,
 
-	//	// Bottom Face (¾Æ·§¸é)
+	//	// Bottom Face (ï¿½Æ·ï¿½ï¿½ï¿½)
 	//	0, 2, 4,  2, 5, 4
 	//};
 
@@ -75,8 +74,8 @@ UCubeComponent::UCubeComponent() {
 
 	//indices =
 	//{
-	//	0, 1, 2,  // Ã¹ ¹øÂ° »ï°¢Çü (Bottom Left -> Top Left -> Bottom Right)
-	//	1, 3, 2   // µÎ ¹øÂ° »ï°¢Çü (Top Left -> Top Right -> Bottom Right)
+	//	0, 1, 2,  // Ã¹ ï¿½ï¿½Â° ï¿½ï°¢ï¿½ï¿½ (Bottom Left -> Top Left -> Bottom Right)
+	//	1, 3, 2   // ï¿½ï¿½ ï¿½ï¿½Â° ï¿½ï°¢ï¿½ï¿½ (Top Left -> Top Right -> Bottom Right)
 	//};
 
 	CGraphics* graphics = CRenderer::Instance()->GetGraphics();
@@ -121,4 +120,105 @@ bool UCubeComponent::Intersects(FVector rayOrigin, FVector rayDirection)
 	float min_of_t_max = min(min(t_max_x, t_max_y), t_max_z);
 
 	return (max_of_t_min <= min_of_t_max) && (min_of_t_max >= 0);
+}
+bool UCubeComponent::IntersectsRay(const FVector& rayOrigin, const FVector& rayDir, float& Distance)
+{
+	// AABB ï¿½Ö¼ï¿½, ï¿½Ö´ï¿½ ï¿½ï¿½Ç¥ ï¿½ï¿½ï¿½ï¿½
+	FVector min = { -1.f, -1.f, -1.f };
+	FVector max = { 1.f,  1.f,  1.f };
+
+	// t ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­
+	float tMin = -FLT_MAX;
+	float tMax = FLT_MAX;
+	const float epsilon = 1e-6f; // 0ï¿½ï¿½ï¿½ï¿½ ï¿½ñ±³¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
+
+	// xï¿½à¿¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½×½ï¿½Æ®
+	if (fabs(rayDir.x) < epsilon)
+	{
+		if (rayOrigin.x < min.x || rayOrigin.x > max.x)
+			return false;
+	}
+	else
+	{
+		double t1 = (min.x - rayOrigin.x) / rayDir.x;
+		double t2 = (max.x - rayOrigin.x) / rayDir.x;
+		if (t1 > t2)
+			std::swap(t1, t2);
+		tMin = (tMin < t1) ? t1 : tMin;
+		tMax = (tMax < t2) ? tMax : t2;
+	}
+
+	// yï¿½à¿¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½×½ï¿½Æ®
+	if (fabs(rayDir.y) < epsilon)
+	{
+		if (rayOrigin.y < min.y || rayOrigin.y > max.y)
+			return false;
+	}
+	else
+	{
+		float t1 = (min.y - rayOrigin.y) / rayDir.y;
+		float t2 = (max.y - rayOrigin.y) / rayDir.y;
+		if (t1 > t2)
+			std::swap(t1, t2);
+		tMin = (tMin < t1) ? t1 : tMin;
+		tMax = (tMax < t2) ? tMax : t2;
+	}
+
+	// zï¿½à¿¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½×½ï¿½Æ®
+	if (fabs(rayDir.z) < epsilon)
+	{
+		if (rayOrigin.z < min.z || rayOrigin.z > max.z)
+			return false;
+	}
+	else
+	{
+		float t1 = (min.z - rayOrigin.z) / rayDir.z;
+		float t2 = (max.z - rayOrigin.z) / rayDir.z;
+		if (t1 > t2)
+			std::swap(t1, t2);
+		tMin = (tMin < t1) ? t1 : tMin;
+		tMax = (tMax < t2) ? tMax : t2;
+	}
+
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½ï¿½Ï´ï¿½ï¿½ï¿½ È®ï¿½ï¿½: tMaxï¿½ï¿½ tMinï¿½ï¿½ï¿½ï¿½ Å©ï¿½Å³ï¿½ ï¿½ï¿½ï¿½ï¿½, tMaxï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´Ï¶ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
+	if (tMax >= tMin && tMax >= 0)
+	{
+		Distance = tMin;  // ï¿½Ê¿ä¿¡ ï¿½ï¿½ï¿½ï¿½ tMaxï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
+		return true;
+	}
+
+	return false;
+}
+
+void UCubeComponent::PickObjectByRayIntersection(const FVector& pickPosition, const FMatrix& viewMatrix, float* hitDistance)
+{
+
+	FVector pickRayOrigin, pickRayDirection;
+	GenerateRayForPicking(pickPosition, viewMatrix, &pickRayOrigin, &pickRayDirection);
+
+
+
+	
+
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç¥ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
+	OutputDebugString((L"pickRayOrigin ---------------------------------\n"));
+	OutputDebugString((L"x: " + std::to_wstring(pickRayOrigin.x) + L"\n").c_str());
+	OutputDebugString((L"y: " + std::to_wstring(pickRayOrigin.y) + L"\n").c_str());
+	OutputDebugString((L"z: " + std::to_wstring(pickRayOrigin.z) + L"\n").c_str());
+
+	OutputDebugString((L"pickRayDirection---------------------------------\n"));
+	OutputDebugString((L"x: " + std::to_wstring(pickRayDirection.x) + L"\n").c_str());
+	OutputDebugString((L"y: " + std::to_wstring(pickRayDirection.y) + L"\n").c_str());
+	OutputDebugString((L"z: " + std::to_wstring(pickRayDirection.z) + L"\n").c_str());
+	bool bHit = IntersectsRay(pickRayOrigin, pickRayDirection, *hitDistance);
+
+	if (bHit)
+	{
+		OutputDebugString(L"Res :: hit!!!!-----------------\n");
+	}
+	else
+	{
+		OutputDebugString(L"Res :: NOT!!!!-----------------\n");
+		//OutputDebugString(L"Ray did not hit the cube\n");
+	}
 }
