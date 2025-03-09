@@ -59,7 +59,7 @@ public:
 	//void UpdateComponentVelocity();
 
 // ��� ����
-protected:
+private:
 	USceneComponent* AttachParent = nullptr;
 	TArray<USceneComponent*> AttachChildern;
 

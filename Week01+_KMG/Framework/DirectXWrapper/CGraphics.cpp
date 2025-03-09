@@ -15,6 +15,10 @@ CGraphics::~CGraphics() {
 void CGraphics::RenderBegin() {
 	_deviceContext->OMSetRenderTargets(1, &_renderTargetView, depthStencilView);
 	//_deviceContext->OMSetRenderTargets(1, &_renderTargetView, nullptr);
+	if (depthStencilView == nullptr)
+	{
+		return;
+	}
 	_deviceContext->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	_deviceContext->ClearRenderTargetView(_renderTargetView, _clearColor);
 	_deviceContext->RSSetViewports(1, &_viewPort);
@@ -27,6 +31,20 @@ void CGraphics::RenderEnd() {
 void CGraphics::Release() {
 	ReleaseRenderTargetView();
 	ReleaseDeviceAndSwapChain();
+}
+
+void CGraphics::ResizeBuffers(int width, int height)
+{
+	//if (!_device || !_swapChain) return;
+	_width = width;
+	_height = height;
+	_swapChain->ResizeBuffers(1, _width, _height, DXGI_FORMAT_UNKNOWN, 0);
+
+	CreateRenderTargetView();
+
+	SetViewport(width, height);
+	
+
 }
 
 void CGraphics::CreateDeviceAndSwapChain() {

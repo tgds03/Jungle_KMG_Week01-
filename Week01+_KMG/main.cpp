@@ -7,7 +7,9 @@
 #include "Framework/Core/UPlaneComponent.h"
 #include "Framework/Core/UCoordArrowComponent.h"
 #include "Framework/Core/UArrowComponent.h"
-
+#include "Framework/Core/UGizmoComponent.h"
+extern int SCR_WIDTH;
+extern int SCR_HEIGHT;
 const int TARGET_FPS = 60;
 const double TARGET_FRAMERATE = 1000.0 / TARGET_FPS;
 
@@ -15,6 +17,7 @@ UWorld* gMainScene;
 UArrowComponent* gAxisXComp;
 UArrowComponent* gAxisYComp;
 UArrowComponent* gAxisZComp;
+UGizmoComponent* gGizmo;
 
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
 	switch (message) {
@@ -23,11 +26,20 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 		break;
 	case WM_LBUTTONDOWN:
 		if(gMainScene)
+			
 			gMainScene->PickingByRay(LOWORD(lParam), HIWORD(lParam), gAxisXComp, gAxisYComp, gAxisZComp);
 		break;
 	case WM_CHAR:
 		ImGui::GetIO().AddInputCharacter((unsigned int)wParam);
 		break;
+	//case WM_SIZE:
+	//{
+	//	//if (CRenderer::Instance()->GetGraphics() && CRenderer::Instance()->GetGraphics()->GetDevice() && CRenderer::Instance()->GetGraphics()->GetDeviceContext()) {
+	//		//SCR_WIDTH = LOWORD(lParam);
+	//		//SCR_HEIGHT = HIWORD(lParam);
+	//		//CRenderer::Instance()->GetGraphics()->ResizeBuffers(SCR_WIDTH, SCR_HEIGHT);
+	//	}
+	//}
 	default:
 		return DefWindowProc(hWnd, message, wParam, lParam);
 	}
@@ -65,6 +77,9 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	UArrowComponent* AxisXComp = new UArrowComponent(EAxisColor::RED_X);
 	UArrowComponent* AxisYComp = new UArrowComponent(EAxisColor::GREEN_Y);
 	UArrowComponent* AxisZComp = new UArrowComponent(EAxisColor::BLUE_Z);
+	UGizmoComponent* Gizmo = new UGizmoComponent(AxisXComp, AxisYComp, AxisZComp);
+
+	Gizmo->AttachToComponent(sphere);
 	AxisXComp->SetRelativeRotation({ 0,-M_PI/2,0 });
 	AxisYComp->SetRelativeRotation({ M_PI / 2 ,0,0});
 	AxisZComp->SetRelativeRotation({ 0,0,0 });
@@ -73,6 +88,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	gAxisXComp = AxisXComp;
 	gAxisYComp = AxisYComp;
 	gAxisZComp = AxisZComp;
+	gGizmo = Gizmo;
 
 
 	MSG msg = {};
@@ -116,6 +132,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 		// 테스트용
 		////////////////////////////////
+		//Input::Instance()->Frame();
 		guiController->NewFrame();
 		guiController->world->Update();
 		CRenderer::Instance()->GetGraphics()->RenderBegin();

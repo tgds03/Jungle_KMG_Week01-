@@ -1,6 +1,10 @@
 #include "stdafx.h"
 #include "Input.h"
 #include "Framework/Core/UCoordArrowComponent.h"
+#include "UWorld.h"
+
+//class UWorld;
+extern UWorld* gMainScene;
 
 Input* Input::_instance = nullptr;
 
@@ -24,7 +28,8 @@ bool Input::Init(HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeig
 	assert(SUCCEEDED(result));
 	result = m_keyboard->SetDataFormat(&c_dfDIKeyboard);
 	assert(SUCCEEDED(result));
-	result = m_keyboard->SetCooperativeLevel(hwnd, DISCL_FOREGROUND | DISCL_EXCLUSIVE);
+	//result = m_keyboard->SetCooperativeLevel(hwnd, DISCL_FOREGROUND | DISCL_EXCLUSIVE);
+	result = m_keyboard->SetCooperativeLevel(hwnd, DISCL_NONEXCLUSIVE | DISCL_BACKGROUND); // Ã¢¸ðµå (https://m.blog.naver.com/PostView.naver?blogId=fish19&logNo=120183923039)
 	assert(SUCCEEDED(result));
 	result = m_keyboard->Acquire();
 	assert(SUCCEEDED(result));
@@ -34,7 +39,8 @@ bool Input::Init(HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeig
 	assert(SUCCEEDED(result));
 	result = m_mouse->SetDataFormat(&c_dfDIMouse);
 	assert(SUCCEEDED(result));
-	result = m_mouse->SetCooperativeLevel(hwnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE);
+	//result = m_mouse->SetCooperativeLevel(hwnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE);
+	result = m_mouse->SetCooperativeLevel(hwnd, DISCL_NONEXCLUSIVE | DISCL_BACKGROUND);
 	assert(SUCCEEDED(result));
 	result = m_mouse->Acquire();
 	assert(SUCCEEDED(result));
@@ -191,9 +197,9 @@ void Input::GetMouseRay(FVector& rayOrigin, FVector& rayDirection,
 
 	FVector4 nearPoint = FVector4(ndcX, ndcY, 0.f, 1.f);
 	FVector4 farPoint = FVector4(ndcX, ndcY, 1.f, 1.f);
-	ImGui::Begin("GetMouseRay");
-	ImGui::Text("nearPoint : %f %f %f \nfarPoint : %f %f %f", nearPoint.x, nearPoint.y, nearPoint.z, farPoint.x, farPoint.y, farPoint.z);
-	ImGui::End();
+	//ImGui::Begin("GetMouseRay");
+	//ImGui::Text("nearPoint : %f %f %f \nfarPoint : %f %f %f", nearPoint.x, nearPoint.y, nearPoint.z, farPoint.x, farPoint.y, farPoint.z);
+	//ImGui::End();
 	FMatrix invProj = projectionMatrix.Inverse();
 
 	nearPoint = nearPoint * invProj;
@@ -215,7 +221,7 @@ UCoordArrowComponent* Input::SpawnMouseRay(const FMatrix& viewMatrix, const FMat
 	FMatrix viewProjInv = (viewMatrix * projectionMatrix).Inverse();
 	GetMouseRay(o, d, viewMatrix, projectionMatrix);
 
-	auto a = new UCoordArrowComponent;
+	auto a = gMainScene->SpawnCoordArrowActor();
 	auto s = d.Magnitude();
 	//auto x = -asin(d.y);
 	auto x = atan2(d.y, d.z);
@@ -231,11 +237,13 @@ UCoordArrowComponent* Input::SpawnMouseRay(const FMatrix& viewMatrix, const FMat
 	a->SetRelativeRotation({ x, y, 0 });
 	a->SetRelativeLocation(o);
 	a->SetRelativeScale3D({ s ,s,s});
+
+	a->Set(o, d);
 	
-	ImGui::Begin("SpawnMouseRay");
-	ImGui::Text("spawn ray's info (loc rot scale)%f, %f, %f, %f, %f, %f, %f", a->GetRelativeLocation().x, a->GetRelativeLocation().y, a->GetRelativeLocation().z, a->GetRelativeRotation().x, a->GetRelativeRotation().y, 0, a->GetRelativeScale3D().x);
-	ImGui::Text("spawn ray's info (front right up)%f, %f, %f, %f, %f, %f, %f", a->Front().x, a->Front().y, a->Front().z, a->Right().x, a->Right().y, 0, a->Right().x);
-	ImGui::End();
+	//ImGui::Begin("SpawnMouseRay");
+	//ImGui::Text("spawn ray's info (loc rot scale)%f, %f, %f, %f, %f, %f, %f", a->GetRelativeLocation().x, a->GetRelativeLocation().y, a->GetRelativeLocation().z, a->GetRelativeRotation().x, a->GetRelativeRotation().y, 0, a->GetRelativeScale3D().x);
+	//ImGui::Text("spawn ray's info (front right up)%f, %f, %f, %f, %f, %f, %f", a->Front().x, a->Front().y, a->Front().z, a->Right().x, a->Right().y, 0, a->Right().x);
+	//ImGui::End();
 	
 	return a;
 

@@ -2,6 +2,8 @@
 #include "UCameraComponent.h"
 
 void UCameraComponent::Update() {
+	aspectRatio = SCR_WIDTH / (float)SCR_HEIGHT;
+
 	if ( Input::Instance()->IsKeyDown(DIK_A) ) {
 		//RelativeLocation.x -= 1.0f * Time::GetDeltaTime();
 		RelativeLocation -= Right() * Time::GetDeltaTime();
