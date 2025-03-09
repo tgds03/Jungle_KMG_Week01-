@@ -2,7 +2,7 @@
 #include "UGizmoComponent.h"
 #include "UArrowComponent.h"
 
-#define GIZMO_SELECT_MOUSE_SPEED 30.0f;
+#define GIZMO_SELECT_MOUSE_SPEED 10.0f;
 
 UGizmoComponent::UGizmoComponent(UArrowComponent* axisX, UArrowComponent* axisY, UArrowComponent* axisZ)
 	: ArrowX(axisX), ArrowY(axisY), ArrowZ(axisZ)

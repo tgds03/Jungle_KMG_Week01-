@@ -25,10 +25,18 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 		PostQuitMessage(0);
 		break;
 	case WM_LBUTTONDOWN:
-		if(gMainScene)
-			gMainScene->PickingByRay(LOWORD(lParam), HIWORD(lParam), gAxisXComp, gAxisYComp, gAxisZComp);
 		break;
-	case WM_LBUTTONUP:
+	case WM_MOUSEMOVE:
+	{
+		TRACKMOUSEEVENT tme = {};
+		tme.cbSize = sizeof(TRACKMOUSEEVENT);
+		tme.dwFlags = TME_LEAVE;
+		tme.hwndTrack = hWnd; 
+		tme.dwHoverTime = 0;  
+		TrackMouseEvent(&tme);
+		break;
+	}
+	case WM_MOUSELEAVE:
 		if (gMainScene)
 			gMainScene->SetAxisPicked(gAxisXComp, gAxisYComp, gAxisZComp, EAxisColor::NONE);
 		break;
@@ -171,6 +179,19 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		{
 			obj->SetRelativeLocation(obj->GetRelativeLocation() - obj->Up());
 		}
+		if (Input::Instance()->IsMouseButtonPressed(0)) {
+			int mx, my;
+			if (gMainScene) {
+				Input::Instance()->GetMouseLocation(mx, my);
+				gMainScene->PickingByRay(mx,my, gAxisXComp, gAxisYComp, gAxisZComp);
+			}
+		}
+		if (Input::Instance()->IsMouseButtonReleased(0)) {
+			if (gMainScene) {
+				gMainScene->SetAxisPicked(gAxisXComp, gAxisYComp, gAxisZComp, EAxisColor::NONE);
+
+			}
+		}
 		//CRenderer::Instance()->GetCamera()->PrintLoc(L"CAM");
 		//obj->PrintLoc(L"obj");
 
@@ -184,7 +205,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		gGizmo->Update();
 		AxisXComp->Render();
 		AxisYComp->Render();
-		AxisZComp->Render();
+		AxisZComp-> Render();
 		//obj2->SetRelativeLocationX(obj2->GetRelativeLocation().x + 0.1);
 		gGizmo->Render();
 		mainScene->Render();
@@ -201,4 +222,4 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	Input::Instance()->Shutdown();
 	CRenderer::Release();
 	return 0;
-}
+} 
