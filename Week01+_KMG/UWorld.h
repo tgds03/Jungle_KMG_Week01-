@@ -24,7 +24,7 @@ public:
 
     void AddActor(UActorComponent* comp);
     void RemoveActor(UActorComponent* comp);
-
+    void PickingByRay(LPARAM lParam);
     UCameraComponent* SpawnCamera();
     UCubeComponent* SpawnCubeActor();
     USphereComponent* SpawnSphereACtor();
