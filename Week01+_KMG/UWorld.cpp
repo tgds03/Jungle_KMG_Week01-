@@ -43,7 +43,7 @@ void UWorld::RemoveActor(UActorComponent* comp)
     actorList.remove(comp);
 }
 
-void UWorld::PickingByRay(LPARAM lParam)
+void UWorld::PickingByRay()
 {
 	UCameraComponent* mainCamera = CRenderer::Instance()->GetMainCamera();
 	

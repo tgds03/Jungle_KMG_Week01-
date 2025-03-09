@@ -18,7 +18,7 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 	case WM_LBUTTONDOWN:
 	case WM_LBUTTONUP:
 		if(gMainScene)
-			gMainScene->PickingByRay(lParam);
+			gMainScene->PickingByRay();
 		break;
 	default:
 		return DefWindowProc(hWnd, message, wParam, lParam);
