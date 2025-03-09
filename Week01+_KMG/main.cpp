@@ -112,7 +112,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		CRenderer::Instance()->GetGraphics()->RenderBegin();
 		mainScene->Render();
 
-		ImGui::Begin("profile");
+		ImGui::Begin("statics");
 		ImGui::Text("UObject Count: %d", CEngineStatics::TotalAllocationCount);
 		ImGui::Text("UObject Bytes: %d", CEngineStatics::TotalAllocationBytes);
 		ImGui::End();
