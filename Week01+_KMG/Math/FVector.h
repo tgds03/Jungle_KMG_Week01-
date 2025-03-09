@@ -25,6 +25,13 @@ struct FVector {
 		if ( scalar == 0 ) return FVector();
 		return FVector(x / scalar, y / scalar, z / scalar);
 	}
+	FVector operator^(const FVector& rhs) const {
+		return FVector(
+			y * rhs.z - z * rhs.y,
+			z * rhs.x - x * rhs.z,
+			x * rhs.y - y * rhs.x
+		);
+	}
 	FVector& operator*=(float scalar) {
 		x *= scalar;
 		y *= scalar;

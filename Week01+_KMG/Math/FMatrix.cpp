@@ -244,6 +244,45 @@ FMatrix FMatrix::Translate(FVector xyz)
 	return Translate(xyz.x, xyz.y, xyz.z);
 }
 
+FMatrix FMatrix::MakeFromX(FVector xaxis) {
+	const FVector newX = xaxis.Normalized();
+	const FVector up = abs(xaxis.z) < 1.f ? FVector::Up : FVector::Right;
+	const FVector newY = (up ^ newX).Normalized();
+	const FVector newZ = newX ^ newY;
+	return FMatrix({
+		newX.x, newX.y, newX.z, 0.0f,
+		newY.x, newY.y, newY.z, 0.0f,
+		newZ.x, newZ.y, newZ.z, 0.0f,
+		0.0f, 0.0f, 0.0f, 0.0f,
+	});
+}
+
+FMatrix FMatrix::MakeFromY(FVector yaxis) {
+	const FVector newY = yaxis.Normalized();
+	const FVector up = abs(yaxis.z) < 1.f ? FVector::Up : FVector::Right;
+	const FVector newZ = (up ^ newY).Normalized();
+	const FVector newX = newY ^ newZ;
+	return FMatrix({
+		newX.x, newX.y, newX.z, 0.0f,
+		newY.x, newY.y, newY.z, 0.0f,
+		newZ.x, newZ.y, newZ.z, 0.0f,
+		0.0f, 0.0f, 0.0f, 0.0f,
+	});
+}
+
+FMatrix FMatrix::MakeFromZ(FVector zaxis) {
+	const FVector newZ = zaxis.Normalized();
+	const FVector up = abs(zaxis.z) < 1.f ? FVector::Up : FVector::Right;
+	const FVector newX = (up ^ newZ).Normalized();
+	const FVector newY = newZ ^ newX;
+	return FMatrix({
+		newX.x, newX.y, newX.z, 0.0f,
+		newY.x, newY.y, newY.z, 0.0f,
+		newZ.x, newZ.y, newZ.z, 0.0f,
+		0.0f, 0.0f, 0.0f, 0.0f,
+	});
+}
+
 FMatrix FMatrix::Swap(UINT r1, UINT r2)
 {
 	if (r1 > 3 || r2 > 3) return FMatrix::Identity;

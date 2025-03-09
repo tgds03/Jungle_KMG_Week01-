@@ -47,6 +47,9 @@ public:
 	static FMatrix RotateXYZ(FVector xyz);
 	static FMatrix Translate(float tx, float ty, float tz);
 	static FMatrix Translate(FVector xyz);
+	static FMatrix MakeFromX(FVector xaxis);
+	static FMatrix MakeFromY(FVector yaxis);
+	static FMatrix MakeFromZ(FVector zaxis);
 	FMatrix Swap(UINT r1, UINT r2);
 };
 //#pragma once

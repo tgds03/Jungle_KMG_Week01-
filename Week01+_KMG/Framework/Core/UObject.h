@@ -28,6 +28,10 @@ public:
 		free(p);
 	}
 
+	inline bool operator==(const UObject& rhs) const {
+		return _uuid == rhs._uuid;
+	}
+
 	uint32 GetUUID() { return _uuid; }
 	uint32 GetId() { return _internalIndex; }
 
