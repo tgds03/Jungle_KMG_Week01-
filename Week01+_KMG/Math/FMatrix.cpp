@@ -133,7 +133,7 @@ FMatrix FMatrix::Inverse() const
 		// 피벗이 0이면 행 교환
 		if (A[i][i] == 0) {
 			int swapRow = i + 1;
-			while (swapRow < 4 && A.m[swapRow][i] == 0) swapRow++;
+			while (swapRow < 4 && fabs(A.m[swapRow][i]) < FLT_EPSILON) swapRow++;
 			if (swapRow == 4)
 			{
 				UE_LOG(L"역행렬이 존재하지 않습니다.");

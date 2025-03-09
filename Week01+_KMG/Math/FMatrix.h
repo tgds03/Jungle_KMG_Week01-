@@ -47,6 +47,11 @@ public:
 		FVector4 v = (vec * (*this));
 		return FVector(v.x / v.w, v.y / v.w, v.z / v.w);
 	}
+	FVector TransformCoord(const FVector& v) {
+		FVector4 v4 = FVector4(v, 1);
+		
+		return TransformCoord(v4);
+	}
 
 public:
 	static const FMatrix Identity;
