@@ -30,6 +30,7 @@ using FWString = std::wstring;
 
 #include "Framework/Core/Time.h"
 #include "Framework/Core/Input.h"
+#include "DataManager.h"
 
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_dx11.h"

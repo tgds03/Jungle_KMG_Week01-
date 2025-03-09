@@ -12,6 +12,13 @@ class USphereComponent;
 class UPlaneComponent;
 class UCoordArrowComponent;
 
+struct PrimitiveData {
+    FString Type;
+    FVector Location;
+    FVector Rotation;
+    FVector Scale;
+};
+
 class UWorld :
     public UObject
 {
@@ -24,18 +31,27 @@ public:
 
     void AddActor(UActorComponent* comp);
     void RemoveActor(UActorComponent* comp);
+    void ClearWorld();
+
     void PickingByRay();
+
+    int GetActorCount() const;
+    const TLinkedList<UActorComponent*>& GetActors() const;
+
     UCameraComponent* SpawnCamera();
     UCubeComponent* SpawnCubeActor();
     USphereComponent* SpawnSphereACtor();
     UPlaneComponent* SpawnPlaneActor();
     UCoordArrowComponent* SpawnCoordArrowActor();
 
+    void SaveWorld(const FString& fileName);
+    void LoadWorld(const FString& fileName);
+
 private:
     TLinkedList<UActorComponent*> actorList = {};
 
     template <typename T>
-    T* SpawnActor(); // RTTI ���� �� public���� ����
+    T* SpawnActor(); 
     template <typename T>
     T* SpawnActor(FVector position, FVector rotation = FVector::Zero, FVector scal = FVector::One);
 };

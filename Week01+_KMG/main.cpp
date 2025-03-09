@@ -58,13 +58,19 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	CRenderer::Instance()->GetMainCamera()->SetRelativeLocation(FVector(0, 0, -5));
 
 	worldArrow->SetRelativeScale3D({ 100,100,100 });
-	ground->SetRelativeScale3D({ 10,5,3 });
+	ground->SetRelativeScale3D({ 10,5,10 });
 	//ground->SetRelativeLocation({ 0,-10,0 });
 	arrow->SetRelativeScale3D({ 3,3,3 });
 
 	arrow->SetRelativeLocation({ 0,0,0 });
 	arrow->AttachToComponent(obj);
 	obj->SetRelativeRotation({ 0,1,0 });
+
+	USphereComponent* sphere = mainScene->SpawnSphereACtor();
+	sphere->SetRelativeScale3D({ 1.5f, 1.5f, 1.5f });
+
+	//FString jsonOutput = DataManager::Instance().GenerateWorldJson(mainScene);
+
 
 	MSG msg = {};
 	while (msg.message != WM_QUIT) {
@@ -76,7 +82,17 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		}
 
 		////////////////////////////////
-		// CUBE - ARROW 따라가는지 테스트용
+		// CUBE - ARROW 따라가는지 
+		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_P))
+		{
+			mainScene->SaveWorld("TestLevel");
+		}
+
+		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_P))
+		{
+			mainScene->LoadWorld("TestLevel");
+		}
+
 
 		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_J))
 		{

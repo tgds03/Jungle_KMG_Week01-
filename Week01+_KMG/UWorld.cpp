@@ -67,6 +67,15 @@ void UWorld::PickingByRay()
 	}
 }
 
+int UWorld::GetActorCount() const
+{
+    return actorList.size();
+}
+
+const TLinkedList<UActorComponent*>& UWorld::GetActors() const
+{
+    return actorList;
+}
 
 UCameraComponent* UWorld::SpawnCamera()
 {
@@ -93,4 +102,14 @@ UPlaneComponent* UWorld::SpawnPlaneActor()
 UCoordArrowComponent* UWorld::SpawnCoordArrowActor()
 {
     return SpawnActor<UCoordArrowComponent>();
+}
+
+void UWorld::SaveWorld(const FString& fileName)
+{
+    DataManager::Instance()->SaveWorldToJson(this, fileName);
+}
+
+void UWorld::LoadWorld(const FString& fileName)
+{
+    FString jsonData = DataManager::Instance()->LoadWorldFromJson(this, fileName);
 }
