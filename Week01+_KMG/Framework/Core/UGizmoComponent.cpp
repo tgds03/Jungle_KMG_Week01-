@@ -21,8 +21,8 @@ UGizmoComponent::UGizmoComponent()
 	ArrowY->OverrideScale3D = { 2,2,2 };
 	ArrowZ->OverrideScale3D = { 2,2,2 };
 
-	ArrowX->SetRelativeRotation({ 0,-M_PI / 2,0 });
-	ArrowY->SetRelativeRotation({ M_PI / 2 ,0,0 });
+	ArrowX->SetRelativeRotation({ 0,M_PI / 2,0 });
+	ArrowY->SetRelativeRotation({ -M_PI / 2 ,0,0 });
 	ArrowZ->SetRelativeRotation({ 0,0,0 });
 
 }
