@@ -11,6 +11,7 @@ public:
 	~GuiController();
 
 	void NewFrame();
+	void Picking();
 	void RenderFrame();
 	void RenderEditor();
 

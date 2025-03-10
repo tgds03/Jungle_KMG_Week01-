@@ -37,7 +37,7 @@ public:
     int GetActorCount() const;
     const TLinkedList<UActorComponent*>& GetActors() const;
 
-    void PickingByRay(int mouse_X, int mouse_Y, UArrowComponent* AxisXComp, UArrowComponent* AxisYComp, UArrowComponent* AxisZComp);
+    UActorComponent* PickingByRay(int mouse_X, int mouse_Y, UArrowComponent* AxisXComp, UArrowComponent* AxisYComp, UArrowComponent* AxisZComp);
     void SetAxisPicked(UArrowComponent* axisX, UArrowComponent* axisY, UArrowComponent* axisZ, EAxisColor pickedAxis);
 
     UCameraComponent* SpawnCamera();

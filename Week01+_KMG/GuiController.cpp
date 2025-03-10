@@ -5,6 +5,10 @@
 #include "Framework/Core/Time.h"
 #include "UWorld.h"
 
+extern UArrowComponent* gAxisXComp;
+extern UArrowComponent* gAxisYComp;
+extern UArrowComponent* gAxisZComp;
+
 GuiController::GuiController(HWND hWnd, CGraphics* graphics): hWnd(hWnd) {
 	IMGUI_CHECKVERSION();
 	_context = ImGui::CreateContext();
@@ -49,16 +53,16 @@ void GuiController::NewFrame()
 	_io->MouseDown[0] = Input::Instance()->IsMouseButtonDown(0);
 	_io->MouseDown[1] = Input::Instance()->IsMouseButtonDown(1);
 
-	if (Input::Instance()->IsKeyDown(DIK_RETURN)) {
-		_io->AddInputCharacter('\n');
+	Picking();
+}
+
+void GuiController::Picking() {
+	if (Input::Instance()->IsMouseButtonPressed(0) && !_io->WantCaptureMouse) {
+		int x, y;
+		Input::Instance()->GetMouseLocation(x, y);
+		_selected = world->PickingByRay(x, y, gAxisXComp, gAxisYComp, gAxisZComp);
 	}
-	if ( Input::Instance()->IsKeyDown(DIK_BACKSPACE) ) {
-		_io->AddInputCharacter('\b');
-	}
-	//if ( Input::Instance()->IsKeyDown(DIK_SPACE) ) {
-	//	_io->AddInputCharacter('s');
-	//}
-	
+		
 }
 
 void GuiController::RenderFrame()

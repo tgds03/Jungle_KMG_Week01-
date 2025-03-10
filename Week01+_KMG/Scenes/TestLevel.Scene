@@ -1,30 +1,30 @@
 {
-  "NextUUID" : 11,
+  "AVersion" : 1,
+  "NextUUID" : 9,
   "Primitives" : {
     "0" : {
-      "Location" : [0.000000, 0.000000, 0.000000],
-      "Rotation" : [0.000000, 0.000000, 0.000000],
-      "Scale" : [10.000000, 5.000000, 10.000000],
-      "Type" : "Plane"
+      "Location" : null,
+      "Rotation" : null,
+      "Scale" : null,
+      "Type" : "Cube"
     },
     "1" : {
-      "Location" : [10.000000, 1.000000, 1.000000],
-      "Rotation" : [0.000000, 0.000000, 0.000000],
-      "Scale" : [1.000000, 1.000000, 1.000000],
+      "Location" : null,
+      "Rotation" : null,
+      "Scale" : null,
       "Type" : "Cube"
     },
     "2" : {
-      "Location" : [0.000000, 0.000000, 10.000000],
-      "Rotation" : [0.000000, 0.000000, 0.000000],
-      "Scale" : [1.000000, 1.000000, 1.000000],
+      "Location" : null,
+      "Rotation" : null,
+      "Scale" : null,
       "Type" : "Cube"
     },
     "3" : {
-      "Location" : [0.000000, 0.000000, 0.000000],
-      "Rotation" : [0.000000, 0.000000, 0.000000],
-      "Scale" : [1.500000, 1.500000, 1.500000],
-      "Type" : "Sphere"
+      "Location" : null,
+      "Rotation" : null,
+      "Scale" : null,
+      "Type" : "Cube"
     }
-  },
-  "Version" : 1
+  }
 }

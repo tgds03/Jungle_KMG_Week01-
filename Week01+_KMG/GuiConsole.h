@@ -19,7 +19,6 @@ private:
 	ImVector<char*> _commands;
 	ImGuiTextFilter _filter;
 	GuiController* _controller;
-	int TextEditCallback(ImGuiInputTextCallbackData* data);
 	void ExecCommand(const char* command_line);
 };
 

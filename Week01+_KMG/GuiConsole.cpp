@@ -116,7 +116,8 @@ void GuiConsole::ExecCommand(const char* command_line) {
         } else {
             AddLog("Invalid argument.");
         }
-    } else if (commands[0] == "") {
+    } else if (commands[0] == "clear") {
+        _items.clear();
     } else {
         AddLog("Invaild command.");
     }

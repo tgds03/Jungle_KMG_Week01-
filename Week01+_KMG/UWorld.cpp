@@ -50,7 +50,7 @@ void UWorld::ClearWorld()
     }
 }
 
-void UWorld::PickingByRay(int mouse_X, int mouse_Y, UArrowComponent* AxisXComp, UArrowComponent* AxisYComp, UArrowComponent* AxisZComp)
+UActorComponent* UWorld::PickingByRay(int mouse_X, int mouse_Y, UArrowComponent* AxisXComp, UArrowComponent* AxisYComp, UArrowComponent* AxisZComp)
 {
 	UCameraComponent* mainCamera = CRenderer::Instance()->GetMainCamera();
 	
@@ -73,17 +73,17 @@ void UWorld::PickingByRay(int mouse_X, int mouse_Y, UArrowComponent* AxisXComp, 
 
         UE_LOG(L"X__AXIS \n");
         SetAxisPicked(AxisXComp, AxisYComp, AxisZComp, EAxisColor::RED_X);
-        return;
+        return nullptr;
     }
     if (AxisYComp->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitDistance)) {
         UE_LOG(L"Y__AXIS \n");
         SetAxisPicked(AxisXComp, AxisYComp, AxisZComp, EAxisColor::GREEN_Y);
-        return;
+        return nullptr;
     }
     if (AxisZComp->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitDistance)) {
         UE_LOG(L"Z__AXIS \n");
         SetAxisPicked(AxisXComp, AxisYComp, AxisZComp, EAxisColor::BLUE_Z);
-        return;
+        return nullptr;
     }
     SetAxisPicked(AxisXComp, AxisYComp, AxisZComp, static_cast<EAxisColor>(-1));
     AxisXComp->SetPicked(false);
@@ -100,6 +100,7 @@ void UWorld::PickingByRay(int mouse_X, int mouse_Y, UArrowComponent* AxisXComp, 
         UE_LOG((L"\nfind!__" + std::to_wstring(nearestActorComp->GetUUID()) + L" is neareast!!\n").c_str());
         UE_LOG((L"\nfind!__" + std::to_wstring(nearestActorComp->GetUUID()) + L" is neareast!!\n").c_str());
     }
+    return nearestActorComp;
 }
 
 int UWorld::GetActorCount() const

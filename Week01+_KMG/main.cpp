@@ -105,13 +105,13 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		// CUBE - ARROW 따라가는지 
 		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_N))
 		{
-			mainScene->SaveWorld("TestLevel");
+			guiController->world->SaveWorld("TestLevel");
 			//mainScene->RemoveActor(sphere);
 		}
 
 		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_M))
 		{
-			mainScene->LoadWorld("TestLevel");
+			guiController->world->LoadWorld("TestLevel");
 		}
 
 
