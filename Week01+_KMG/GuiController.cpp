@@ -180,28 +180,40 @@ void GuiController::RenderEditor() {
 	ImGui::Text("UActorComponent Count: %d", world->GetActorCount());
 
 	ImGui::Combo("Primitive", &_selectedPrimitive, primitiveItems, ARRAYSIZE(primitiveItems));
-	if ( ImGui::Button("Create") ) {
+	if (ImGui::Button("Create")) {
 
 		/*UPrimitiveComponent* downcast = dynamic_cast<UPrimitiveComponent*>(_selected);
 		if ( downcast )
 			downcast->renderFlags &= ~PRIMITIVE_FLAG_SELECTED;*/
-
+		int gridSize = sqrt(_spawnNumber); // 격자의 한 변 크기 (정사각형 형태)
+		float spacing = 3.0f; // 개별 오브젝트 간 거리
 		for (int i = 0; i < _spawnNumber; i++) {
-			switch ( _selectedPrimitive ) {
-			case 0:
-				world->SpawnCubeActor();
-				break;
-			case 1:
-				world->SpawnSphereActor();
-				break;
-			case 2:
-				world->SpawnPlaneActor();
+			int row = i / gridSize; // 행 번호
+			int col = i % gridSize; // 열 번호
+
+			FVector spawnPosition = FVector(col * spacing, row * spacing, 0); // XY 평면에서 배치
+
+			switch (_selectedPrimitive) {
+			case 0: {
+				UCubeComponent* cube = world->SpawnCubeActor();
+				cube->SetRelativeLocation(spawnPosition);
 				break;
 			}
-		/*	UPrimitiveComponent* downcast = dynamic_cast<UPrimitiveComponent*>(_selected);
-			if (downcast)
-				downcast->renderFlags |= PRIMITIVE_FLAG_SELECTED;
-		*/	//world->AddActor(_selected);
+			case 1: {
+				USphereComponent* sphere = world->SpawnSphereActor();
+				sphere->SetRelativeLocation(spawnPosition);
+				break;
+			}
+			case 2: {
+				UPlaneComponent* plane = world->SpawnPlaneActor();
+				plane->SetRelativeLocation(spawnPosition);
+				break;
+			}
+			}
+			/*	UPrimitiveComponent* downcast = dynamic_cast<UPrimitiveComponent*>(_selected);
+				if (downcast)
+					downcast->renderFlags |= PRIMITIVE_FLAG_SELECTED;
+			*/	//world->AddActor(_selected);
 		}
 	}
 	ImGui::SameLine(0.f, 5.f);
