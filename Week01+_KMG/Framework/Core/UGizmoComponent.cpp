@@ -14,15 +14,8 @@ UGizmoComponent::UGizmoComponent()
 	ArrowY->AttachToComponent(this);
 	ArrowZ->AttachToComponent(this);
 
-	ArrowX->IsOverrideScale3D = true;
-	ArrowY->IsOverrideScale3D = true;
-	ArrowZ->IsOverrideScale3D = true;
-	ArrowX->OverrideScale3D = { 2,2,2 };
-	ArrowY->OverrideScale3D = { 2,2,2 };
-	ArrowZ->OverrideScale3D = { 2,2,2 };
-
-	ArrowX->SetRelativeRotation({ 0,M_PI / 2,0 });
-	ArrowY->SetRelativeRotation({ -M_PI / 2 ,0,0 });
+	ArrowX->SetRelativeRotation({ 0,-M_PI / 2,0 });
+	ArrowY->SetRelativeRotation({ M_PI / 2 ,0,0 });
 	ArrowZ->SetRelativeRotation({ 0,0,0 });
 
 }
@@ -37,29 +30,8 @@ UGizmoComponent::~UGizmoComponent()
 
 void UGizmoComponent::Update()
 {
-	//ArrowX->IsOverrideLocation = true;
-	//ArrowY->IsOverrideLocation = true;
-	//ArrowZ->IsOverrideLocation = true;
-
-	//ArrowX->IsOverrideRotation = true;
-	//ArrowY->IsOverrideRotation = true;
-	//ArrowZ->IsOverrideRotation = true;
-
-	//ArrowX->IsOverrideScale3D = true;
-	//ArrowY->IsOverrideScale3D = true;
-	//ArrowZ->IsOverrideScale3D = true;
-
-	// ����� �ƹ��͵� �Ⱥپ�����
- 	if (GetAttachParent() == nullptr)
+ 	if (AttachedComponent == nullptr)
 		return;
-
-	ImGui::Begin("Gizmo");
-	//ImGui::Text("Gizmo Rel Pos: %f %f %f", RelativeLocation.x, RelativeLocation.y, RelativeLocation.z);
-	ImGui::Text("Gizmo Comp Pos: %f %f %f", GetComponentLocation().x, GetComponentLocation().y, GetComponentLocation().z);
-	ImGui::Text("Parent Rel Pos: %f %f %f", GetAttachParent()->GetRelativeLocation().x, GetAttachParent()->GetRelativeLocation().y, GetAttachParent()->GetRelativeLocation().z);
-	ImGui::Text("Parent Comp Pos: %f %f %f", GetAttachParent()->GetComponentLocation().x, GetAttachParent()->GetComponentLocation().y, GetAttachParent()->GetComponentLocation().z);
-	ImGui::End();
-
 
 	UArrowComponent* selectedArrow = nullptr;
 	if (selectedAxis == EPrimitiveColor::RED_X) selectedArrow = ArrowX;
@@ -88,16 +60,32 @@ void UGizmoComponent::Update()
 	float effectiveMovement = mouseDirOnScreen.Dot(arrowDirOnScreen);
 	effectiveMovement *= GIZMO_SELECT_MOUSE_SPEED;
 
-	// @@@@@@@@@@@@@@@@@@@@@@@@
-	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-	// 포지션 오버라이드해서 RELATIVE기준으로 안움직이게
- 	auto newPos = selectedArrow->Front() * effectiveMovement + GetAttachParent()->GetRelativeLocation();
-	GetAttachParent()->SetRelativeLocation(newPos);
-	ImGui::Begin("Gizmo Attached");
-	auto l =GetAttachParent()->GetRelativeLocation();
-	ImGui::Text("Gizmo Attached Rel Pos: %f %f %f", l.x, l.y, l.z);
-	ImGui::End();
+ 	auto newPos = selectedArrow->Front() * effectiveMovement + AttachedComponent->GetRelativeLocation();
+	AttachedComponent->SetRelativeLocation(newPos);
 
+	return;
+
+
+
+	//ImGui::Begin("Gizmo Attached");
+	//auto l = AttachedComponent->GetRelativeLocation();
+	//ImGui::Text("Gizmo Attached Rel Pos: %f %f %f", l.x, l.y, l.z);
+	//ImGui::End();
+
+	//USceneComponent* parent = AttachedComponent;
+	//FMatrix parentTransform = parent->GetComponentTransform();
+	//FMatrix parentTransformInverse = parentTransform.Inverse();
+	//FVector parentLocation = parent->GetComponentLocation();
+	//FVector parentRotation = parent->GetComponentRotation();
+	//FVector parentScale3D = parent->GetComponentScale();
+
+	//FVector worldLocation = (FVector4(parentLocation, 1.f) * parentTransformInverse).GetCoord();
+	//FVector worldRotation = (FVector4(parentRotation, 0.f) * parentTransformInverse).xyz();
+	//FVector worldScale3D = (FVector4(parentScale3D, 0.f) * parentTransformInverse).xyz();
+
+	//SetRelativeLocation(parentLocation);
+	//SetRelativeRotation(parentRotation);
+	//SetRelativeScale3D(parentScale3D);
 
 }
 
@@ -110,9 +98,16 @@ void UGizmoComponent::Render()
 	}
 }
 
+//FMatrix UGizmoComponent::GetComponentTransform() const
+//{
+//	FVector scale3D = AttachedComponent->GetComponentScale();
+//	return FMatrix::Scale(scale3D)*FMatrix::Translate(AttachedComponent->GetComponentLocation());
+//}
+
 void UGizmoComponent::AttachTo(UPrimitiveComponent* Parent)
 {
 	isGizmoActivated = true;
+	AttachedComponent = Parent;
 	this->AttachToComponent(Parent);
 }
 
@@ -120,6 +115,7 @@ void UGizmoComponent::Detach()
 {
 	isGizmoActivated = false;
 	selectedAxis = EPrimitiveColor::NONE;
+	AttachedComponent = nullptr;
 	//UE_LOG(L"Detach!!!!!!!\n");
 	this->AttachToComponent(nullptr);
 }

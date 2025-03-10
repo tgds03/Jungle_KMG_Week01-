@@ -95,24 +95,61 @@ UDiscHollowComponent::~UDiscHollowComponent()
 {
 }
 
+bool UDiscHollowComponent::IntersectsRay(const FVector& rayOrigin, const FVector& rayDir, float& dist)
+{
+    if (rayOrigin.y == 0) return false; // normal to normal vector of plane
+
+    dist = -rayOrigin.y / rayDir.y;
+
+    FVector intersectionPoint = rayOrigin + rayDir * dist;
+    float intersectionToDiscCenterSquared = intersectionPoint.MagnitudeSquared();
+
+    return (inner * inner < intersectionToDiscCenterSquared && intersectionToDiscCenterSquared < 1);
+}
+
 //void UDiscHollowComponent::Update()
 //{
 //    UPrimitiveComponent::Update();
 //}
 
-bool UDiscHollowComponent::IntersectsRay(const FVector& rayOrigin, const FVector& rayDir, float& dist)
-{
-    float denom = rayDir.Dot(this->Front());
-    if (std::abs(denom) < FLT_EPSILON) return false;
-
-    auto t = (this->GetComponentLocation() - rayOrigin).Dot(this->Front()) / denom;
-
-    if (t < 0) return false; // Ray와 반대방향
-
-    FVector intersection = rayOrigin + rayDir * t;
-
-    FVector4 intersectionModelSpace4 = FVector4(intersection, 1) * this->GetComponentTransform().Inverse();
-    FVector intersectionModelSpace = (intersectionModelSpace4).xyz() / intersectionModelSpace4.w;
-
-    return (inner < intersectionModelSpace.MagnitudeSquared() && intersectionModelSpace.MagnitudeSquared() < 1);
-}
+//bool UDiscHollowComponent::Intersects(const FVector& rayOrigin, const FVector& rayDir, float& dist)
+//{
+//    FMatrix worldTransformInv = GetComponentTransform().Inverse();
+//    FVector rayOriginModel = (FVector4(rayOrigin, 1.f) * worldTransformInv).GetCoord();
+//    FVector rayDirModel = (FVector4(rayDir, 0.f) * worldTransformInv).xyz();
+//
+//    if (rayDirModel.y == 0) return false; // normal to normal vector of plane
+//    dist = -rayOriginModel.y / rayDirModel.y;
+//
+//    FVector intersectionPoint = rayOriginModel + rayDirModel * dist;
+//    float intersectionToDiscCenterSquared = intersectionPoint.MagnitudeSquared();
+//
+//    return (inner * inner < intersectionToDiscCenterSquared < 1);
+//
+//
+//
+//    // world space에서 계산할때
+//    //float denom = rayDir.Dot(this->Front());
+//    //if (std::abs(denom) < FLT_EPSILON) return false;
+//
+//    //auto t = (this->GetComponentLocation() - rayOrigin).Dot(this->Front()) / denom;
+//
+//    //if (t < 0) return false; // Ray와 반대방향
+//
+//    //FVector intersection = rayOrigin + rayDir * t;
+//
+//    //FVector4 intersectionModelSpace4 = FVector4(intersection, 1) * this->GetComponentTransform().Inverse();
+//    //FVector intersectionModelSpace = (intersectionModelSpace4).xyz() / intersectionModelSpace4.w;
+//
+//    //return (inner < intersectionModelSpace.MagnitudeSquared() && intersectionModelSpace.MagnitudeSquared() < 1);
+//}
+//
+//bool UDiscHollowComponent::PickObjectByRayIntersection(const FVector& pickPosition, const FMatrix& viewMatrix, float* hitDistance)
+//{
+//    auto rayOriginWorld = (FVector4(0,0,0, 1) * viewMatrix).GetCoord();
+//    auto rayDirectionWorld = (FVector4(pickPosition, 0) * viewMatrix).xyz();
+//
+//    bool bHit = Intersects(rayOriginWorld, rayDirectionWorld, *hitDistance);
+//    //*hitDistance = *hitDistance * viewMatrix;
+//    return bHit;
+//}

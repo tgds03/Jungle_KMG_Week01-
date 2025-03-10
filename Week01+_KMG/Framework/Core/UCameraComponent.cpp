@@ -32,7 +32,7 @@ void UCameraComponent::Update() {
 		int dx, dy;
 		Input::Instance()->GetMouseDelta(dx, dy);
 		auto rot = GetRelativeRotation();
-		SetRelativeRotation(rot - FVector(degToRad(-dy) * mouseSensitive, degToRad(-dx) * mouseSensitive, 0));
+		SetRelativeRotation(rot - FVector(degToRad(dy) * mouseSensitive, degToRad(dx) * mouseSensitive, 0));
 
 		//RelativeRotation.y -= degToRad(dx) * mouseSensitive;
 		//RelativeRotation.x -= degToRad(dy) * mouseSensitive;
@@ -69,7 +69,7 @@ void UCameraComponent::Render() {
 
 FMatrix UCameraComponent::View()
 {
-	return GetRelativeTransform().Inverse();
+	return GetComponentTransform().Inverse();
 
 
 

@@ -16,6 +16,7 @@ public:
 	virtual void GenerateRayForPicking(const FVector& pickPosition, const FMatrix& viewMatrix, FVector* pickRayOrigin, FVector* rayDirection) override;
 	virtual bool PickObjectByRayIntersection(const FVector& pickPosition, const FMatrix& viewMatrix, float* hitDistance) override;
 
+	virtual bool Intersects(const FVector rayOrigin, FVector rayDir, float& dist) { return false;  }
 	uint32 renderFlags;
 protected:
 	CVertexBuffer<FVertexSimple>* _vertexBuffer = nullptr;

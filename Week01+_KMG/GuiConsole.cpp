@@ -149,6 +149,10 @@ void GuiConsole::ExecCommand(const char* command_line) {
                 world->SpawnSphereActor();
             } else if ( commands[1] == "plane" ) {
                 world->SpawnPlaneActor();
+            } else if (commands[1] == "disc") {
+                world->SpawnDiscActor();
+            } else if (commands[1] == "dischollow") {
+                world->SpawnDiscHollowActor();
             } else {
                 AddLog("Invalid argument.");
                 return;

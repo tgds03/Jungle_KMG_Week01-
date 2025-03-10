@@ -28,55 +28,55 @@ FVector USceneComponent::Front() {
 
 FVector USceneComponent::GetRelativeLocation() const
 {
-	if (IsOverrideLocation) return OverrideLocation;
+	//if (IsOverrideLocation) return OverrideLocation;
 	return RelativeLocation;
 }
 
 FVector4 USceneComponent::GetRelativeLocation4() const
 {
-	if (IsOverrideLocation) return FVector4(OverrideLocation,1);
+	//if (IsOverrideLocation) return FVector4(OverrideLocation,1);
 	return FVector4(RelativeLocation, 1);
 }
 
 FVector USceneComponent::GetRelativeRotation() const
 {
-	if (IsOverrideRotation) return OverrideRotation;
+	//if (IsOverrideRotation) return OverrideRotation;
 	return RelativeRotation;
 }
 
 FVector USceneComponent::GetRelativeScale3D() const
 {
-	if (IsOverrideScale3D) return OverrideScale3D;
+	//if (IsOverrideScale3D) return OverrideScale3D;
 	return RelativeScale3D;
 }
 
 FMatrix USceneComponent::GetRelativeTransform() const
 {
-	if (IsOverrideTransform) return OverrideTransform;
+	//if (IsOverrideTransform) return OverrideTransform;
 
 	FMatrix origin = FMatrix::Identity;
 	FMatrix scale = FMatrix::Scale(RelativeScale3D);
 	FMatrix rot = FMatrix::RotateX(RelativeRotation.x) * FMatrix::RotateY(RelativeRotation.y) * FMatrix::RotateZ(RelativeRotation.z);
 	FMatrix trans = FMatrix::Translate(RelativeLocation);
 
-	if (IsOverrideLocation) {
-		trans = FMatrix::Translate(OverrideLocation);
-	}
-	if (IsOverrideRotation) {
-		rot = FMatrix::RotateX(OverrideRotation.x) * FMatrix::RotateY(OverrideRotation.y) * FMatrix::RotateZ(OverrideRotation.z);
-	}
-	if (IsOverrideScale3D) {
-		scale = FMatrix::Scale(OverrideScale3D);
-	}
+	//if (IsOverrideLocation) {
+	//	trans = FMatrix::Translate(OverrideLocation);
+	//}
+	//if (IsOverrideRotation) {
+	//	rot = FMatrix::RotateX(OverrideRotation.x) * FMatrix::RotateY(OverrideRotation.y) * FMatrix::RotateZ(OverrideRotation.z);
+	//}
+	//if (IsOverrideScale3D) {
+	//	scale = FMatrix::Scale(OverrideScale3D);
+	//}
 
 	return origin * scale * rot * trans;
 }
 
 FVector USceneComponent::GetComponentLocation() const
 {
-	if (IsOverrideLocation) {
-		return OverrideLocation;
-	}
+	//if (IsOverrideLocation) {
+	//	return OverrideLocation;
+	//}
 
 	if (AttachParent != nullptr)
 	{
@@ -89,45 +89,62 @@ FVector USceneComponent::GetComponentLocation() const
 	}
 }
 
-//FVector USceneComponent::GetComponentRotation() const
-//{
-//	if (AttachParent != nullptr)
-//	{
-//		return FVector((FVector4(GetRelativeRotation(), 0) * AttachParent->GetComponentTransform()).xyz());
-//	}
-//	else
-//	{
-//		return GetRelativeRotation();
-//	}
-//}
-//
-//FVector USceneComponent::GetComponentScale() const
-//{
-//	if (AttachParent != nullptr)
-//	{
-//		return FVector((FVector4(GetRelativeScale3D(), 0) * AttachParent->GetComponentTransform()).xyz());
-//	}
-//	else
-//	{
-//		return GetRelativeScale3D();
-//	}
-//}
+FVector USceneComponent::GetComponentRotation() const
+{
+	if (AttachParent != nullptr)
+	{
+		return FVector((FVector4(GetRelativeRotation(), 0) * AttachParent->GetComponentTransform()).xyz());
+	}
+	else
+	{
+		return GetRelativeRotation();
+	}
+}
+
+FVector USceneComponent::GetComponentScale() const
+{
+	if (AttachParent != nullptr)
+	{
+		return FVector((FVector4(GetRelativeScale3D(), 0) * AttachParent->GetComponentTransform()).xyz());
+	}
+	else
+	{
+		return GetRelativeScale3D();
+	}
+}
+
 FMatrix USceneComponent::GetComponentTransform() const
 {
-	if (IsOverrideTransform)
-	{
-		return OverrideTransform;
-	}
-	if (IsOverrideLocation || IsOverrideRotation || IsOverrideScale3D)
-	{
-		return GetRelativeTransform() * AttachParent->GetComponentTransform();
-		//FMatrix origin = FMatrix::Identity;
+	//if (IsOverrideTransform)
+	//{
+	//	return OverrideTransform;
+	//}
+	//if (IsOverrideLocation || IsOverrideRotation || IsOverrideScale3D)
+	//{
 
-		//FMatrix scale = FMatrix::Scale(OverrideScale3D);
-		//FMatrix rot = FMatrix::RotateX(OverrideRotation.x) * FMatrix::RotateY(OverrideRotation.y) * FMatrix::RotateZ(OverrideRotation.z);
-		//FMatrix trans = FMatrix::Translate(OverrideLocation);
-		//return origin * scale * rot * trans;
-	}
+	//	FMatrix origin = FMatrix::Identity;
+	//	FMatrix scale = FMatrix::Scale(RelativeScale3D);
+	//	FMatrix rot = FMatrix::RotateX(RelativeRotation.x) * FMatrix::RotateY(RelativeRotation.y) * FMatrix::RotateZ(RelativeRotation.z);
+	//	FMatrix trans = FMatrix::Translate(RelativeLocation);
+
+	//	//if (IsOverrideLocation) {
+	//	//	trans = FMatrix::Translate(OverrideLocation);
+	//	//}
+	//	//if (IsOverrideRotation) {
+	//	//	rot = FMatrix::RotateX(OverrideRotation.x) * FMatrix::RotateY(OverrideRotation.y) * FMatrix::RotateZ(OverrideRotation.z);
+	//	//}
+	//	//if (IsOverrideScale3D) {
+	//	//	scale = FMatrix::Scale(OverrideScale3D);
+	//	//}
+
+	//	return GetRelativeTransform() * AttachParent->GetComponentTransform();
+	//	//FMatrix origin = FMatrix::Identity;
+
+	//	//FMatrix scale = FMatrix::Scale(OverrideScale3D);
+	//	//FMatrix rot = FMatrix::RotateX(OverrideRotation.x) * FMatrix::RotateY(OverrideRotation.y) * FMatrix::RotateZ(OverrideRotation.z);
+	//	//FMatrix trans = FMatrix::Translate(OverrideLocation);
+	//	//return origin * scale * rot * trans;
+	//}
 	if (AttachParent != nullptr)
 	{
 		return GetRelativeTransform() * AttachParent->GetComponentTransform();

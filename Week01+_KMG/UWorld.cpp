@@ -133,6 +133,25 @@ void UWorld::SetAxisPicked(UArrowComponent* axisX, UArrowComponent* axisY, UArro
     axisZ->SetPicked(pickedAxis == EPrimitiveColor::BLUE_Z);
 }
 
+void UWorld::ConvertCurPosToWorld(int x, int y, FVector& rayOriginWorld, FVector& rayDirectionWorld)
+{
+    auto cam = CRenderer::Instance()->GetMainCamera();
+    if (!cam) return;
+
+    auto viewport = CRenderer::Instance()->GetGraphics()->GetViewport();
+    FVector4 rayOriginNDC = FVector4(x / viewport.Width, y / viewport.Height, 0, 1);
+    FVector4 rayDirectionNDC = FVector4(x / viewport.Width, y / viewport.Height, 1, 0);
+    
+    auto proj = cam->PerspectiveProjection();
+    auto view = cam->View();
+
+    auto projInv = proj.Inverse();
+    auto viewInv = view.Inverse();
+    
+    rayOriginWorld = (rayOriginNDC * viewInv * projInv).GetCoord();
+    rayDirectionWorld = (rayDirectionNDC * viewInv * projInv).xyz();
+}
+
 UCubeComponent* UWorld::SpawnCubeActor()
 {
     return SpawnActor<UCubeComponent>();

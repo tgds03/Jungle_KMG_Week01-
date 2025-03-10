@@ -39,6 +39,7 @@ void UPrimitiveComponent::GenerateRayForPicking(const FVector& pickPosition, con
 	*rayDirection = (*rayDirection - *pickRayOrigin).Normalized();
 }
 
+// view world상의 ray를 받음
 bool UPrimitiveComponent::PickObjectByRayIntersection(const FVector& pickPosition, const FMatrix& viewMatrix, float* hitDistance)
 {
 

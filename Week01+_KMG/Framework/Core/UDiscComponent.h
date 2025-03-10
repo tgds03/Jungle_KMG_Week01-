@@ -10,6 +10,9 @@ public:
     UDiscComponent();
     ~UDiscComponent();
     //virtual void Update();
+    //virtual bool 
+    //virtual bool PickObjectByRayIntersection(const FVector& pickPosition, const FMatrix& viewMatrix, float* hitDistance) override;
+    //virtual bool Intersects(const FVector rayOrigin, const FVector rayDir, float& dist);
     virtual bool IntersectsRay(const FVector& rayOrigin, const FVector& rayDir, float& dist);
 };
 

@@ -25,9 +25,9 @@ public:
 	FMatrix GetRelativeTransform() const;
 
 	FVector GetComponentLocation() const;
-	//FVector GetComponentRotation() const;
-	//FVector GetComponentScale() const;
-	FMatrix GetComponentTransform() const;
+	FVector GetComponentRotation() const;
+	FVector GetComponentScale() const;
+	virtual FMatrix GetComponentTransform() const;
 	//FVector GetComponentVelocity() const;
 	FVector GetComponentX() const;
 	FVector GetComponentY() const;
@@ -83,17 +83,17 @@ public:
 public:
 	//FMatrix DEBUG_TRANSFORMATION_OVERRIDE = FMatrix::Identity;
 	// flag 설정시 강제로 이 상태로 렌더
-	FVector OverrideLocation = FVector::Zero;
-	FVector OverrideRotation = FVector::Zero;
-	FVector OverrideScale3D = FVector::One;
-	FMatrix OverrideTransform = FMatrix::Identity;
+	//FVector OverrideLocation = FVector::Zero;
+	//FVector OverrideRotation = FVector::Zero;
+	//FVector OverrideScale3D = FVector::One;
+	//FMatrix OverrideTransform = FMatrix::Identity;
 
-	//bool ISDEBUG = false;
+	////bool ISDEBUG = false;
 
-	bool IsOverrideTransform = false;
-	bool IsOverrideLocation = false;
-	bool IsOverrideRotation = false;
-	bool IsOverrideScale3D = false;
+	//bool IsOverrideTransform = false;
+	//bool IsOverrideLocation = false;
+	//bool IsOverrideRotation = false;
+	//bool IsOverrideScale3D = false;
 
 };
 

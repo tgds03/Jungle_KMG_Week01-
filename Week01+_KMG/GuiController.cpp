@@ -166,7 +166,7 @@ void GuiController::RenderEditor() {
 	// â�� ũ�� ������ �����Ͽ� �ʺ�� �����ϰ� ���̴� �ּ� 0, �ִ� ������(FLT_MAX)���� �����մϴ�.
 	ImGui::SetNextWindowSizeConstraints(ImVec2(300.0f, 0.0f), ImVec2(300.0f, FLT_MAX));
 
-	const char* primitiveItems[] = { "Cube", "Sphere", "Plane" };
+	const char* primitiveItems[] = { "Cube", "Sphere", "Plane", "Disc", "DiscHollow"};
 	ImGui::Begin("Control Panel",nullptr, ImGuiWindowFlags_AlwaysAutoResize);
 
 	ImGui::Text("FPS: %.2f (%.2fms)", 1/Time::GetDeltaTime(), 1000.f * Time::GetDeltaTime());
@@ -193,6 +193,12 @@ void GuiController::RenderEditor() {
 				break;
 			case 2:
 				_selected = world->SpawnPlaneActor();
+				break;
+			case 3:
+				_selected = world->SpawnDiscActor();
+				break;
+			case 4:
+				_selected = world->SpawnDiscHollowActor();
 				break;
 			}
 			UPrimitiveComponent* downcast = dynamic_cast<UPrimitiveComponent*>(_selected);

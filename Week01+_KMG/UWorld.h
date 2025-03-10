@@ -45,16 +45,20 @@ public:
     UActorComponent* PickingByRay(int mouse_X, int mouse_Y, float& distance);
     void SetAxisPicked(UArrowComponent* axisX, UArrowComponent* axisY, UArrowComponent* axisZ, EPrimitiveColor pickedAxis);
 
+    void ConvertCurPosToWorld(int x, int y, FVector& rayOriginWorld, FVector& rayDirectionWorldd);
+
+
+
     UCameraComponent* SpawnCamera();
     UCubeComponent* SpawnCubeActor();
     USphereComponent* SpawnSphereActor();
     UPlaneComponent* SpawnPlaneActor();
     UCoordArrowComponent* SpawnCoordArrowActor();
+    UDiscComponent* SpawnDiscActor();
+    UDiscHollowComponent* SpawnDiscHollowActor();
     
     void SaveWorld(const FString& fileName);
     void LoadWorld(const FString& fileName);
-    UDiscComponent* SpawnDiscActor();
-    UDiscHollowComponent* SpawnDiscHollowActor();
 
 private:
     TLinkedList<UActorComponent*> actorList = {};

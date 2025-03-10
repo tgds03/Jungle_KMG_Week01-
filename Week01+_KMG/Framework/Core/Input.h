@@ -5,6 +5,7 @@
 #include <dinput.h>
 //#include "Framework/Core/UCoordArrowComponent.h"
 
+class UCubeComponent;
 class UCoordArrowComponent;
 
 // https://blog.nullbus.net/24
@@ -41,6 +42,7 @@ public:
 	void GetMouseRay(FVector& rayOrigin, FVector& rayDirection, const FMatrix& viewMatrix, const FMatrix& projectionMatrix);
 
 	UCoordArrowComponent* SpawnMouseRay(const FMatrix& viewMatrix, const FMatrix& projectionMatrix, const FMatrix& debugMatrix = FMatrix::Identity);
+	UCubeComponent* SpawnPoint(FVector location);
 
 private:
 	bool ReadKeyboard();

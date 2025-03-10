@@ -81,30 +81,48 @@ UDiscComponent::~UDiscComponent()
 //{
 //}
 
+//bool UDiscComponent::PickObjectByRayIntersection(const FVector& pickPosition, const FMatrix& viewMatrix, float* hitDistance)
+//{
+//    FVector pickRayOrigin, pickRayDirection;
+//    GenerateRayForPicking(pickPosition, viewMatrix, &pickRayOrigin, &pickRayDirection);
+//
+//    // viewspace에서 worldspace로 변환
+//    FVector rayOriginWorld = (FVector4(pickRayOrigin, 1.f) * viewMatrix.Inverse())
+//
+//    bool bHit = Interse
+//}
+
+// world좌표계 ray -> model space에서 계산
+//bool UDiscComponent::Intersects(const FVector rayOrigin, const FVector rayDir, float& dist)
+//{
+//    FMatrix worldTransformInv = GetComponentTransform().Inverse();
+//    FVector rayOriginModel = (FVector4(rayOrigin, 1.f) * worldTransformInv).GetCoord();
+//    FVector rayDirModel = (FVector4(rayDir, 0.f) * worldTransformInv).xyz();
+//    
+//    if (rayDirModel.y == 0) return false; // normal to normal vector of plane
+//    dist = -rayOriginModel.y / rayDirModel.y;
+//
+//    FVector intersectionPoint = rayOriginModel + rayDirModel * dist;
+//    float intersectionToDiscCenterSquared = intersectionPoint.MagnitudeSquared();
+//
+//    return (intersectionToDiscCenterSquared < 1);
+//    assert(0);
+//    return 0;
+//}
+ 
+// model space값을 받아옴
 bool UDiscComponent::IntersectsRay(const FVector& rayOrigin, const FVector& rayDir, float& dist)
 {
+    //FMatrix worldTransformInv = GetComponentTransform().Inverse();
+    //FVector rayOriginModel = (FVector4(rayOrigin, 1.f) * worldTransformInv).GetCoord();
+    //FVector rayDirModel = (FVector4(rayDir, 0.f) * worldTransformInv).xyz();
 
-    float denom = rayDir.Dot(this->Front());
-    if (std::abs(denom) < FLT_EPSILON) return false;
+    if (rayOrigin.y == 0) return false; // normal to normal vector of plane
 
-    auto t = (this->GetComponentLocation() - rayOrigin).Dot(this->Front()) / denom;
+    dist = -rayOrigin.y / rayDir.y;
 
-    if (t < 0) return false; // Ray와 반대방향
+    FVector intersectionPoint = rayOrigin + rayDir * dist;
+    float intersectionToDiscCenterSquared = intersectionPoint.MagnitudeSquared();
 
-    FVector intersection = rayOrigin + rayDir * t;
-
-    FVector intersectionModelSpace = (FVector4(intersection, 0) * this->GetAttachParent()->GetComponentTransform().Inverse()).xyz();
-
-    return (intersectionModelSpace.MagnitudeSquared() < 1);
-
-
-    //FVector disp = intersection - this->GetComponentLocation();
-
-    //FVector dispModelSpace = (FVector4(disp, 0) * this->GetComponentTransform().Inverse()).xyz();
-
-    //float lenModelSpace = dispModelSpace
-    //if(disp.MagnitudeSquared() <= )
-
-    // Disc를 포함하는 평면
-    //return 1;
+    return (intersectionToDiscCenterSquared < 1);
 }
