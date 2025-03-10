@@ -30,7 +30,7 @@ private:
 
 	D3D11_VIEWPORT _viewPort = {};
 
-	float _clearColor[4] = { 0.f, 0.f, 0.f, 1.f };
+	float _clearColor[4] = { 0.1f, 0.19f, 0.1f, 1.f };
 
 private:
 	void CreateDeviceAndSwapChain();
