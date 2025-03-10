@@ -120,7 +120,7 @@ FMatrix USceneComponent::GetComponentTransform() const
 	}
 	if (IsOverrideLocation || IsOverrideRotation || IsOverrideScale3D)
 	{
-		return GetRelativeTransform();
+		return GetRelativeTransform() * AttachParent->GetComponentTransform();
 		//FMatrix origin = FMatrix::Identity;
 
 		//FMatrix scale = FMatrix::Scale(OverrideScale3D);

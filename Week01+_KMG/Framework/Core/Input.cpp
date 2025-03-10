@@ -28,8 +28,8 @@ bool Input::Init(HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeig
 	assert(SUCCEEDED(result));
 	result = m_keyboard->SetDataFormat(&c_dfDIKeyboard);
 	assert(SUCCEEDED(result));
-	//result = m_keyboard->SetCooperativeLevel(hwnd, DISCL_FOREGROUND | DISCL_EXCLUSIVE);
-	result = m_keyboard->SetCooperativeLevel(hwnd, DISCL_NONEXCLUSIVE | DISCL_BACKGROUND); // 창모드 (https://m.blog.naver.com/PostView.naver?blogId=fish19&logNo=120183923039)
+	result = m_keyboard->SetCooperativeLevel(hwnd, DISCL_FOREGROUND | DISCL_EXCLUSIVE);
+	//result = m_keyboard->SetCooperativeLevel(hwnd, DISCL_NONEXCLUSIVE | DISCL_BACKGROUND); // 창모드 (https://m.blog.naver.com/PostView.naver?blogId=fish19&logNo=120183923039)
 	assert(SUCCEEDED(result));
 	result = m_keyboard->Acquire();
 	assert(SUCCEEDED(result));
@@ -39,8 +39,8 @@ bool Input::Init(HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeig
 	assert(SUCCEEDED(result));
 	result = m_mouse->SetDataFormat(&c_dfDIMouse);
 	assert(SUCCEEDED(result));
-	//result = m_mouse->SetCooperativeLevel(hwnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE);
-	result = m_mouse->SetCooperativeLevel(hwnd, DISCL_NONEXCLUSIVE | DISCL_BACKGROUND);
+	result = m_mouse->SetCooperativeLevel(hwnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE);
+	//result = m_mouse->SetCooperativeLevel(hwnd, DISCL_NONEXCLUSIVE | DISCL_BACKGROUND);
 	assert(SUCCEEDED(result));
 	result = m_mouse->Acquire();
 	assert(SUCCEEDED(result));

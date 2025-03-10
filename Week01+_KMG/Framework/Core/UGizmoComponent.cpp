@@ -103,10 +103,10 @@ void UGizmoComponent::Update()
 
 void UGizmoComponent::Render()
 {
+	if (isGizmoActivated) {
 		ArrowX->Render();
 		ArrowY->Render();
 		ArrowZ->Render();
-	if (isGizmoActivated) {
 	}
 }
 
