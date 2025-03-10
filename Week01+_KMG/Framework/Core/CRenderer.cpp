@@ -12,8 +12,11 @@ CRenderer::CRenderer() {
 
 void CRenderer::Init(HWND hWnd) {
 	_graphics = new CGraphics(hWnd);
-	_constantBuffer = new CConstantBuffer<FMatrix>(_graphics->GetDevice(), _graphics->GetDeviceContext());
-	_constantBuffer->Create();
+	_matrixBuffer = new CConstantBuffer<FMatrix>(_graphics->GetDevice(), _graphics->GetDeviceContext());
+	_matrixBuffer->Create();
+	_flagsBuffer = new CConstantBuffer<FPrimitiveFlags>(_graphics->GetDevice(), _graphics->GetDeviceContext());
+	_flagsBuffer->Create();
+
 	SetVertexShader(L"Shader.hlsl", "VS", "vs_5_0");
 	SetPixelShader(L"Shader.hlsl", "PS", "ps_5_0");
 	SetRasterzierState();
@@ -64,15 +67,21 @@ void CRenderer::SetRasterzierState() {
 	_graphics->GetDeviceContext()->RSSetState(_rasterizerState->Get());
 }
 
-void CRenderer::SetConstantBuffer(FMatrix matrix) {
+void CRenderer::SetTransformToConstantBuffer(FMatrix matrix) {
 	//FMatrix view = matrix * _mainCamera->GetRelativeTransform().Inverse();
 	FMatrix view = _mainCamera->View();
 	FMatrix projection = _mainCamera->Projection();
 	matrix = matrix * view;
 	matrix = matrix * projection;
-	_constantBuffer->CopyData(matrix);
-	ID3D11Buffer* constantBuffer = _constantBuffer->Get();
+	_matrixBuffer->CopyData(matrix);
+	ID3D11Buffer* constantBuffer = _matrixBuffer->Get();
 	_graphics->GetDeviceContext()->VSSetConstantBuffers(0, 1, &constantBuffer);
+}
+
+void CRenderer::SetFlagsToConstantBuffer(FPrimitiveFlags flags) {
+	_flagsBuffer->CopyData(flags);
+	ID3D11Buffer* constantBuffer = _flagsBuffer->Get();
+	_graphics->GetDeviceContext()->VSSetConstantBuffers(1, 1, &constantBuffer);
 }
 
 UCameraComponent* CRenderer::GetMainCamera() const

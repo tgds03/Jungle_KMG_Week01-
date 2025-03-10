@@ -61,7 +61,13 @@ void GuiController::Picking() {
 	if (Input::Instance()->IsMouseButtonPressed(0) && !_io->WantCaptureMouse) {
 		int x, y;
 		Input::Instance()->GetMouseLocation(x, y);
+		UPrimitiveComponent* downcast = dynamic_cast<UPrimitiveComponent*>(_selected);
+		if ( downcast )
+			downcast->renderFlags &= ~PRIMITIVE_FLAG_SELECTED;
 		_selected = world->PickingByRay(x, y, gAxisXComp, gAxisYComp, gAxisZComp);
+		downcast = dynamic_cast<UPrimitiveComponent*>(_selected);
+		if ( downcast )
+			downcast->renderFlags |= PRIMITIVE_FLAG_SELECTED;
 	}
 		
 }
@@ -95,6 +101,11 @@ void GuiController::RenderEditor() {
 
 	ImGui::Combo("Primitive", &_selectedPrimitive, primitiveItems, ARRAYSIZE(primitiveItems));
 	if ( ImGui::Button("Create") ) {
+
+		UPrimitiveComponent* downcast = dynamic_cast<UPrimitiveComponent*>(_selected);
+		if ( downcast )
+			downcast->renderFlags &= ~PRIMITIVE_FLAG_SELECTED;
+
 		for (int i = 0; i < _spawnNumber; i++) {
 			switch ( _selectedPrimitive ) {
 			case 0:
@@ -107,6 +118,9 @@ void GuiController::RenderEditor() {
 				_selected = world->SpawnPlaneActor();
 				break;
 			}
+			UPrimitiveComponent* downcast = dynamic_cast<UPrimitiveComponent*>(_selected);
+			if (downcast)
+				downcast->renderFlags |= PRIMITIVE_FLAG_SELECTED;
 			//world->AddActor(_selected);
 		}
 	}
@@ -121,6 +135,9 @@ void GuiController::RenderEditor() {
 	if (ImGui::Button("New Scene")) {
 		world->ClearWorld();
 		_selected = nullptr;
+		UPrimitiveComponent* downcast = dynamic_cast<UPrimitiveComponent*>(_selected);
+		if ( downcast )
+			downcast->renderFlags &= ~PRIMITIVE_FLAG_SELECTED;
 	}
 	if (ImGui::Button("Save Scene")) {
 		world->SaveWorld(_sceneNameBuffer);
@@ -128,6 +145,9 @@ void GuiController::RenderEditor() {
 	if (ImGui::Button("Load Scene")) {
 		world->LoadWorld(_sceneNameBuffer);
 		_selected = nullptr;
+		UPrimitiveComponent* downcast = dynamic_cast<UPrimitiveComponent*>(_selected);
+		if ( downcast )
+			downcast->renderFlags &= ~PRIMITIVE_FLAG_SELECTED;
 	}
 
 	ImGui::End();

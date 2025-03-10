@@ -35,7 +35,8 @@ public:
 	void SetPixelShader(const FWString filename, FString funcname, FString version);
 	void ResetPixelShader();
 	void SetRasterzierState();
-	void SetConstantBuffer(FMatrix matrix);
+	void SetTransformToConstantBuffer(FMatrix matrix);
+	void SetFlagsToConstantBuffer(FPrimitiveFlags flags);
 	UCameraComponent* GetMainCamera() const;
 	void SetCamera(UCameraComponent* camera);
 private:
@@ -44,7 +45,8 @@ private:
 	CPixelShader* _pixelShader = nullptr;
 	CInputLayout* _inputLayout = nullptr;
 	CRasterzierState* _rasterizerState = nullptr;
-	CConstantBuffer<FMatrix>* _constantBuffer = nullptr;
+	CConstantBuffer<FMatrix>* _matrixBuffer = nullptr;
+	CConstantBuffer<FPrimitiveFlags>* _flagsBuffer = nullptr;
 	UCameraComponent* _mainCamera = nullptr;
 };
 

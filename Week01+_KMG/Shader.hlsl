@@ -2,7 +2,10 @@ cbuffer TransformBuffer : register(b0)
 {
     row_major matrix WorldMatrix; // 4x4 변환 행렬
 };
-
+cbuffer PrimitiveBuffer : register(b1)
+{
+    uint Flags;
+};
 struct VS_INPUT
 {
     float3 Position : POSITION;
@@ -26,7 +29,18 @@ VS_OUTPUT VS(VS_INPUT input)
     //output.Position = float4(input.Position, 1.0f);
     
     // 정점 색상을 그대로 전달
-    output.Color = input.Color;
+    if (Flags == 0)
+    {
+        output.Color = input.Color;
+    }
+    else if (Flags & 1 << 0)
+    {
+        output.Color = float4(0.f, 0.f, 0.f, 0.f);
+    }
+    else if (Flags & 1 << 1)
+    {
+        output.Color = input.Color * 1.5;
+    }
     //output.Color = float4(-output.Position.zzz, 1.0f);
     
     return output;

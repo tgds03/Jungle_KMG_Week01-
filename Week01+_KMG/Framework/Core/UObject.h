@@ -17,13 +17,13 @@ public:
 		void* ptr = ::operator new(size);
 		++CEngineStatics::TotalAllocationCount;
 		_allocationMap[ptr] = size;
-		CEngineStatics::TotalAllocationBytes += size;
+		CEngineStatics::TotalAllocationBytes += static_cast<uint32>(size);
 		return ptr;
 	}
 
 	void operator delete(void* p) {
 		--CEngineStatics::TotalAllocationCount;
-		CEngineStatics::TotalAllocationBytes -= _allocationMap[p];
+		CEngineStatics::TotalAllocationBytes -= static_cast<uint32>(_allocationMap[p]);
 		_allocationMap.erase(p);
 		free(p);
 	}
