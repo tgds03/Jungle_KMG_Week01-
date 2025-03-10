@@ -75,7 +75,26 @@ void UGizmoComponent::Update()
 		selectedDisc = DiscY;
 	else if (selectedAxis == EPrimitiveColor::BLUE_Z_ROT) selectedDisc = DiscZ;
 	else {
+		if (temp)
+		{
+			temp->renderFlags &= ~PRIMITIVE_FLAG_SELECTED;
+			temp = nullptr;
+		}
+		if (temp1) {
+			temp1->renderFlags &= ~PRIMITIVE_FLAG_SELECTED;
+			temp1 = nullptr;
+		}
 		return; 	// ������� ȭ��ǥ�� ���õ��� ����
+	}
+	if (selectedArrow)
+	{
+		temp = selectedArrow;
+		temp->renderFlags |= PRIMITIVE_FLAG_SELECTED;
+	}
+	else if (selectedDisc)
+	{
+		temp1 = selectedDisc;
+		temp1->renderFlags |= PRIMITIVE_FLAG_SELECTED;
 	}
 
 	// ���콺 ��Ÿ
@@ -86,10 +105,6 @@ void UGizmoComponent::Update()
 		
  	FVector mouseDirOnScreen = { dx,dy,0 };
 	if (abs(dx) < FLT_EPSILON && abs(dy) < FLT_EPSILON) return;
-	ImGui::Begin("MouseDelta");
-	ImGui::Text("MouseDelta: %f %f", dx, dy);
-	ImGui::End();
-
 
 	if (selectedArrow)
 	{

@@ -29,9 +29,11 @@ public:
     UArrowComponent* ArrowX;
     UArrowComponent* ArrowY;
     UArrowComponent* ArrowZ;
+    UArrowComponent* temp;
 
     UDiscHollowComponent* DiscX;
     UDiscHollowComponent* DiscY;
     UDiscHollowComponent* DiscZ;
+    UDiscHollowComponent* temp1;
 };
 
