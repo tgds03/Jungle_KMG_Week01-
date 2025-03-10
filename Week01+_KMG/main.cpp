@@ -29,10 +29,18 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 		PostQuitMessage(0);
 		break;
 	case WM_LBUTTONDOWN:
-		if(gMainScene)
-			gMainScene->PickingByRay(LOWORD(lParam), HIWORD(lParam), gAxisXComp, gAxisYComp, gAxisZComp);
 		break;
-	case WM_LBUTTONUP:
+	case WM_MOUSEMOVE:
+	{
+		TRACKMOUSEEVENT tme = {};
+		tme.cbSize = sizeof(TRACKMOUSEEVENT);
+		tme.dwFlags = TME_LEAVE;
+		tme.hwndTrack = hWnd; 
+		tme.dwHoverTime = 0;  
+		TrackMouseEvent(&tme);
+		break;
+	}
+	case WM_MOUSELEAVE:
 		if (gMainScene)
 			gMainScene->SetAxisPicked(gAxisXComp, gAxisYComp, gAxisZComp, EAxisColor::NONE);
 		break;
@@ -130,30 +138,20 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		//}
 
 
-		//if (Input::Instance()->IsKeyPressed(DIKEYBOARD_J))
-		//{
-		//	obj->SetRelativeLocation(obj->GetRelativeLocation() - obj->Right());
-		//}
-		//if (Input::Instance()->IsKeyPressed(DIKEYBOARD_L))
-		//{
-		//	obj->SetRelativeLocation(obj->GetRelativeLocation() + obj->Right());
-		//}
-		//if (Input::Instance()->IsKeyPressed(DIKEYBOARD_I))
-		//{
-		//	obj->SetRelativeLocation(obj->GetRelativeLocation() + obj->Front());
-		//}
-		//if (Input::Instance()->IsKeyPressed(DIKEYBOARD_K))
-		//{
-		//	obj->SetRelativeLocation(obj->GetRelativeLocation() - obj->Front());
-		//}
-		//if (Input::Instance()->IsKeyPressed(DIKEYBOARD_O))
-		//{
-		//	obj->SetRelativeLocation(obj->GetRelativeLocation() + obj->Up());
-		//}
-		//if (Input::Instance()->IsKeyPressed(DIKEYBOARD_U))
-		//{
-		//	obj->SetRelativeLocation(obj->GetRelativeLocation() - obj->Up());
-		//}
+
+		if (Input::Instance()->IsMouseButtonPressed(0)) {
+			int mx, my;
+			if (gMainScene) {
+				Input::Instance()->GetMouseLocation(mx, my);
+				gMainScene->PickingByRay(mx,my, gAxisXComp, gAxisYComp, gAxisZComp);
+			}
+		}
+		if (Input::Instance()->IsMouseButtonReleased(0)) {
+			if (gMainScene) {
+				gMainScene->SetAxisPicked(gAxisXComp, gAxisYComp, gAxisZComp, EAxisColor::NONE);
+
+			}
+		}
 		//CRenderer::Instance()->GetCamera()->PrintLoc(L"CAM");
 		//obj->PrintLoc(L"obj");
 
@@ -170,6 +168,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		AxisYComp->Render();
 		AxisZComp->Render();
 		guiController->RenderEditor();
+		gGizmo->Render();
+
 		guiController->RenderFrame();
 		CRenderer::Instance()->GetGraphics()->RenderEnd();
 		Time::Instance()->_query_frame_end_time();
@@ -180,4 +180,4 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	Input::Instance()->Shutdown();
 	CRenderer::Release();
 	return 0;
-}
+} 
