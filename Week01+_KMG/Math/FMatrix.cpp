@@ -228,24 +228,24 @@ FMatrix FMatrix::Scale(FVector xyz)
 FMatrix FMatrix::RotateX(float rx) {
 	return FMatrix({
 		1.f, 0.f, 0.f, 0.f,
-		0.f, cos(rx), sin(rx), 0.f,
-		0.f, -sin(rx), cos(rx), 0.f,
+		0.f, cos(rx), -sin(rx), 0.f,
+		0.f, sin(rx), cos(rx), 0.f,
 		0.f, 0.f, 0.f, 1.f
 	});
 }
 FMatrix FMatrix::RotateY(float ry) {
 	return FMatrix({
-		cos(ry), 0.f, -sin(ry), 0.f,
+		cos(ry), 0.f, sin(ry), 0.f,
 		0.f, 1.f, 0.f, 0.f,
-		sin(ry), 0.f, cos(ry), 0.f,
+		-sin(ry), 0.f, cos(ry), 0.f,
 		0.f, 0.f, 0.f, 1.f,
 	});
 }
 
 FMatrix FMatrix::RotateZ(float rz) {
 	return FMatrix({
-		cos(rz), sin(rz), 0.f, 0.f,
-		-sin(rz), cos(rz), 0.f, 0.f,
+		cos(rz), -sin(rz), 0.f, 0.f,
+		sin(rz), cos(rz), 0.f, 0.f,
 		0.f, 0.f, 1.f, 0.f,
 		0.f, 0.f, 0.f, 1.f,
 	});

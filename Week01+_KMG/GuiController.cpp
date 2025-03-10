@@ -57,6 +57,7 @@ void GuiController::NewFrame()
 
 		if (neareastActorComp == nullptr && neareastAxis == EPrimitiveColor::NONE) { //선택 암것도 안됨
 			gGizmo->Detach();
+
 		}
 		else {
 			if (nearestActorDistance < nearestGizmoDistance) { // actor 선택
@@ -262,6 +263,7 @@ void GuiController::RenderEditor() {
 		//ImGui::DragFloat3("rotation", &downcast->RelativeRotation.x, 0.1f);
 		//ImGui::DragFloat3("scale", &downcast->RelativeScale3D.x, 0.1f);
 		if ( ImGui::Button("Delete") ) {
+			gGizmo->Detach();
 			world->RemoveActor(_selected);
 			_selected = nullptr;
 		}
