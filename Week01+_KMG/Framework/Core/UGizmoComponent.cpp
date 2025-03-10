@@ -138,13 +138,12 @@ void UGizmoComponent::Update()
 
 		FVector cursorDeltaOnScreen = { dx,dy,0 };
 
-
 		auto cam = CRenderer::Instance()->GetMainCamera();
 		FVector gizmoCenterOnScreen = (FVector4(GetComponentLocation(), 1.f) * cam->View() * cam->PerspectiveProjection()).GetCoord();
 		gizmoCenterOnScreen = FVector(gizmoCenterOnScreen.x, gizmoCenterOnScreen.y, 0);
 		FVector cursorToGizmo = gizmoCenterOnScreen - cursorPosOnScreen;
 
-		FVector effectiveMovementVector = cursorToGizmo.Cross(mouseDirOnScreen);
+		FVector effectiveMovementVector = cursorToGizmo.Cross(cursorDeltaOnScreen);
 		float effectiveMovementClockwise = effectiveMovementVector.z;
 
 		//FVector discClockWiseOnScreen = (FVector4(selectedDisc->Right() * -1, 0) * cam->View() * cam->PerspectiveProjection()).xyz();
