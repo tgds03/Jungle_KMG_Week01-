@@ -1,5 +1,6 @@
 ﻿#include "stdafx.h"
 #include "UDiscHollowComponent.h"
+#include "USphereComponent.h"
 
 #define DISC_RESOLUTION 128
 
@@ -22,24 +23,24 @@ UDiscHollowComponent::UDiscHollowComponent(EPrimitiveColor color, float innerRad
         for (int i = 0; i <= DISC_RESOLUTION; ++i) {
             float angle = i * angleStep;
             float x = cos(angle);
-            float z = sin(angle);
-            vertices.push_back({ x, 0.0f, z ,color3.x, color3.y, color3.z, 1 });
+            float y = sin(angle);
+            vertices.push_back({ x, y, 0.0f,color3.x, color3.y, color3.z, 1 });
             
             x *= innerRadius;
-            z *= innerRadius;
-            vertices.push_back({ x, 0.0f, z ,color3.x, color3.y, color3.z, 1 });
+            y *= innerRadius;
+            vertices.push_back({ x, y, 0.0f,color3.x, color3.y, color3.z, 1 });
         }
 
         // 인덱스 설정 (삼각형 리스트)
         for (int i = 0; i <= DISC_RESOLUTION+1; ++i) {
             int pivot = 2 * i;
             indices.push_back(pivot);      // 중심점
-            indices.push_back(pivot + 3);      // 현재 점
-            indices.push_back(pivot+2);  // 다음 점 (마지막 점 예외 처리)
+            indices.push_back(pivot + 2);      // 현재 점
+            indices.push_back(pivot+3);  // 다음 점 (마지막 점 예외 처리)
 
             indices.push_back(pivot);      // 중심점
-            indices.push_back(pivot + 1);      // 현재 점
-            indices.push_back(pivot+3);  // 다음 점 (마지막 점 예외 처리)
+            indices.push_back(pivot + 3);      // 현재 점
+            indices.push_back(pivot+1);  // 다음 점 (마지막 점 예외 처리)
 
         }
     }
@@ -62,24 +63,24 @@ UDiscHollowComponent::UDiscHollowComponent()
         for (int i = 0; i <= DISC_RESOLUTION; ++i) {
             float angle = i * angleStep;
             float x = cos(angle);
-            float z = sin(angle);
-            vertices.push_back({ x, 0.0f, z ,1,1,1, 1 });
+            float y = sin(angle);
+            vertices.push_back({ x, y,0.0f ,1,1,1, 1 });
 
             x *= 0.5;
-            z *= 0.5;
-            vertices.push_back({ x, 0.0f, z ,1,1,1, 1 });
+            y *= 0.5;
+            vertices.push_back({ x, y,0.0f ,1,1,1, 1 });
         }
 
         // 인덱스 설정 (삼각형 리스트)
         for (int i = 0; i <= DISC_RESOLUTION + 1; ++i) {
             int pivot = 2 * i;
             indices.push_back(pivot);      // 중심점
-            indices.push_back(pivot + 3);      // 현재 점
-            indices.push_back(pivot + 2);  // 다음 점 (마지막 점 예외 처리)
+            indices.push_back(pivot + 2);      // 현재 점
+            indices.push_back(pivot + 3);  // 다음 점 (마지막 점 예외 처리)
 
             indices.push_back(pivot);      // 중심점
-            indices.push_back(pivot + 1);      // 현재 점
-            indices.push_back(pivot + 3);  // 다음 점 (마지막 점 예외 처리)
+            indices.push_back(pivot + 3);      // 현재 점
+            indices.push_back(pivot + 1);  // 다음 점 (마지막 점 예외 처리)
 
         }
     }
@@ -102,15 +103,47 @@ UDiscHollowComponent::~UDiscHollowComponent()
 
 bool UDiscHollowComponent::IntersectsRay(const FVector& rayOrigin, const FVector& rayDir, float& dist)
 {
-    float denom = rayDir.Dot(this->Front());
-    if (std::abs(denom) < FLT_EPSILON) return false;
+    FVector planeNormal = Front();
+    planeNormal = planeNormal * -1;
+    FVector planePoint = GetComponentLocation(); 
+    float denominator = planeNormal.Dot(rayDir);
 
-    auto t = (this->GetComponentLocation() - rayOrigin).Dot(this->Front()) / denom;
+    if (fabs(denominator) < 1e-6) {
+        return 0; // 평면과 직선이 평행하여 교차하지 않음
+    }
 
-    if (t < 0) return false; // Ray와 반대방향
+    float d = -planeNormal.Dot(planePoint);
+    float t = -(planeNormal.Dot(rayOrigin) + d) / denominator;
+
+    if (t < 0) {
+        return 0; // 교차점이 직선의 반대 방향
+    }
 
     FVector intersection = rayOrigin + rayDir * t;
 
+
+    float D = planeNormal.Dot(planePoint);
+
+    if (planeNormal.Dot(rayDir) < FLT_EPSILON)
+    {
+        return false;
+    }
+
+    float x = (D - planeNormal.Dot(rayOrigin)) / planeNormal.Dot(rayDir);
+
+    FVector contact =  rayOrigin + rayDir.Normalized() * x;
+    contact *= 1;
+
+
+    //float denom = rayDir.Dot(this->Front());
+    //if (std::abs(denom) < FLT_EPSILON) return false;
+
+    //auto t = (this->GetComponentLocation() - rayOrigin).Dot(this->Front()) / denom;
+
+    //if (t < FLT_EPSILON) return false; // Ray와 반대방향
+
+    //FVector intersection = rayOrigin + rayDir * t;
+    this->SetWorldLocation(contact);
     FVector4 intersectionModelSpace4 = FVector4(intersection, 1) * this->GetComponentTransform().Inverse();
     FVector intersectionModelSpace = (intersectionModelSpace4).xyz() / intersectionModelSpace4.w;
 

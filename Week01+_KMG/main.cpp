@@ -94,7 +94,9 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	UArrowComponent* AxisYComp = new UArrowComponent(GREEN_Y);
 	UArrowComponent* AxisZComp = new UArrowComponent(BLUE_Z);
 	UGizmoComponent* Gizmo = new UGizmoComponent(AxisXComp, AxisYComp, AxisZComp);
-
+	UCoordArrowComponent* c = new UCoordArrowComponent();
+	c->AttachToComponent(disc);
+	//disc->SetRelativeRotationX(1.0);
 	Gizmo->AttachToComponent(obj2);
 	AxisXComp->SetRelativeRotation({ 0,-M_PI/2,0 });
 	AxisYComp->SetRelativeRotation({ M_PI / 2 ,0,0});
@@ -169,6 +171,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		CRenderer::Instance()->GetGraphics()->RenderBegin();
 		gGizmo->Update();
 		disc->Render();
+		c->Render();
 		obj2->SetRelativeRotation(obj2->GetRelativeRotation() + FVector{0.1, 0.2, 0.3});
 		gGizmo->Render();
 		mainScene->Render();

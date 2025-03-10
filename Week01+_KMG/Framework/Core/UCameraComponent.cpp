@@ -18,7 +18,7 @@ void UCameraComponent::Update() {
 	if ( Input::Instance()->IsKeyDown(DIK_W) ) {
 		//RelativeLocation.z -= 1.0f * Time::GetDeltaTime();
 		//RelativeLocation += Front() * Time::GetDeltaTime();
-		SetRelativeLocation(loc + Front() * Time::GetDeltaTime());
+		SetRelativeLocation(loc + Front() * 10 * Time::GetDeltaTime());
 	}
 	if ( Input::Instance()->IsKeyDown(DIK_S) ) {
 		//RelativeLocation.z += 1.0f * Time::GetDeltaTime();
