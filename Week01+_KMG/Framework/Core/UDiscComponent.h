@@ -6,7 +6,7 @@ class UDiscComponent :
     public UPrimitiveComponent
 {
 public:
-    UDiscComponent(EAxisColor color);
+    UDiscComponent(EPrimitiveColor color);
     UDiscComponent();
     ~UDiscComponent();
     //virtual void Update();

@@ -9,7 +9,7 @@ static const FVector Colors[] = {
     FVector(0.0f, 0.0f, 1.0f)   // Z��: �Ķ�
 };
 
-UDiscComponent::UDiscComponent(EAxisColor color)
+UDiscComponent::UDiscComponent(EPrimitiveColor color)
 {
     FVector color3 = Colors[color];
 

@@ -42,7 +42,7 @@ public:
     const TLinkedList<UActorComponent*>& GetActors() const;
 
     UActorComponent* PickingByRay(int mouse_X, int mouse_Y, UArrowComponent* AxisXComp, UArrowComponent* AxisYComp, UArrowComponent* AxisZComp);
-    void SetAxisPicked(UArrowComponent* axisX, UArrowComponent* axisY, UArrowComponent* axisZ, EAxisColor pickedAxis);
+    void SetAxisPicked(UArrowComponent* axisX, UArrowComponent* axisY, UArrowComponent* axisZ, EPrimitiveColor pickedAxis);
 
     UCameraComponent* SpawnCamera();
     UCubeComponent* SpawnCubeActor();

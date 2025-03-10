@@ -146,11 +146,11 @@ UCameraComponent* UWorld::SpawnCamera()
     return newCamera;
 }
 
-void UWorld::SetAxisPicked(UArrowComponent* axisX, UArrowComponent* axisY, UArrowComponent* axisZ, EAxisColor pickedAxis)
+void UWorld::SetAxisPicked(UArrowComponent* axisX, UArrowComponent* axisY, UArrowComponent* axisZ, EPrimitiveColor pickedAxis)
 {
-    axisX->SetPicked(pickedAxis == EAxisColor::RED_X);
-    axisY->SetPicked(pickedAxis == EAxisColor::GREEN_Y);
-    axisZ->SetPicked(pickedAxis == EAxisColor::BLUE_Z);
+    axisX->SetPicked(pickedAxis == EPrimitiveColor::RED_X);
+    axisY->SetPicked(pickedAxis == EPrimitiveColor::GREEN_Y);
+    axisZ->SetPicked(pickedAxis == EPrimitiveColor::BLUE_Z);
 }
 
 UCubeComponent* UWorld::SpawnCubeActor()

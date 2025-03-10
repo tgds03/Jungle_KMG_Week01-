@@ -6,7 +6,7 @@ class UDiscHollowComponent :
     public UPrimitiveComponent
 {
 public:
-    UDiscHollowComponent(EAxisColor color, float innerRadius);
+    UDiscHollowComponent(EPrimitiveColor color, float innerRadius);
     UDiscHollowComponent();
     ~UDiscHollowComponent();
     //virtual void Update();
