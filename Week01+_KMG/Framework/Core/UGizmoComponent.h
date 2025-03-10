@@ -22,5 +22,6 @@ public:
     UArrowComponent* ArrowX;
     UArrowComponent* ArrowY;
     UArrowComponent* ArrowZ;
+    UArrowComponent* temp;
 };
 

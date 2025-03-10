@@ -12,10 +12,8 @@ public:
 	UArrowComponent(EPrimitiveColor axis);
 	~UArrowComponent();
 	virtual void Render();
-	void LoadObjAndComputeBoundingBox();
 	bool IsPicked() { return picked; }
 	void SetPicked(bool pik) { picked = pik; }
-	virtual bool IntersectsRay(const FVector& rayOrigin, const FVector& rayDir, float& dist);
 private:
 	//for boundBox
 	FVector minPos;

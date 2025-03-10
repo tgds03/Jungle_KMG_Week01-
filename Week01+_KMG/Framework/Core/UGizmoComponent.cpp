@@ -21,8 +21,8 @@ UGizmoComponent::UGizmoComponent()
 	ArrowY->OverrideScale3D = { 2,2,2 };
 	ArrowZ->OverrideScale3D = { 2,2,2 };
 
-	ArrowX->SetRelativeRotation({ 0,M_PI / 2,0 });
-	ArrowY->SetRelativeRotation({ -M_PI / 2 ,0,0 });
+	ArrowX->SetRelativeRotation({ 0,-M_PI / 2,0 });
+	ArrowY->SetRelativeRotation({ M_PI / 2 ,0,0 });
 	ArrowZ->SetRelativeRotation({ 0,0,0 });
 
 }
@@ -66,8 +66,17 @@ void UGizmoComponent::Update()
 	else if (selectedAxis == EPrimitiveColor::GREEN_Y) selectedArrow = ArrowY;
 	else if (selectedAxis == EPrimitiveColor::BLUE_Z) selectedArrow = ArrowZ;
 	else {
-		return; 	// ������� ȭ��ǥ�� ���õ��� ����
+		if (temp) {
+			temp->renderFlags &= ~PRIMITIVE_FLAG_SELECTED;
+			temp = nullptr;
+		}
+		return;
 	}
+	if (selectedArrow) {
+		temp = selectedArrow;
+		temp->renderFlags |= PRIMITIVE_FLAG_SELECTED;
+	}
+
 
 	// ���콺 ��Ÿ
 	int dxInt, dyInt;
@@ -122,4 +131,9 @@ void UGizmoComponent::Detach()
 	selectedAxis = EPrimitiveColor::NONE;
 	//UE_LOG(L"Detach!!!!!!!\n");
 	this->AttachToComponent(nullptr);
+	if (temp) {
+		temp->renderFlags &= ~PRIMITIVE_FLAG_SELECTED;
+		
+		temp = nullptr;
+	}
 }

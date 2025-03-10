@@ -32,7 +32,7 @@ void UCameraComponent::Update() {
 		int dx, dy;
 		Input::Instance()->GetMouseDelta(dx, dy);
 		auto rot = GetRelativeRotation();
-		SetRelativeRotation(rot - FVector(degToRad(-dy) * mouseSensitive, degToRad(-dx) * mouseSensitive, 0));
+		SetRelativeRotation(rot - FVector(degToRad(dy) * mouseSensitive, degToRad(dx) * mouseSensitive, 0));
 
 		//RelativeRotation.y -= degToRad(dx) * mouseSensitive;
 		//RelativeRotation.x -= degToRad(dy) * mouseSensitive;
@@ -41,7 +41,12 @@ void UCameraComponent::Update() {
 }
 
 void UCameraComponent::Render() {
-	ImGui::Begin("Camera");
+
+	
+}
+
+void UCameraComponent::RenderUI()
+{
 	//ImGui::Text(("position: " + static_cast<std::string>(RelativeLocation)).c_str());
 	//ImGui::Text(("rotation: " + static_cast<std::string>(RelativeRotation)).c_str());
 	ImGui::Checkbox("Orthogonal", &orthogonal);
@@ -64,7 +69,6 @@ void UCameraComponent::Render() {
 	//ImGui::DragFloat3("position", &RelativeLocation.x, 0.1f);
 	//ImGui::DragFloat3("rotation", &RelativeRotation.x, 0.1f);
 
-	ImGui::End();
 }
 
 FMatrix UCameraComponent::View()

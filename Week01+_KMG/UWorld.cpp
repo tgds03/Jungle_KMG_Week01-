@@ -91,17 +91,19 @@ UActorComponent* UWorld::PickingByRay(int mouse_X, int mouse_Y, float& dist)
     float hitDistance = FLT_MAX;
     float nearestDistance = FLT_MAX;
     UActorComponent* nearestActorComp = nullptr;
-
+    int intersect = FLT_MIN;
 	for (const auto& actorComp : actorList) {
         if (!actorComp) continue;
-		bool bRes = actorComp->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitDistance);
-       if (bRes && hitDistance < nearestDistance) {
+		int bRes = actorComp->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitDistance);
+       if (bRes > intersect && hitDistance < nearestDistance) {
             nearestActorComp = actorComp;
             nearestDistance = hitDistance;
+            intersect = bRes;
+            UE_LOG((L"\nINTERSECTS::: " + std::to_wstring(bRes)).c_str());
         }
 	}
     if (nearestActorComp) {
-        UE_LOG((L"\nfind!__" + std::to_wstring(nearestActorComp->GetUUID()) + L" is neareast!!\n").c_str());
+        UE_LOG((L"\nfind!__" + std::to_wstring(nearestActorComp->GetUUID()) + L" is neareast!! dist: "+ std::to_wstring(nearestDistance)+ L"\n").c_str());
     }
     dist = nearestDistance;
     return nearestActorComp;
