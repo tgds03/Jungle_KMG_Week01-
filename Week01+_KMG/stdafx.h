@@ -7,6 +7,7 @@
 #include <d3d11.h>
 #include <d3dcompiler.h>
 #include <comdef.h>
+#include <dxgidebug.h>
 
 #include <fstream>
 #include <assert.h>
@@ -49,7 +50,6 @@ template <typename T> void SafeRelease(T** ppT) {
 		*ppT = nullptr;
 	}
 }
-
 
 #define UE_LOG OutputDebugString
 

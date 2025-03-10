@@ -14,8 +14,22 @@ private:
 	CRenderer& operator=(const CRenderer& ref) = delete;
 	~CRenderer() {
 		delete _vertexShader;
+		_vertexShader = nullptr;
 		delete _pixelShader;
+		_pixelShader = nullptr;
+		delete _inputLayout;
+		_inputLayout = nullptr;
+		delete _rasterizerState;
+		_rasterizerState = nullptr;
+		delete _matrixBuffer;
+		_matrixBuffer = nullptr;
+		delete _flagsBuffer;
+		_flagsBuffer = nullptr;
+		delete _mainCamera;
+		_mainCamera = nullptr;
 		delete _graphics;
+		_graphics = nullptr;
+		
 	};
 public:
 	static CRenderer* Instance() {
@@ -25,6 +39,7 @@ public:
 	};
 	static void Release() {
 		delete _instance;
+		_instance = nullptr;
 	}
 	void Init(HWND hWnd);
 	

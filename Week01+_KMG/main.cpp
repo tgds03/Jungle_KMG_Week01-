@@ -166,5 +166,17 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	}
 	Input::Instance()->Shutdown();
 	CRenderer::Release();
+
+#ifdef _DEBUG
+	HMODULE dxgidebugdll = GetModuleHandleW(L"dxgidebug.dll");
+	decltype(&DXGIGetDebugInterface) GetDebugInterface = reinterpret_cast<decltype(&DXGIGetDebugInterface)>(GetProcAddress(dxgidebugdll, "DXGIGetDebugInterface"));
+	IDXGIDebug* debug;
+	GetDebugInterface(IID_PPV_ARGS(&debug));
+	OutputDebugString(L"-------------DirectX11 Obj Ref Count--------------\n");
+	debug->ReportLiveObjects(DXGI_DEBUG_D3D11, DXGI_DEBUG_RLO_DETAIL);
+	OutputDebugString(L"--------------------------------------------------\n");
+	debug->Release();
+#endif // _DEBUG
+
 	return 0;
 } 

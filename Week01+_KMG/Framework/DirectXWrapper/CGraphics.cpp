@@ -29,8 +29,10 @@ void CGraphics::RenderEnd() {
 }
 
 void CGraphics::Release() {
+	SafeRelease(&depthStencilView);
 	ReleaseRenderTargetView();
 	ReleaseDeviceAndSwapChain();
+	
 }
 
 void CGraphics::ResizeBuffers(int width, int height)
@@ -126,6 +128,7 @@ void CGraphics::ReleaseDeviceAndSwapChain() {
 	if ( _deviceContext )
 		_deviceContext->Flush();
 	SafeRelease(&_renderTargetView);
+	SafeRelease(&_swapChain);
 	SafeRelease(&_deviceContext);
 	SafeRelease(&_device);
 }
