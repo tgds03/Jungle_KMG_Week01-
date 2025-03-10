@@ -40,6 +40,9 @@
     <Filter Include="Shader">
       <UniqueIdentifier>{3492a764-7518-4c73-a2f4-59a06b7b2c3f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="헤더 파일\Include">
+      <UniqueIdentifier>{aec81e03-3931-4ee5-b9b8-76177004370b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -141,6 +144,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Core\UArrowComponent.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="DataManager.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -246,6 +252,12 @@
     </ClInclude>
     <ClInclude Include="Framework\Core\UArrowComponent.h">
       <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="DataManager.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\json.hpp">
+      <Filter>헤더 파일\Include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

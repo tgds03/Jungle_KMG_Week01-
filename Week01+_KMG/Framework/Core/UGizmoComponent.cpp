@@ -2,7 +2,7 @@
 #include "UGizmoComponent.h"
 #include "UArrowComponent.h"
 
-#define GIZMO_SELECT_MOUSE_SPEED 30.0f;
+#define GIZMO_SELECT_MOUSE_SPEED 10.0f;
 
 UGizmoComponent::UGizmoComponent(UArrowComponent* axisX, UArrowComponent* axisY, UArrowComponent* axisZ)
 	: ArrowX(axisX), ArrowY(axisY), ArrowZ(axisZ)
@@ -29,6 +29,10 @@ void UGizmoComponent::Update()
 	ArrowY->IsOverrideScale3D = true;
 	ArrowZ->IsOverrideScale3D = true;
 
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Æ¹ï¿½ï¿½Íµï¿½ ï¿½ÈºÙ¾ï¿½ï¿½ï¿½ï¿½ï¿½
+ 	if (GetAttachParent() == nullptr)
+		return;
+
 	ImGui::Begin("Gizmo");
 	//ImGui::Text("Gizmo Rel Pos: %f %f %f", RelativeLocation.x, RelativeLocation.y, RelativeLocation.z);
 	ImGui::Text("Gizmo Comp Pos: %f %f %f", GetComponentLocation().x, GetComponentLocation().y, GetComponentLocation().z);
@@ -36,18 +40,15 @@ void UGizmoComponent::Update()
 	ImGui::Text("Parent Comp Pos: %f %f %f", GetAttachParent()->GetComponentLocation().x, GetAttachParent()->GetComponentLocation().y, GetAttachParent()->GetComponentLocation().z);
 	ImGui::End();
 
-	// ±âÁî¸ð°¡ ¾Æ¹«°Íµµ ¾ÈºÙ¾îÀÖÀ½
- 	if (GetAttachParent() == nullptr)
-		return;
 
 	UArrowComponent* selectedArrow = nullptr;
 	if (ArrowX->IsPicked()) selectedArrow = ArrowX;
 	else if (ArrowY->IsPicked()) selectedArrow = ArrowY;
 	else if (ArrowZ->IsPicked()) selectedArrow = ArrowZ;
-	else return; 	// ±âÁî¸ðÀÇ È­»ìÇ¥°¡ ¼±ÅÃµÇÁö ¾ÊÀ½
+	else return; 	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È­ï¿½ï¿½Ç¥ï¿½ï¿½ ï¿½ï¿½ï¿½Ãµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
 	UArrowComponent* arrow;
-	// ¸¶¿ì½º µ¨Å¸
+	// ï¿½ï¿½ï¿½ì½º ï¿½ï¿½Å¸
 	int dxInt, dyInt;
 	Input::Instance()->GetMouseDelta(dxInt, dyInt);
 	float dx = dxInt / (float)SCR_WIDTH;

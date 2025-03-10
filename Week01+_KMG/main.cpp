@@ -19,28 +19,55 @@ UArrowComponent* gAxisXComp;
 UArrowComponent* gAxisYComp;
 UArrowComponent* gAxisZComp;
 UGizmoComponent* gGizmo;
+GuiController* gGuiController;
+
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
+	if ( ImGui_ImplWin32_WndProcHandler(hWnd, message, wParam, lParam) )
+		return true;
 	switch (message) {
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
 	case WM_LBUTTONDOWN:
-		if(gMainScene)
-		{
-			gMainScene->PickingByRay(LOWORD(lParam), HIWORD(lParam), gAxisXComp, gAxisYComp, gAxisZComp);
+		if(gMainScene) {
 			auto cam = CRenderer::Instance()->GetMainCamera();
 			Input::Instance()->SpawnMouseRay(cam->View(), cam->PerspectiveProjection());
 		}
 		break;
-	//case WM_SIZE:
-	//{
-	//	//if (CRenderer::Instance()->GetGraphics() && CRenderer::Instance()->GetGraphics()->GetDevice() && CRenderer::Instance()->GetGraphics()->GetDeviceContext()) {
-	//		//SCR_WIDTH = LOWORD(lParam);
-	//		//SCR_HEIGHT = HIWORD(lParam);
-	//		//CRenderer::Instance()->GetGraphics()->ResizeBuffers(SCR_WIDTH, SCR_HEIGHT);
-	//	}
-	//}
+	case WM_MOUSEMOVE:
+	{
+		TRACKMOUSEEVENT tme = {};
+		tme.cbSize = sizeof(TRACKMOUSEEVENT);
+		tme.dwFlags = TME_LEAVE;
+		tme.hwndTrack = hWnd; 
+		tme.dwHoverTime = 0;  
+		TrackMouseEvent(&tme);
+		break;
+	}
+	case WM_MOUSELEAVE:
+		if (gMainScene)
+			gMainScene->SetAxisPicked(gAxisXComp, gAxisYComp, gAxisZComp, EPrimitiveColor::NONE);
+		break;
+	case WM_SIZE:
+	{
+		if (CRenderer::Instance()->GetGraphics() && CRenderer::Instance()->GetGraphics()->GetDevice() && CRenderer::Instance()->GetGraphics()->GetDeviceContext()) {
+			SCR_WIDTH = LOWORD(lParam);
+			SCR_HEIGHT = HIWORD(lParam);
+			CRenderer::Instance()->GetGraphics()->ResizeBuffers(SCR_WIDTH, SCR_HEIGHT);
+			UCameraComponent* camera = CRenderer::Instance()->GetMainCamera();
+			if(camera){
+				float aspectRatio = static_cast<float>(SCR_WIDTH) / static_cast<float>(SCR_HEIGHT);
+				camera->UpdateRatio(aspectRatio);
+			}
+			if(gGuiController)
+				gGuiController->Resize();
+			Input::Instance()->ResizeScreen(SCR_WIDTH, SCR_HEIGHT);
+
+		}
+		break;
+	}
 	default:
 		return DefWindowProc(hWnd, message, wParam, lParam);
 	}
@@ -72,32 +99,16 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	Input::Instance()->Init(hInstance, hWnd, SCR_WIDTH, SCR_HEIGHT);
 
 	GuiController* guiController = new GuiController(hWnd, CRenderer::Instance()->GetGraphics());
-
-	UWorld* mainScene = new UWorld();
-	gMainScene = mainScene;
-	//UPlaneComponent* ground = mainScene->SpawnPlaneActor();
-	UCubeComponent* obj = mainScene->SpawnCubeActor();
-	UCubeComponent* obj2 = mainScene->SpawnCubeActor();
-	//USphereComponent* sphere = mainScene->SpawnSphereACtor();
-	UCoordArrowComponent* arrow = mainScene->SpawnCoordArrowActor();
-	UCoordArrowComponent* worldArrow = mainScene->SpawnCoordArrowActor();
-	//USphereComponent* sphere = mainScene->SpawnSphereACtor();
-	//UDiscComponent* disc = mainScene->SpawnDiscActor();
-	//UDiscHollowComponent* disc = new UDiscHollowComponent(RED_X, 0.9f);
-	UDiscHollowComponent* disc = mainScene->SpawnDiscHollowActor();
-	
-	//disc->SetRelativeRotation({ 10,10,10 });
-	//sphere->SetRelativeScale3D({ 1,1,1 });
-	//sphere->SetRelativeRotation({ 1,2,3 });
+	guiController->world = new UWorld();
+	gGuiController = guiController;
 
 	UArrowComponent* AxisXComp = new UArrowComponent(RED_X);
 	UArrowComponent* AxisYComp = new UArrowComponent(GREEN_Y);
 	UArrowComponent* AxisZComp = new UArrowComponent(BLUE_Z);
 	UGizmoComponent* Gizmo = new UGizmoComponent(AxisXComp, AxisYComp, AxisZComp);
-	UCoordArrowComponent* c = new UCoordArrowComponent();
-	c->AttachToComponent(disc);
-	//disc->SetRelativeRotationX(1.0);
-	Gizmo->AttachToComponent(obj2);
+
+	//Gizmo->AttachToComponent(sphere);
+	// Gizmo->AttachToComponent(obj2);
 	AxisXComp->SetRelativeRotation({ 0,-M_PI/2,0 });
 	AxisYComp->SetRelativeRotation({ M_PI / 2 ,0,0});
 	AxisZComp->SetRelativeRotation({ 0,0,0 });
@@ -114,51 +125,40 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	gAxisZComp = AxisZComp;
 	gGizmo = Gizmo;
 
-	worldArrow->SetRelativeScale3D({ 100,100,100 });
+	//worldArrow->SetRelativeScale3D({ 100,100,100 });
 	//ground->SetRelativeScale3D({ 10,5,3 });
 	//ground->SetRelativeLocation({ 0,-10,0 });
-	arrow->SetRelativeScale3D({ 3,3,3 });
+	//arrow->SetRelativeScale3D({ 3,3,3 });
 
-	arrow->SetRelativeLocation({ 0,0,0 });
-	arrow->AttachToComponent(obj);
-	obj->SetRelativeLocation({ 10,1,1 });
-	obj2->SetRelativeLocation({ 0,0,10 });
 
 	MSG msg = {};
 	while (msg.message != WM_QUIT) {
 		Time::Instance()->_query_frame_update_time();
-		Input::Instance()->Frame();
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
 
 		////////////////////////////////
-		// CUBE - ARROW 따라가는지 테스트용
+		// CUBE - ARROW 따라가는지 
+		//if (Input::Instance()->IsKeyPressed(DIKEYBOARD_B))
+		//{
+		//	guiController->world->ClearWorld();
+		//}
+		//if (Input::Instance()->IsKeyPressed(DIKEYBOARD_N))
+		//{
+		//	guiController->world->SaveWorld("TestLevel");
+		//	//mainScene->RemoveActor(sphere);
+		//}
+		//if (Input::Instance()->IsKeyPressed(DIKEYBOARD_M))
+		//{
+		//	guiController->world->LoadWorld("TestLevel");
+		//}
 
-		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_J))
-		{
-			obj->SetRelativeLocation(obj->GetRelativeLocation() - obj->Right());
-		}
-		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_L))
-		{
-			obj->SetRelativeLocation(obj->GetRelativeLocation() + obj->Right());
-		}
-		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_I))
-		{
-			obj->SetRelativeLocation(obj->GetRelativeLocation() + obj->Front());
-		}
-		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_K))
-		{
-			obj->SetRelativeLocation(obj->GetRelativeLocation() - obj->Front());
-		}
-		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_O))
-		{
-			obj->SetRelativeLocation(obj->GetRelativeLocation() + obj->Up());
-		}
-		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_U))
-		{
-			obj->SetRelativeLocation(obj->GetRelativeLocation() - obj->Up());
+		if (Input::Instance()->IsMouseButtonReleased(0)) {
+			if (gMainScene) {
+				gMainScene->SetAxisPicked(gAxisXComp, gAxisYComp, gAxisZComp, EPrimitiveColor::NONE);
+			}
 		}
 		//CRenderer::Instance()->GetCamera()->PrintLoc(L"CAM");
 		//obj->PrintLoc(L"obj");
@@ -166,30 +166,26 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		// 테스트용
 		////////////////////////////////
 		//Input::Instance()->Frame();
+		Input::Instance()->Frame();
+		//Input::Instance()->Unacquire();
 		guiController->NewFrame();
-		mainScene->Update();
+		guiController->world->Update();
 		CRenderer::Instance()->GetGraphics()->RenderBegin();
-		gGizmo->Update();
-		disc->Render();
-		c->Render();
-		obj2->SetRelativeRotation(obj2->GetRelativeRotation() + FVector{0.1, 0.2, 0.3});
-		gGizmo->Render();
-		mainScene->Render();
+		guiController->world->Render();
 		AxisXComp->Render();
 		AxisYComp->Render();
 		AxisZComp->Render();
-		ImGui::ShowDebugLogWindow();
-		ImGui::Begin("statics");
-		ImGui::Text("UObject Count: %d", CEngineStatics::TotalAllocationCount);
-		ImGui::Text("UObject Bytes: %d", CEngineStatics::TotalAllocationBytes);
-		ImGui::End();
+		guiController->RenderEditor();
+		gGizmo->Render();
 
 		guiController->RenderFrame();
 		CRenderer::Instance()->GetGraphics()->RenderEnd();
 		Time::Instance()->_query_frame_end_time();
+		//if (!SUCCEEDED(Input::Instance()->Acquire()))
+		//	assert(0);
 		
 	}
 	Input::Instance()->Shutdown();
 	CRenderer::Release();
 	return 0;
-}
+} 

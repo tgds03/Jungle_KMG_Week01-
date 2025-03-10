@@ -1,6 +1,5 @@
 #pragma once
 #include "Framework/Core/UPrimitiveComponent.h"
-
 static const FVector AxisColors[] = {
 	FVector(1.0f, 0.0f, 0.0f),  // X��: ����
 	FVector(0.0f, 1.0f, 0.0f),  // Y��: �ʷ�

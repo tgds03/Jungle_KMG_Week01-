@@ -1,4 +1,5 @@
 #pragma once
+#include "stdafx.h"
 #include "Framework/Core/UObject.h"
 #include "Framework/Core/USphereComponent.h"
 //#include "Framework/Core/UActorComponent.h"
@@ -16,6 +17,13 @@ class USphereComponent;
 class UPlaneComponent;
 class UCoordArrowComponent;
 
+struct PrimitiveData {
+    FVector Location;
+    FVector Rotation;
+    FVector Scale;
+    FString Type;
+};
+
 class UWorld :
     public UObject
 {
@@ -28,13 +36,22 @@ public:
 
     void AddActor(UActorComponent* comp);
     void RemoveActor(UActorComponent* comp);
-    void PickingByRay(int mouse_X, int mouse_Y, UArrowComponent* AxisXComp, UArrowComponent* AxisYComp, UArrowComponent* AxisZComp);
+    void ClearWorld();
+
+    int GetActorCount() const;
+    const TLinkedList<UActorComponent*>& GetActors() const;
+
+    UActorComponent* PickingByRay(int mouse_X, int mouse_Y, UArrowComponent* AxisXComp, UArrowComponent* AxisYComp, UArrowComponent* AxisZComp);
     void SetAxisPicked(UArrowComponent* axisX, UArrowComponent* axisY, UArrowComponent* axisZ, EPrimitiveColor pickedAxis);
+
     UCameraComponent* SpawnCamera();
     UCubeComponent* SpawnCubeActor();
-    USphereComponent* SpawnSphereACtor();
+    USphereComponent* SpawnSphereActor();
     UPlaneComponent* SpawnPlaneActor();
     UCoordArrowComponent* SpawnCoordArrowActor();
+    
+    void SaveWorld(const FString& fileName);
+    void LoadWorld(const FString& fileName);
     UDiscComponent* SpawnDiscActor();
     UDiscHollowComponent* SpawnDiscHollowActor();
 
@@ -42,13 +59,13 @@ private:
     TLinkedList<UActorComponent*> actorList = {};
 
     template <typename T>
-    T* SpawnActor(); // RTTI ���� �� public���� ����
+    T* SpawnActor(bool addActorList = true);
     template <typename T>
     T* SpawnActor(FVector position, FVector rotation = FVector::Zero, FVector scal = FVector::One);
 };
 
 template<typename T>
-inline T* UWorld::SpawnActor()
+inline T* UWorld::SpawnActor(bool addActorList)
 {
     static_assert(std::is_base_of<UActorComponent, T>::value, "T must be derived from UActorComponent");
 
@@ -57,7 +74,9 @@ inline T* UWorld::SpawnActor()
     if (!newActor)
         return nullptr;
 
-    AddActor(newActor);
+    if (addActorList)
+        AddActor(newActor);
+
     return newActor;
 }
 

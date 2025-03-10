@@ -6,12 +6,15 @@ public:
 	virtual void Update();
 	virtual void Render();
 	FMatrix View();
+	FMatrix Projection();
+	FMatrix OrthgonalProjection();
 	FMatrix PerspectiveProjection();
+	bool orthogonal = false;
 	float fieldOfView = 60.f;
-
 	float aspectRatio = SCR_WIDTH / (float)SCR_HEIGHT;
 	float nearDistance = 1.01f, farDistance = 100.f;
 	float mouseSensitive = 0.5f;
+	void UpdateRatio(float aratio) { aspectRatio = aratio; }
 
 private:
 	//FMatrix CalculateLookAtLHS(FVector front, FVector up, FVector pos);

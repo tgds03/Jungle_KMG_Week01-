@@ -3,38 +3,28 @@
 
 void UCameraComponent::Update() {
 	aspectRatio = SCR_WIDTH / (float)SCR_HEIGHT;
-
+	const float speed = 2.0f;
 	auto loc = GetRelativeLocation();
+	FVector movement = FVector::Zero;
 	if ( Input::Instance()->IsKeyDown(DIK_A) ) {
-		//RelativeLocation.x -= 1.0f * Time::GetDeltaTime();
-		//RelativeLocation -= Right() * Time::GetDeltaTime();
-		SetRelativeLocation(loc - Right() * Time::GetDeltaTime());
+		movement -= Right();
 	}
 	if ( Input::Instance()->IsKeyDown(DIK_D) ) {
-		//RelativeLocation.x += 1.0f * Time::GetDeltaTime();
-		//RelativeLocation += Right() * Time::GetDeltaTime();
-		SetRelativeLocation(loc + Right() * Time::GetDeltaTime());
+		movement += Right();
 	}
 	if ( Input::Instance()->IsKeyDown(DIK_W) ) {
-		//RelativeLocation.z -= 1.0f * Time::GetDeltaTime();
-		//RelativeLocation += Front() * Time::GetDeltaTime();
-		SetRelativeLocation(loc + Front() * 10 * Time::GetDeltaTime());
+		movement += Front();
 	}
 	if ( Input::Instance()->IsKeyDown(DIK_S) ) {
-		//RelativeLocation.z += 1.0f * Time::GetDeltaTime();
-		//RelativeLocation -= Front() * Time::GetDeltaTime();
-		SetRelativeLocation(loc - Front() * Time::GetDeltaTime());
+		movement -= Front();
 	}
 	if ( Input::Instance()->IsKeyDown(DIK_SPACE) ) {
-		//RelativeLocation.y += 1.0f * Time::GetDeltaTime();
-		//RelativeLocation += Up() * Time::GetDeltaTime();
-		SetRelativeLocation(loc + Up() * Time::GetDeltaTime());
+		movement += Up();
 	}
 	if ( Input::Instance()->IsKeyDown(DIK_LSHIFT) ) {
-		//RelativeLocation.y -= 1.0f * Time::GetDeltaTime();
-		//RelativeLocation -= Up() * Time::GetDeltaTime();
-		SetRelativeLocation(loc - Up() * Time::GetDeltaTime());
+		movement -= Up();
 	}
+	SetRelativeLocation(loc + movement * Time::GetDeltaTime() * speed);
 	if ( Input::Instance()->IsKeyDown(DIK_Q) ) {
 		UE_LOG(FMatrix::MakeFromZ(Front()).to_wstring().c_str());
 	}
@@ -52,8 +42,25 @@ void UCameraComponent::Update() {
 
 void UCameraComponent::Render() {
 	ImGui::Begin("Camera");
-	ImGui::Text(("position: " + static_cast<std::string>(GetRelativeLocation())).c_str());
-	ImGui::Text(("rotation: " + static_cast<std::string>(GetRelativeRotation())).c_str());
+	//ImGui::Text(("position: " + static_cast<std::string>(RelativeLocation)).c_str());
+	//ImGui::Text(("rotation: " + static_cast<std::string>(RelativeRotation)).c_str());
+	ImGui::Checkbox("Orthogonal", &orthogonal);
+	ImGui::SliderFloat("FOV", &fieldOfView, 10.f, 90.f);
+
+	FVector vec = GetRelativeLocation();
+	float loc[3] = { vec.x, vec.y, vec.z };
+	//ImGui::SliderFloat3("position", loc, -50.f, 50.f);
+	ImGui::DragFloat3("position", loc, 0.1f);
+	SetRelativeLocation(FVector(loc[0], loc[1], loc[2]));
+
+	vec = GetRelativeRotation();
+	float rot[3] = { vec.x, vec.y, vec.z };
+	//ImGui::SliderFloat3("rotation", rot, -M_PI, M_PI);
+	ImGui::DragFloat3("rotation", rot, 0.1f);
+	SetRelativeRotation(FVector(rot[0], rot[1], rot[2]));
+	//ImGui::DragFloat3("position", &RelativeLocation.x, 0.1f);
+	//ImGui::DragFloat3("rotation", &RelativeRotation.x, 0.1f);
+
 	ImGui::End();
 }
 
@@ -114,6 +121,24 @@ FMatrix UCameraComponent::View()
 	return mat;
 }
 
+FMatrix UCameraComponent::Projection() {
+	if ( orthogonal )
+		return OrthgonalProjection();
+	else
+		return PerspectiveProjection();
+}
+
+FMatrix UCameraComponent::OrthgonalProjection() {
+	float zRange = farDistance - nearDistance;
+	const float scale = 0.5f;
+	return FMatrix({ 
+		scale / aspectRatio, 0.f, 0.f, 0.f, 
+		0.f, scale, 0.f, 0.f,
+		0.f, 0.f, 1.f / zRange, - nearDistance / zRange,
+		0.f, 0.f, 0.f, 1.f
+	});
+}
+
 //FMatrix UCameraComponent::InverseTransformation() {
 //	FMatrix m = FMatrix::Translate(-RelativeLocation.x, -RelativeLocation.y, -RelativeLocation.z);
 //	m = m * FMatrix::RotateZ(-RelativeRotation.z);
@@ -124,8 +149,6 @@ FMatrix UCameraComponent::View()
 //}
 
 FMatrix UCameraComponent::PerspectiveProjection() {
-	float t = tan(degToRad(fieldOfView / 2));
-
 	float yScale = 1.0f / tanf(degToRad(fieldOfView * 0.5f)); // cot(FOV/2)
 	float xScale = yScale / aspectRatio;
 	float zRange = farDistance - nearDistance;
@@ -136,10 +159,10 @@ FMatrix UCameraComponent::PerspectiveProjection() {
 		 0.0f,    0.0f,   farDistance / zRange,                1.0f ,
 		 0.0f,    0.0f,  -nearDistance * farDistance / zRange,        0.0f 
 		});
-	return FMatrix({
-		1 / (t * aspectRatio), 0, 0, 0,
-		0, 1 / t, 0, 0,
-		0, 0, (farDistance + nearDistance) / (farDistance - nearDistance), -farDistance * nearDistance / (farDistance - nearDistance),
-		0, 0, 1, 0
-		});
+	//return FMatrix({
+	//	1 / (t * aspectRatio), 0, 0, 0,
+	//	0, 1 / t, 0, 0,
+	//	0, 0, (farDistance + nearDistance) / (farDistance - nearDistance), -farDistance * nearDistance / (farDistance - nearDistance),
+	//	0, 0, 1, 0
+	//	});
 }

@@ -1,5 +1,7 @@
 #pragma once
 #include "UPrimitiveComponent.h"
+#include "UArrowComponent.h"
+
 class UDiscComponent :
     public UPrimitiveComponent
 {

@@ -70,6 +70,12 @@ void Input::Shutdown() {
 	return;
 }
 
+void Input::ResizeScreen(int sWidth, int sHeight)
+{
+	m_screenHeight = sHeight;
+	m_screenWidth = sWidth;
+}
+
 bool Input::Frame() {
 	bool result;
 
@@ -138,13 +144,19 @@ void Input::GetMouseDelta(int& mouse_x, int& mouse_y) {
 	mouse_y = m_mouseState.lY;
 }
 
-
+void Input::GetMouseWheel(int& mouse_w) {
+	mouse_w = m_mouseState.lZ;
+}
 
 bool Input::ReadKeyboard() {
-	HRESULT result;
+	HRESULT result = 0;
 
 	memcpy(m_keyboardStatePrevious, m_keyboardState, sizeof(m_keyboardState));
 	result = m_keyboard->GetDeviceState(sizeof(m_keyboardState), (LPVOID)&m_keyboardState);
+	if (!ImGui::GetIO().WantTextInput)
+		result = m_keyboard->GetDeviceState(sizeof(m_keyboardState), (LPVOID)&m_keyboardState);
+	else
+		m_keyboard->Unacquire();
 	if ( FAILED(result) ) {
 		if ( (result == DIERR_INPUTLOST) || (result == DIERR_NOTACQUIRED) ) {
 			m_keyboard->Acquire();
