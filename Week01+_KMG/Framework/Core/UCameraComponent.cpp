@@ -41,7 +41,12 @@ void UCameraComponent::Update() {
 }
 
 void UCameraComponent::Render() {
-	ImGui::Begin("Camera");
+
+	
+}
+
+void UCameraComponent::RenderUI()
+{
 	//ImGui::Text(("position: " + static_cast<std::string>(RelativeLocation)).c_str());
 	//ImGui::Text(("rotation: " + static_cast<std::string>(RelativeRotation)).c_str());
 	ImGui::Checkbox("Orthogonal", &orthogonal);
@@ -64,7 +69,6 @@ void UCameraComponent::Render() {
 	//ImGui::DragFloat3("position", &RelativeLocation.x, 0.1f);
 	//ImGui::DragFloat3("rotation", &RelativeRotation.x, 0.1f);
 
-	ImGui::End();
 }
 
 FMatrix UCameraComponent::View()

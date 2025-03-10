@@ -229,7 +229,12 @@ void GuiController::RenderEditor() {
 		if ( downcast )
 			downcast->renderFlags &= ~PRIMITIVE_FLAG_SELECTED;
 	}
-
+	ImGui::Separator();
+	ImGui::Text("Camera");
+	UCameraComponent* mainCam = CRenderer::Instance()->GetMainCamera();
+	if (mainCam) {
+		mainCam->RenderUI();
+	}
 	ImGui::End();
 	float propertyWindowWidth = static_cast<float>(SCR_WIDTH) * 0.3f;
 	float propertyWindowHeight = static_cast<float>(SCR_HEIGHT) * 0.25f;

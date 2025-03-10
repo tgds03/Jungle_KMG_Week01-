@@ -5,6 +5,7 @@ class UCameraComponent :public USceneComponent {
 public:
 	virtual void Update();
 	virtual void Render();
+	void RenderUI();
 	FMatrix View();
 	FMatrix Projection();
 	FMatrix OrthgonalProjection();

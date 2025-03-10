@@ -105,14 +105,14 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	//Gizmo->AttachToComponent(sphere);
 	// Gizmo->AttachToComponent(obj2);
 
-	CRenderer::Instance()->GetMainCamera()->SetRelativeLocation(FVector(0, 0, -5));
-
 	gGizmo = Gizmo;
 
 	//worldArrow->SetRelativeScale3D({ 100,100,100 });
 	//ground->SetRelativeScale3D({ 10,5,3 });
 	//ground->SetRelativeLocation({ 0,-10,0 });
 	//arrow->SetRelativeScale3D({ 3,3,3 });
+	UCoordArrowComponent* coordArrow = new UCoordArrowComponent();
+	coordArrow->SetRelativeScale3D({ 50000,50000,50000 });
 
 	MSG msg = {};
 	while (msg.message != WM_QUIT) {
@@ -156,7 +156,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		gGizmo->Update();
 		guiController->RenderEditor();
 		gGizmo->Render();
-
+		coordArrow->Render();
 		guiController->RenderFrame();
 		CRenderer::Instance()->GetGraphics()->RenderEnd();
 		Time::Instance()->_query_frame_end_time();
