@@ -79,6 +79,8 @@ void GuiController::RenderEditor() {
 	ImGui::Text("UObject Count: %d", CEngineStatics::TotalAllocationCount);
 	ImGui::Text("UObject Bytes: %d", CEngineStatics::TotalAllocationBytes);
 	ImGui::Separator();
+
+	ImGui::Text("UActorComponent Count: %d", world->GetActorCount());
 	
 	ImGui::Combo("Primitive", &_selectedPrimitive, primitiveItems, ARRAYSIZE(primitiveItems));
 	if ( ImGui::Button("Create") ) {
@@ -94,7 +96,7 @@ void GuiController::RenderEditor() {
 				_selected = world->SpawnPlaneActor();
 				break;
 			}
-			world->AddActor(_selected);
+			//world->AddActor(_selected);
 		}
 	}
 	ImGui::SameLine(0.f, 5.f);
@@ -106,20 +108,27 @@ void GuiController::RenderEditor() {
 
 	ImGui::InputText("Scene Name", _sceneNameBuffer, ARRAYSIZE(_sceneNameBuffer));
 	if (ImGui::Button("New Scene")) {
+		world->ClearWorld();
+		_selected = nullptr;
 	}
 	if (ImGui::Button("Save Scene")) {
+		world->SaveWorld(_sceneNameBuffer);
 	}
 	if (ImGui::Button("Load Scene")) {
+		world->LoadWorld(_sceneNameBuffer);
 	}
 
 	ImGui::End();
 
 	ImGui::Begin("Property");
-	USceneComponent* downcast = dynamic_cast<USceneComponent*>(_selected);
+	USceneComponent* downcast = nullptr;
+	if (_selected)
+		downcast = dynamic_cast<USceneComponent*>(_selected);
 	if (downcast != nullptr) {
 		/*ImGui::SliderFloat3("position", &downcast->RelativeLocation.x, -50.f, 50.f);
 		ImGui::SliderFloat3("rotation", &downcast->RelativeRotation.x, -M_PI, M_PI);
 		ImGui::SliderFloat3("scale", &downcast->RelativeScale3D.x, -5.f, 5.f);*/
+		ImGui::Text("UUID: %d", _selected->GetUUID());
 		ImGui::DragFloat3("position", &downcast->RelativeLocation.x, 0.1f);
 		ImGui::DragFloat3("rotation", &downcast->RelativeRotation.x, 0.1f);
 		ImGui::DragFloat3("scale", &downcast->RelativeScale3D.x, 0.1f);

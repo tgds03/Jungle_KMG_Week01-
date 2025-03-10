@@ -6,7 +6,9 @@ extern UGizmoComponent* gGizmo;
 
 UWorld::UWorld()
 {
-    CRenderer::Instance()->SetCamera(SpawnCamera());
+    UCameraComponent* camera = SpawnCamera();
+    CRenderer::Instance()->SetCamera(camera);
+    AddActor(camera);
     SpawnCoordArrowActor();
 }
 
@@ -47,17 +49,27 @@ void UWorld::RemoveActor(UActorComponent* comp)
 void UWorld::ClearWorld()
 {
     gGizmo->Detach();
+    UCameraComponent* cam = nullptr;
     while (!actorList.empty()) // ����Ʈ�� �� ������ �ݺ�
     {
-        delete actorList.front();
+        UActorComponent* actor = actorList.front();
+        UCameraComponent* downcast = dynamic_cast<UCameraComponent*>(actor);
         actorList.pop_front();
+        if ( downcast ) {
+            cam = downcast;
+            continue;
+        }
+        
+        delete actor;
     }
+    if (cam)
+        AddActor(cam);
 }
 
 UActorComponent* UWorld::PickingByRay(int mouse_X, int mouse_Y, UArrowComponent* AxisXComp, UArrowComponent* AxisYComp, UArrowComponent* AxisZComp)
 {
     UCameraComponent* mainCamera = CRenderer::Instance()->GetMainCamera();
-    if (!mainCamera) return;
+    if (!mainCamera) return nullptr;
     FMatrix viewMatrix = mainCamera->GetComponentTransform().Inverse();
     FMatrix projectionMatrix = mainCamera->PerspectiveProjection();
     D3D11_VIEWPORT viewport = CRenderer::Instance()->GetGraphics()->GetViewport();
@@ -94,7 +106,7 @@ UActorComponent* UWorld::PickingByRay(int mouse_X, int mouse_Y, UArrowComponent*
     }
     if (pickedAxis != EAxisColor::NONE) {
         SetAxisPicked(AxisXComp, AxisYComp, AxisZComp, pickedAxis);
-        return;
+        return nullptr;
     }
 
     float hitDistance = FLT_MAX;
@@ -173,6 +185,8 @@ void UWorld::SaveWorld(const FString& fileName)
 
 void UWorld::LoadWorld(const FString& fileName)
 {
+    ClearWorld();
+
     TArray<PrimitiveData> primitives = DataManager::Instance()->LoadWorldFromJson(fileName);
 
     for (const auto& primitive : primitives)

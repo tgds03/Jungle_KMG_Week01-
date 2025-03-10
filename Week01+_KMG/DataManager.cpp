@@ -48,6 +48,7 @@ TArray<PrimitiveData> DataManager::LoadWorldFromJson(const FString& fileName)
     if (!file.is_open()) 
     {
         std::cerr << "Failed to open file: " << fullPath << std::endl;
+        UE_LOG(L"Failed to open file");
         return primitives;
     }
 
