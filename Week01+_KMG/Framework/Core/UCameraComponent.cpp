@@ -45,7 +45,10 @@ void UCameraComponent::Render() {
 	//ImGui::Text(("position: " + static_cast<std::string>(RelativeLocation)).c_str());
 	//ImGui::Text(("rotation: " + static_cast<std::string>(RelativeRotation)).c_str());
 	ImGui::Checkbox("Orthogonal", &orthogonal);
-	ImGui::SliderFloat("FOV", &fieldOfView, 10.f, 90.f);
+	if (!orthogonal)
+		ImGui::SliderFloat("FOV", &fieldOfView, 10.f, 90.f);
+	else
+		ImGui::SliderFloat("Scale", &orthoScale, 0.01f, 1.0f);
 
 	FVector vec = GetRelativeLocation();
 	float loc[3] = { vec.x, vec.y, vec.z };
@@ -130,7 +133,7 @@ FMatrix UCameraComponent::Projection() {
 
 FMatrix UCameraComponent::OrthgonalProjection() {
 	float zRange = farDistance - nearDistance;
-	const float scale = 0.5f;
+	const float scale = orthoScale;
 	return FMatrix({ 
 		scale / aspectRatio, 0.f, 0.f, 0.f, 
 		0.f, scale, 0.f, 0.f,
