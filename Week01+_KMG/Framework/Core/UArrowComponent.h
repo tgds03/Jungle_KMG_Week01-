@@ -16,7 +16,7 @@ static const FVector AxisColors[] = {
 class UArrowComponent:public UPrimitiveComponent
 {
 public:
-	UArrowComponent(EPrimitiveColor axis);
+	UArrowComponent(EAxisColor axis);
 	~UArrowComponent();
 	virtual void Render();
 	void LoadObjAndComputeBoundingBox();
@@ -29,7 +29,7 @@ private:
 	FVector maxPos;
 	// picking
 	bool picked = false;
-	EPrimitiveColor color;
+	EAxisColor color;
 	//static ID3D11DepthStencilState* noDepthWriteState;
 	//static ID3D11DepthStencilState* previousWriteState;
 };

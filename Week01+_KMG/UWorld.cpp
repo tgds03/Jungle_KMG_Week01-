@@ -116,20 +116,20 @@ UActorComponent* UWorld::PickingByRay(int mouse_X, int mouse_Y, UArrowComponent*
 
     if (AxisXComp->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitDistance)) {
         UE_LOG(L"X__AXIS \n");
-        SetAxisPicked(AxisXComp, AxisYComp, AxisZComp, EPrimitiveColor::RED_X);
-        return;
+        SetAxisPicked(AxisXComp, AxisYComp, AxisZComp, EAxisColor::RED_X);
+        return nullptr;
     }
     if (AxisYComp->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitDistance)) {
         UE_LOG(L"Y__AXIS \n");
-        SetAxisPicked(AxisXComp, AxisYComp, AxisZComp, EPrimitiveColor::GREEN_Y);
-        return;
+        SetAxisPicked(AxisXComp, AxisYComp, AxisZComp, EAxisColor::GREEN_Y);
+        return nullptr;
     }
     if (AxisZComp->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitDistance)) {
         UE_LOG(L"Z__AXIS \n");
-        SetAxisPicked(AxisXComp, AxisYComp, AxisZComp, EPrimitiveColor::BLUE_Z);
-        return;
+        SetAxisPicked(AxisXComp, AxisYComp, AxisZComp, EAxisColor::BLUE_Z);
+        return nullptr;
     }
-    SetAxisPicked(AxisXComp, AxisYComp, AxisZComp, static_cast<EPrimitiveColor>(-1));
+    SetAxisPicked(AxisXComp, AxisYComp, AxisZComp, static_cast<EAxisColor>(-1));
     AxisXComp->SetPicked(false);
     AxisYComp->SetPicked(false);
     AxisZComp->SetPicked(false);
@@ -166,11 +166,11 @@ UCameraComponent* UWorld::SpawnCamera()
     return newCamera;
 }
 
-void UWorld::SetAxisPicked(UArrowComponent* axisX, UArrowComponent* axisY, UArrowComponent* axisZ, EPrimitiveColor pickedAxis)
+void UWorld::SetAxisPicked(UArrowComponent* axisX, UArrowComponent* axisY, UArrowComponent* axisZ, EAxisColor pickedAxis)
 {
-    axisX->SetPicked(pickedAxis == EPrimitiveColor::RED_X);
-    axisY->SetPicked(pickedAxis == EPrimitiveColor::GREEN_Y);
-    axisZ->SetPicked(pickedAxis == EPrimitiveColor::BLUE_Z);
+    axisX->SetPicked(pickedAxis == EAxisColor::RED_X);
+    axisY->SetPicked(pickedAxis == EAxisColor::GREEN_Y);
+    axisZ->SetPicked(pickedAxis == EAxisColor::BLUE_Z);
 }
 
 UCubeComponent* UWorld::SpawnCubeActor()

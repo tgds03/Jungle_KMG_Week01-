@@ -6,7 +6,7 @@
 ID3D11DepthStencilState* noDepthWriteState;
 ID3D11DepthStencilState* previousWriteState;
 
-UArrowComponent::UArrowComponent(EPrimitiveColor axis) : UPrimitiveComponent(), color(axis)
+UArrowComponent::UArrowComponent(EAxisColor axis) : UPrimitiveComponent(), color(axis)
 {
 	std::wstring filepath = L"Assets/AxisArrow.obj";
 	std::ifstream objFile(filepath.c_str());

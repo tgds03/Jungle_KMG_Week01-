@@ -1,10 +1,12 @@
 #pragma once
 #include "UPrimitiveComponent.h"
+#include "UArrowComponent.h"
+
 class UDiscHollowComponent :
     public UPrimitiveComponent
 {
 public:
-    UDiscHollowComponent(EPrimitiveColor color, float innerRadius);
+    UDiscHollowComponent(EAxisColor color, float innerRadius);
     UDiscHollowComponent();
     ~UDiscHollowComponent();
     //virtual void Update();

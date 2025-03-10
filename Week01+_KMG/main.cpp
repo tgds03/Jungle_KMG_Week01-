@@ -124,10 +124,10 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	gAxisZComp = AxisZComp;
 	gGizmo = Gizmo;
 
-	worldArrow->SetRelativeScale3D({ 100,100,100 });
+	//worldArrow->SetRelativeScale3D({ 100,100,100 });
 	//ground->SetRelativeScale3D({ 10,5,3 });
 	//ground->SetRelativeLocation({ 0,-10,0 });
-	arrow->SetRelativeScale3D({ 3,3,3 });
+	//arrow->SetRelativeScale3D({ 3,3,3 });
 
 
 	MSG msg = {};

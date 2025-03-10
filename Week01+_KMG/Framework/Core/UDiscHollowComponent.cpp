@@ -9,7 +9,7 @@ static const FVector Colors[] = {
     FVector(0.0f, 0.0f, 1.0f)   // Z��: �Ķ�
 };
 
-UDiscHollowComponent::UDiscHollowComponent(EPrimitiveColor color, float innerRadius) : inner(innerRadius)
+UDiscHollowComponent::UDiscHollowComponent(EAxisColor color, float innerRadius) : inner(innerRadius)
 {
     inner = innerRadius;
     FVector color3 = Colors[color];

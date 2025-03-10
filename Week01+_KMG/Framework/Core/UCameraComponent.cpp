@@ -3,7 +3,7 @@
 
 void UCameraComponent::Update() {
 	aspectRatio = SCR_WIDTH / (float)SCR_HEIGHT;
-
+	const float speed = 2.0f;
 	auto loc = GetRelativeLocation();
 	if ( Input::Instance()->IsKeyDown(DIK_A) ) {
 		//RelativeLocation.x -= 1.0f * Time::GetDeltaTime();
@@ -33,7 +33,7 @@ void UCameraComponent::Update() {
 	if ( Input::Instance()->IsKeyDown(DIK_LSHIFT) ) {
 		//RelativeLocation.y -= 1.0f * Time::GetDeltaTime();
 		//RelativeLocation -= Up() * Time::GetDeltaTime();
-		SetRelativeLocation(loc - Up() * Time::GetDeltaTime()) * speed;
+		SetRelativeLocation(loc - Up() * Time::GetDeltaTime() * speed);
 	}
 	if ( Input::Instance()->IsKeyDown(DIK_Q) ) {
 		UE_LOG(FMatrix::MakeFromZ(Front()).to_wstring().c_str());
