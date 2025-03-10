@@ -66,49 +66,27 @@ void UWorld::ClearWorld()
         AddActor(cam);
 }
 
-UActorComponent* UWorld::PickingByRay(int mouse_X, int mouse_Y, UArrowComponent* AxisXComp, UArrowComponent* AxisYComp, UArrowComponent* AxisZComp)
+void UWorld::ConvertNDC_VIEW(int mouse_X, int mouse_Y, FVector& pickPosition, FMatrix& viewMatrix)
 {
     UCameraComponent* mainCamera = CRenderer::Instance()->GetMainCamera();
-    if (!mainCamera) return nullptr;
-    FMatrix viewMatrix = mainCamera->GetComponentTransform().Inverse();
-    FMatrix projectionMatrix = mainCamera->PerspectiveProjection();
+    if (!mainCamera) return;
+
     D3D11_VIEWPORT viewport = CRenderer::Instance()->GetGraphics()->GetViewport();
-
-    //Input::Instance()->GetMouseLocation(mouse_X, mouse_Y);
-
-    FVector pickPosition;
+    viewMatrix = mainCamera->GetComponentTransform().Inverse();
+    FMatrix projectionMatrix = mainCamera->PerspectiveProjection();
     pickPosition.x = ((2.0f * mouse_X / viewport.Width) - 1) / projectionMatrix[0][0];
     pickPosition.y = -((2.0f * mouse_Y / viewport.Height) - 1) / projectionMatrix[1][1];
     pickPosition.z = 1.0f; // Near Plane
-    float hitAxisXDistance = FLT_MAX;
-    float hitAxisYDistance = FLT_MAX;
-    float hitAxisZDistance = FLT_MAX;
-    float minDistance = FLT_MAX;
-    EPrimitiveColor pickedAxis = EPrimitiveColor::NONE; 
+}
 
-    if (AxisXComp->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitAxisXDistance)) {
-        if (hitAxisXDistance < minDistance) {
-            minDistance = hitAxisXDistance;
-            pickedAxis = EPrimitiveColor::RED_X;
-        }
-    }
-    if (AxisYComp->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitAxisYDistance)) {
-        if (hitAxisYDistance < minDistance) {
-            minDistance = hitAxisYDistance;
-            pickedAxis = EPrimitiveColor::GREEN_Y;
-        }
-    }
-    if (AxisZComp->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitAxisZDistance)) {
-        if (hitAxisZDistance < minDistance) {
-            minDistance = hitAxisZDistance;
-            pickedAxis = EPrimitiveColor::BLUE_Z;
-        }
-    }
-    if (pickedAxis != EPrimitiveColor::NONE) {
-        SetAxisPicked(AxisXComp, AxisYComp, AxisZComp, pickedAxis);
-        return nullptr;
-    }
+UActorComponent* UWorld::PickingByRay(int mouse_X, int mouse_Y, float& dist)
+{
 
+    FVector pickPosition;
+    FMatrix viewMatrix = FMatrix::Identity;
+   
+    ConvertNDC_VIEW(mouse_X, mouse_Y, pickPosition,viewMatrix);
+    
     float hitDistance = FLT_MAX;
     float nearestDistance = FLT_MAX;
     UActorComponent* nearestActorComp = nullptr;
@@ -123,10 +101,12 @@ UActorComponent* UWorld::PickingByRay(int mouse_X, int mouse_Y, UArrowComponent*
 	}
     if (nearestActorComp) {
         UE_LOG((L"\nfind!__" + std::to_wstring(nearestActorComp->GetUUID()) + L" is neareast!!\n").c_str());
-        UE_LOG((L"\nfind!__" + std::to_wstring(nearestActorComp->GetUUID()) + L" is neareast!!\n").c_str());
     }
+    dist = nearestDistance;
     return nearestActorComp;
 }
+
+
 
 int UWorld::GetActorCount() const
 {

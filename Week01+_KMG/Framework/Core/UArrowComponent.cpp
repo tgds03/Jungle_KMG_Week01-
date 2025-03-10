@@ -166,7 +166,7 @@ void UArrowComponent::Render()
 		break;
 	}
 	OverrideLocation = GetAttachParent()->GetComponentLocation();
-	OverrideScale3D = GetAttachParent()->GetRelativeScale3D();
+	//OverrideScale3D = GetAttachParent()->GetRelativeScale3D();
 	UPrimitiveComponent::Render();
 	
 	return;

@@ -15,9 +15,6 @@ const int TARGET_FPS = 60;
 const double TARGET_FRAMERATE = 1000.0 / TARGET_FPS;
 
 UWorld* gMainScene;
-UArrowComponent* gAxisXComp;
-UArrowComponent* gAxisYComp;
-UArrowComponent* gAxisZComp;
 UGizmoComponent* gGizmo;
 GuiController* gGuiController;
 
@@ -47,8 +44,9 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 		break;
 	}
 	case WM_MOUSELEAVE:
-		if (gMainScene)
-			gMainScene->SetAxisPicked(gAxisXComp, gAxisYComp, gAxisZComp, EPrimitiveColor::NONE);
+		if (gMainScene) {
+
+		}
 		break;
 	case WM_SIZE:
 	{
@@ -102,27 +100,13 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	guiController->world = new UWorld();
 	gGuiController = guiController;
 
-	UArrowComponent* AxisXComp = new UArrowComponent(RED_X);
-	UArrowComponent* AxisYComp = new UArrowComponent(GREEN_Y);
-	UArrowComponent* AxisZComp = new UArrowComponent(BLUE_Z);
-	UGizmoComponent* Gizmo = new UGizmoComponent(AxisXComp, AxisYComp, AxisZComp);
+	UGizmoComponent* Gizmo = new UGizmoComponent();
 
 	//Gizmo->AttachToComponent(sphere);
 	// Gizmo->AttachToComponent(obj2);
-	AxisXComp->SetRelativeRotation({ 0,-M_PI/2,0 });
-	AxisYComp->SetRelativeRotation({ M_PI / 2 ,0,0});
-	AxisZComp->SetRelativeRotation({ 0,0,0 });
-
-	AxisXComp->SetRelativeScale3D({ 0.8, 0.8 ,0.8 });
-	AxisYComp->SetRelativeScale3D({ 0.8, 0.8 ,0.8 });
-	AxisZComp->SetRelativeScale3D({ 0.8, 0.8 ,0.8 });
-
 
 	CRenderer::Instance()->GetMainCamera()->SetRelativeLocation(FVector(0, 0, -5));
 
-	gAxisXComp = AxisXComp;
-	gAxisYComp = AxisYComp;
-	gAxisZComp = AxisZComp;
 	gGizmo = Gizmo;
 
 	//worldArrow->SetRelativeScale3D({ 100,100,100 });
@@ -155,11 +139,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		//	guiController->world->LoadWorld("TestLevel");
 		//}
 
-		if (Input::Instance()->IsMouseButtonReleased(0)) {
-			if (gMainScene) {
-				gMainScene->SetAxisPicked(gAxisXComp, gAxisYComp, gAxisZComp, EPrimitiveColor::NONE);
-			}
-		}
 		//CRenderer::Instance()->GetCamera()->PrintLoc(L"CAM");
 		//obj->PrintLoc(L"obj");
 
@@ -172,9 +151,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		guiController->world->Update();
 		CRenderer::Instance()->GetGraphics()->RenderBegin();
 		guiController->world->Render();
-		AxisXComp->Render();
-		AxisYComp->Render();
-		AxisZComp->Render();
+	
 		guiController->RenderEditor();
 		gGizmo->Render();
 
