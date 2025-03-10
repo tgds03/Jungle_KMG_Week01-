@@ -4,30 +4,50 @@
 
 #define GIZMO_SELECT_MOUSE_SPEED 10.0f;
 
-UGizmoComponent::UGizmoComponent(UArrowComponent* axisX, UArrowComponent* axisY, UArrowComponent* axisZ)
-	: ArrowX(axisX), ArrowY(axisY), ArrowZ(axisZ)
+UGizmoComponent::UGizmoComponent()
 {
+	ArrowX = new UArrowComponent(EPrimitiveColor::RED_X);
+	ArrowY = new UArrowComponent(EPrimitiveColor::GREEN_Y);
+	ArrowZ = new UArrowComponent(EPrimitiveColor::BLUE_Z);
+
 	ArrowX->AttachToComponent(this);
 	ArrowY->AttachToComponent(this);
 	ArrowZ->AttachToComponent(this);
-	ArrowX->SetRelativeScale3D({ 2,2,2 });
-	ArrowY->SetRelativeScale3D({ 2,2,2 });
-	ArrowZ->SetRelativeScale3D({ 2,2,2 });
-}
-
-void UGizmoComponent::Update()
-{
-	ArrowX->IsOverrideLocation = true;
-	ArrowY->IsOverrideLocation = true;
-	ArrowZ->IsOverrideLocation = true;
-
-	ArrowX->IsOverrideRotation = true;
-	ArrowY->IsOverrideRotation = true;
-	ArrowZ->IsOverrideRotation = true;
 
 	ArrowX->IsOverrideScale3D = true;
 	ArrowY->IsOverrideScale3D = true;
 	ArrowZ->IsOverrideScale3D = true;
+	ArrowX->OverrideScale3D = { 2,2,2 };
+	ArrowY->OverrideScale3D = { 2,2,2 };
+	ArrowZ->OverrideScale3D = { 2,2,2 };
+
+	ArrowX->SetRelativeRotation({ 0,M_PI / 2,0 });
+	ArrowY->SetRelativeRotation({ -M_PI / 2 ,0,0 });
+	ArrowZ->SetRelativeRotation({ 0,0,0 });
+
+}
+
+UGizmoComponent::~UGizmoComponent()
+{
+	ArrowX->AttachToComponent(nullptr);
+	ArrowY->AttachToComponent(nullptr);
+	ArrowZ->AttachToComponent(nullptr);
+	ArrowX = ArrowY = ArrowZ = nullptr;
+}
+
+void UGizmoComponent::Update()
+{
+	//ArrowX->IsOverrideLocation = true;
+	//ArrowY->IsOverrideLocation = true;
+	//ArrowZ->IsOverrideLocation = true;
+
+	//ArrowX->IsOverrideRotation = true;
+	//ArrowY->IsOverrideRotation = true;
+	//ArrowZ->IsOverrideRotation = true;
+
+	//ArrowX->IsOverrideScale3D = true;
+	//ArrowY->IsOverrideScale3D = true;
+	//ArrowZ->IsOverrideScale3D = true;
 
 	// ����� �ƹ��͵� �Ⱥپ�����
  	if (GetAttachParent() == nullptr)
@@ -42,12 +62,13 @@ void UGizmoComponent::Update()
 
 
 	UArrowComponent* selectedArrow = nullptr;
-	if (ArrowX->IsPicked()) selectedArrow = ArrowX;
-	else if (ArrowY->IsPicked()) selectedArrow = ArrowY;
-	else if (ArrowZ->IsPicked()) selectedArrow = ArrowZ;
-	else return; 	// ������� ȭ��ǥ�� ���õ��� ����
+	if (selectedAxis == EPrimitiveColor::RED_X) selectedArrow = ArrowX;
+	else if (selectedAxis == EPrimitiveColor::GREEN_Y) selectedArrow = ArrowY;
+	else if (selectedAxis == EPrimitiveColor::BLUE_Z) selectedArrow = ArrowZ;
+	else {
+		return; 	// ������� ȭ��ǥ�� ���õ��� ����
+	}
 
-	UArrowComponent* arrow;
 	// ���콺 ��Ÿ
 	int dxInt, dyInt;
 	Input::Instance()->GetMouseDelta(dxInt, dyInt);
@@ -67,6 +88,9 @@ void UGizmoComponent::Update()
 	float effectiveMovement = mouseDirOnScreen.Dot(arrowDirOnScreen);
 	effectiveMovement *= GIZMO_SELECT_MOUSE_SPEED;
 
+	// @@@@@@@@@@@@@@@@@@@@@@@@
+	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+	// 포지션 오버라이드해서 RELATIVE기준으로 안움직이게
  	auto newPos = selectedArrow->Front() * effectiveMovement + GetAttachParent()->GetRelativeLocation();
 	GetAttachParent()->SetRelativeLocation(newPos);
 	ImGui::Begin("Gizmo Attached");
@@ -77,12 +101,25 @@ void UGizmoComponent::Update()
 
 }
 
+void UGizmoComponent::Render()
+{
+	if (isGizmoActivated) {
+		ArrowX->Render();
+		ArrowY->Render();
+		ArrowZ->Render();
+	}
+}
+
 void UGizmoComponent::AttachTo(UPrimitiveComponent* Parent)
 {
+	isGizmoActivated = true;
 	this->AttachToComponent(Parent);
 }
 
 void UGizmoComponent::Detach()
 {
+	isGizmoActivated = false;
+	selectedAxis = EPrimitiveColor::NONE;
+	//UE_LOG(L"Detach!!!!!!!\n");
 	this->AttachToComponent(nullptr);
 }

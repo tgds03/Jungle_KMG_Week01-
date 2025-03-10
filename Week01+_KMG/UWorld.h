@@ -41,7 +41,8 @@ public:
     int GetActorCount() const;
     const TLinkedList<UActorComponent*>& GetActors() const;
 
-    UActorComponent* PickingByRay(int mouse_X, int mouse_Y, UArrowComponent* AxisXComp, UArrowComponent* AxisYComp, UArrowComponent* AxisZComp);
+    void ConvertNDC_VIEW(int mouse_X, int mouse_Y, FVector& pickPosition, FMatrix& viewMatrix);
+    UActorComponent* PickingByRay(int mouse_X, int mouse_Y, float& distance);
     void SetAxisPicked(UArrowComponent* axisX, UArrowComponent* axisY, UArrowComponent* axisZ, EPrimitiveColor pickedAxis);
 
     UCameraComponent* SpawnCamera();

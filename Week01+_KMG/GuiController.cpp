@@ -4,11 +4,10 @@
 #include "Framework/Core/CEngineStatics.h"
 #include "Framework/Core/Time.h"
 #include "Framework/Core/UCubeComponent.h"
+#include "Framework/Core/UGizmoComponent.h"
 #include "UWorld.h"
 
-extern UArrowComponent* gAxisXComp;
-extern UArrowComponent* gAxisYComp;
-extern UArrowComponent* gAxisZComp;
+extern UGizmoComponent* gGizmo;
 
 GuiController::GuiController(HWND hWnd, CGraphics* graphics): hWnd(hWnd) {
 	IMGUI_CHECKVERSION();
@@ -40,11 +39,6 @@ void GuiController::NewFrame()
 	GetClientRect(hWnd, &rect);
 	ImGui::Text("Width : %d, Height : %d", rect.right - rect.left, rect.bottom - rect.top);
 	ImGui::End();
-	//POINT p;
-	//GetCursorPos(&p);
-	//ScreenToClient(hWnd, &p);
-	//_io->MousePos.x = static_cast<float>(p.x);
-	//_io->MousePos.y = static_cast<float>(p.y);
 	int x, y, w;
 	Input::Instance()->GetMouseLocation(x, y);
 	Input::Instance()->GetMouseWheel(w);
@@ -54,22 +48,104 @@ void GuiController::NewFrame()
 	_io->MouseDown[0] = Input::Instance()->IsMouseButtonDown(0);
 	_io->MouseDown[1] = Input::Instance()->IsMouseButtonDown(1);
 
-	Picking();
+	// 월드에서의 ray추출?!
+	if (Input::Instance()->IsMouseButtonPressed(0) && !_io->WantCaptureMouse) {
+		float nearestActorDistance;
+		float nearestGizmoDistance;
+		UActorComponent* neareastActorComp = GetNearestActorComponents(nearestActorDistance);
+		EPrimitiveColor neareastAxis = GetNearestGizmo(nearestGizmoDistance);
+
+		if (neareastActorComp == nullptr && neareastAxis == EPrimitiveColor::NONE) { //선택 암것도 안됨
+			gGizmo->Detach();
+		}
+		else {
+			if (nearestActorDistance < nearestGizmoDistance) { // actor 선택
+				//actor select 상태 (색 변경)
+				UPrimitiveComponent* downcast = dynamic_cast<UPrimitiveComponent*>(_selected);
+				if ( downcast )
+				downcast->renderFlags &= ~PRIMITIVE_FLAG_SELECTED;
+			
+				_selected = neareastActorComp;
+				downcast = dynamic_cast<UPrimitiveComponent*>(_selected);
+				if ( downcast )
+					downcast->renderFlags |= PRIMITIVE_FLAG_SELECTED;
+				//gizmo 붙이기
+				gGizmo->AttachTo(dynamic_cast<UPrimitiveComponent*>(_selected));
+				gGizmo->selectedAxis = EPrimitiveColor::NONE;
+			}
+			else  { // gizmo 선택
+				gGizmo->selectedAxis = neareastAxis;
+				//gGizmo
+			}
+		}
+		
+		// 컴포넌트 < 기즈모
+		// giuzmo attachparent 컴포넌트
+		// 기즈모 < 컴포넌트
+		// EPRIMITIVE르,ㄹ 통해서
+		// GIZEMO->ACTIVATEARROW( EPRIMITIVE )
+		// 3. DISTANCE 둘다 NULLPTR
+		// GIZMO떼고 SELECTED = NULL 
+		
+	}
+	if (Input::Instance()->IsMouseButtonReleased(0) && !_io->WantCaptureMouse) {
+		gGizmo->selectedAxis = EPrimitiveColor::NONE;
+	}
+
+	// 마우스 DXDY얻어서
+	// if 기즈모 parent있으면
+	// 기즈모가 dxdy받아서 해당방향 location deltat 리턴
+	// 바등ㄴ delta로 selected object 무브
+
 }
 
-void GuiController::Picking() {
-	if (Input::Instance()->IsMouseButtonPressed(0) && !_io->WantCaptureMouse) {
+UActorComponent* GuiController::GetNearestActorComponents(float& distance) {
 		int x, y;
 		Input::Instance()->GetMouseLocation(x, y);
-		UPrimitiveComponent* downcast = dynamic_cast<UPrimitiveComponent*>(_selected);
-		if ( downcast )
-			downcast->renderFlags &= ~PRIMITIVE_FLAG_SELECTED;
-		_selected = world->PickingByRay(x, y, gAxisXComp, gAxisYComp, gAxisZComp);
-		downcast = dynamic_cast<UPrimitiveComponent*>(_selected);
-		if ( downcast )
-			downcast->renderFlags |= PRIMITIVE_FLAG_SELECTED;
+		//_selected = 
+		UActorComponent* nearestActor = world->PickingByRay(x, y, distance); //_selected
+		return nearestActor;	
+}
+
+EPrimitiveColor GuiController::GetNearestGizmo(float& distance)
+{
+	if (!gGizmo->isGizmoActivated)
+	{
+		distance = FLT_MAX;
+		return EPrimitiveColor::NONE;
 	}
-		
+	int x, y;
+	Input::Instance()->GetMouseLocation(x, y);
+	FMatrix viewMatrix = FMatrix::Identity;
+	FVector pickPosition;
+	world->ConvertNDC_VIEW(x, y, pickPosition, viewMatrix);
+	float hitDistance[4]{ FLT_MAX,FLT_MAX,FLT_MAX,FLT_MAX };
+	float minDistance = FLT_MAX;
+	EPrimitiveColor pickedAxis = EPrimitiveColor::NONE;
+
+	if (gGizmo->ArrowX->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitDistance[EPrimitiveColor::RED_X])) {
+		if (hitDistance[EPrimitiveColor::RED_X] < minDistance) {
+			minDistance = hitDistance[EPrimitiveColor::RED_X];
+			pickedAxis = EPrimitiveColor::RED_X;
+		}
+	}
+	if (gGizmo->ArrowY->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitDistance[EPrimitiveColor::GREEN_Y])) {
+		if (hitDistance[EPrimitiveColor::GREEN_Y] < minDistance) {
+			minDistance = hitDistance[EPrimitiveColor::GREEN_Y];
+			pickedAxis = EPrimitiveColor::GREEN_Y;
+		}
+	}
+	if (gGizmo->ArrowZ->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitDistance[EPrimitiveColor::BLUE_Z])) {
+		if (hitDistance[EPrimitiveColor::BLUE_Z] < minDistance) {
+			minDistance = hitDistance[EPrimitiveColor::BLUE_Z];
+			pickedAxis = EPrimitiveColor::BLUE_Z;
+		}
+	}
+
+	distance = hitDistance[pickedAxis];
+	return pickedAxis;
+
+
 }
 
 void GuiController::RenderFrame()

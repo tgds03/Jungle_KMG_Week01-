@@ -8,14 +8,17 @@ class UGizmoComponent :
     public USceneComponent
 {
 public:
-    UGizmoComponent(UArrowComponent* axisX, UArrowComponent* axisY, UArrowComponent* axisZ);
+    UGizmoComponent();
     //UGizmoComponent();
-    //~UGizmoComponent();
+    ~UGizmoComponent();
     virtual void Update();
+    virtual void Render() override;
     void AttachTo(UPrimitiveComponent* Parent);
     void Detach();
 
-private:
+    EPrimitiveColor selectedAxis = EPrimitiveColor::NONE;
+    bool isGizmoActivated = false;
+    
     UArrowComponent* ArrowX;
     UArrowComponent* ArrowY;
     UArrowComponent* ArrowZ;

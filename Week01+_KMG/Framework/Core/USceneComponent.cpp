@@ -120,7 +120,7 @@ FMatrix USceneComponent::GetComponentTransform() const
 	}
 	if (IsOverrideLocation || IsOverrideRotation || IsOverrideScale3D)
 	{
-		return GetRelativeTransform();
+		return GetRelativeTransform() * AttachParent->GetComponentTransform();
 		//FMatrix origin = FMatrix::Identity;
 
 		//FMatrix scale = FMatrix::Scale(OverrideScale3D);
@@ -358,7 +358,7 @@ void USceneComponent::GetParentComponents(TArray<USceneComponent*>& Parents) con
 	}
 }
 
-// pass by reference�� �޸� ����
+// children 설정
 void USceneComponent::SetupAttachment(TArray<USceneComponent*>& Children)
 {
 	AttachChildern.clear();
@@ -393,28 +393,55 @@ void USceneComponent::SetupAttachment(TArray<USceneComponent*>& Children)
 
 bool USceneComponent::AttachToComponent(USceneComponent* Parent)
 {
-	if (Parent == nullptr)
-	{
-		AttachParent = nullptr;
-		return true;
-	}
+	// 새로운 parent가 나인지 확ㅇㄴ
 	if (Parent == this)
 	{
 		UE_LOG(L"USceneComponent::AttachToComponent::�ڱ� �ڽ��� Parent�� �� �� �����ϴ�.");
 		return false;
 	}
-
+	
 	// parent�� �Ϸ��� ������Ʈ�� ���� *this�� �ִ��� Ȯ��
-	TArray<USceneComponent*> parentsOfInput;
-	Parent->GetParentComponents(parentsOfInput);
-	if (parentsOfInput.end() != std::find(parentsOfInput.begin(), parentsOfInput.end(), this))
+	// paren중에 내가 있는지 확인
+	if (Parent != nullptr) {
+		TArray<USceneComponent*> parentsOfInput;
+		Parent->GetParentComponents(parentsOfInput);
+		if (parentsOfInput.end() != std::find(parentsOfInput.begin(), parentsOfInput.end(), this))
+		{
+			UE_LOG(L"USceneComponent::AttachToComponent::Descendent�� Parent�� �� �� �����ϴ�.");
+			return false;
+		}
+	}
+	
+
+	// 만약 parent에 붙어있으면
+	// 현재 붙어있는 parent로 가서 this 를 child에서 없앰
+	if (GetAttachParent() != nullptr)
 	{
-		UE_LOG(L"USceneComponent::AttachToComponent::Descendent�� Parent�� �� �� �����ϴ�.");
-		return false;
+		TArray<USceneComponent*> currentChildrenOfParent = GetAttachParent()->GetAttachChildren();
+
+		auto it = std::find(currentChildrenOfParent.begin(), currentChildrenOfParent.end(), this);
+		//if (it != currentChildrenOfParent.end()) {
+		assert(it != currentChildrenOfParent.end());
+
+		currentChildrenOfParent.erase(it);
+		GetAttachParent()->SetupAttachment(currentChildrenOfParent);
+		//}
+
 	}
 
-	Parent->AttachChildern.push_back(Parent);
+	// parent를 새로 설정
+
+	if (Parent == nullptr)
+	{
+		AttachParent = nullptr;
+
+		return true;
+	}
+
+
+	// parent 갱신
 	AttachParent = Parent;
+	Parent->AttachChildern.push_back(this);
 	return true;
 
 	//TArray<USceneComponent*> children;

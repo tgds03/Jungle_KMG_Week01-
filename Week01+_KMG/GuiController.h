@@ -1,6 +1,7 @@
 #pragma once
+//#include "stdafx.h"
 #include "GuiConsole.h"
-
+enum EPrimitiveColor;
 class CGraphics;
 class UActorComponent;
 class UWorld;
@@ -11,7 +12,10 @@ public:
 	~GuiController();
 
 	void NewFrame();
-	void Picking();
+	UActorComponent* GetNearestActorComponents(float& distance);
+	EPrimitiveColor GetNearestGizmo(float& distance);
+
+	
 	void RenderFrame();
 	void RenderEditor();
 	void Resize();

@@ -153,21 +153,21 @@ UArrowComponent::~UArrowComponent()
 void UArrowComponent::Render()
 { 
 
-	switch (color)
-	{
-	case RED_X:
-		OverrideRotation = { 0,-M_PI / 2,0 };
-		break;
-	case GREEN_Y:
-		OverrideRotation = { M_PI / 2 ,0,0 };
-		break;
-	case BLUE_Z:
-		OverrideRotation = { 0,0,0 };
-		break;
-	}
-	OverrideLocation = GetAttachParent()->GetComponentLocation();
-	OverrideScale3D = GetAttachParent()->GetRelativeScale3D();
-	UPrimitiveComponent::Render();
+	//switch (color)
+	//{
+	//case RED_X:
+	//	OverrideRotation = { 0,-M_PI / 2,0 };
+	//	break;
+	//case GREEN_Y:
+	//	OverrideRotation = { M_PI / 2 ,0,0 };
+	//	break;
+	//case BLUE_Z:
+	//	OverrideRotation = { 0,0,0 };
+	//	break;
+	//}
+	//OverrideLocation = GetAttachParent()->GetComponentLocation();
+	//OverrideScale3D = GetAttachParent()->GetRelativeScale3D();
+ 	UPrimitiveComponent::Render();
 	
 	return;
 
