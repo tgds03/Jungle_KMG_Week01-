@@ -48,5 +48,9 @@ VS_OUTPUT VS(VS_INPUT input)
 
 float4 PS(VS_OUTPUT input) : SV_TARGET
 {
+    
+    float3 gammaCorrectedColor = pow(input.Color.rgb, 1.0 / 2.2); // 감마 보정 적용
+    return float4(gammaCorrectedColor, input.Color.a);
+    
     return input.Color; // 컬러 출력
 }
