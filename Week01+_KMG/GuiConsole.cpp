@@ -102,20 +102,37 @@ void GuiConsole::ExecCommand(const char* command_line) {
     TArray<FString> commands = StrSplit(str);
     if (commands[0] == "spawn") {
         UWorld* world = _controller->world;
-        if (commands.size() < 2) {
+
+        int count;
+        if (commands.size() == 1) {
             AddLog("Invalid argument.");
-        } else if (commands[1] == "cube") {
-            world->SpawnCubeActor();
-            AddLog("Successed");
-        } else if (commands[1] == "sphere") {
-            world->SpawnSphereActor();
-            AddLog("Successed");
-        } else if (commands[1] == "plane") {
-            world->SpawnPlaneActor();
-            AddLog("Successed");
-        } else {
-            AddLog("Invalid argument.");
+            return;
+        } else if ( commands.size() == 2 )
+            count = 1;
+        else if (commands.size() == 3)
+        {
+            if ( atoi(commands[2].c_str()) >= 0 || commands[2] == "0" )
+                count = atoi(commands[2].c_str());
+            else {
+                AddLog("Invalid argument.");
+                return;
+            }
         }
+
+        for (int i = 0; i < count; i++) {
+            if ( commands[1] == "cube" ) {
+                world->SpawnCubeActor();
+            } else if ( commands[1] == "sphere" ) {
+                world->SpawnSphereActor();
+            } else if ( commands[1] == "plane" ) {
+                world->SpawnPlaneActor();
+            } else {
+                AddLog("Invalid argument.");
+                return;
+            }
+        }
+        AddLog("Successed");
+
     } else if (commands[0] == "clear") {
         _items.clear();
     } else {

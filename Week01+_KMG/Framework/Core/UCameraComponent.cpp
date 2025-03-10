@@ -7,39 +7,21 @@ void UCameraComponent::Update() {
 	auto loc = GetRelativeLocation();
 	FVector movement = FVector::Zero;
 	if ( Input::Instance()->IsKeyDown(DIK_A) ) {
-		//RelativeLocation.x -= 1.0f * Time::GetDeltaTime();
-		//RelativeLocation -= Right() * Time::GetDeltaTime();
-		//SetRelativeLocation(loc - Right() * Time::GetDeltaTime());
 		movement -= Right();
 	}
 	if ( Input::Instance()->IsKeyDown(DIK_D) ) {
-		//RelativeLocation.x += 1.0f * Time::GetDeltaTime();
-		//RelativeLocation += Right() * Time::GetDeltaTime();
-		//SetRelativeLocation(loc + Right() * Time::GetDeltaTime());
 		movement += Right();
 	}
 	if ( Input::Instance()->IsKeyDown(DIK_W) ) {
-		//RelativeLocation.z -= 1.0f * Time::GetDeltaTime();
-		//RelativeLocation += Front() * Time::GetDeltaTime();
-		//SetRelativeLocation(loc + Front() * Time::GetDeltaTime());
 		movement += Front();
 	}
 	if ( Input::Instance()->IsKeyDown(DIK_S) ) {
-		//RelativeLocation.z += 1.0f * Time::GetDeltaTime();
-		//RelativeLocation -= Front() * Time::GetDeltaTime();
-		//SetRelativeLocation(loc - Front() * Time::GetDeltaTime());
 		movement -= Front();
 	}
 	if ( Input::Instance()->IsKeyDown(DIK_SPACE) ) {
-		//RelativeLocation.y += 1.0f * Time::GetDeltaTime();
-		//RelativeLocation += Up() * Time::GetDeltaTime();
-		//SetRelativeLocation(loc + Up() * Time::GetDeltaTime());
 		movement += Up();
 	}
 	if ( Input::Instance()->IsKeyDown(DIK_LSHIFT) ) {
-		//RelativeLocation.y -= 1.0f * Time::GetDeltaTime();
-		//RelativeLocation -= Up() * Time::GetDeltaTime();
-		//SetRelativeLocation(loc - Up() * Time::GetDeltaTime());
 		movement -= Up();
 	}
 	SetRelativeLocation(loc + movement * Time::GetDeltaTime() * speed);
@@ -67,12 +49,14 @@ void UCameraComponent::Render() {
 
 	FVector vec = GetRelativeLocation();
 	float loc[3] = { vec.x, vec.y, vec.z };
-	ImGui::SliderFloat3("position", loc, -50.f, 50.f);
+	//ImGui::SliderFloat3("position", loc, -50.f, 50.f);
+	ImGui::DragFloat3("position", loc, 0.1f);
 	SetRelativeLocation(FVector(loc[0], loc[1], loc[2]));
 
 	vec = GetRelativeRotation();
 	float rot[3] = { vec.x, vec.y, vec.z };
-	ImGui::SliderFloat3("rotation", rot, -M_PI, M_PI);
+	//ImGui::SliderFloat3("rotation", rot, -M_PI, M_PI);
+	ImGui::DragFloat3("rotation", rot, 0.1f);
 	SetRelativeRotation(FVector(rot[0], rot[1], rot[2]));
 	//ImGui::DragFloat3("position", &RelativeLocation.x, 0.1f);
 	//ImGui::DragFloat3("rotation", &RelativeRotation.x, 0.1f);
@@ -146,9 +130,10 @@ FMatrix UCameraComponent::Projection() {
 
 FMatrix UCameraComponent::OrthgonalProjection() {
 	float zRange = farDistance - nearDistance;
+	const float scale = 0.5f;
 	return FMatrix({ 
-		2.f / aspectRatio, 0.f, 0.f, 0.f, 
-		0.f, 2.f, 0.f, 0.f,
+		scale / aspectRatio, 0.f, 0.f, 0.f, 
+		0.f, scale, 0.f, 0.f,
 		0.f, 0.f, 1.f / zRange, - nearDistance / zRange,
 		0.f, 0.f, 0.f, 1.f
 	});
