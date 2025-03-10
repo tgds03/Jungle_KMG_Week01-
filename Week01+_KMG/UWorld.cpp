@@ -168,3 +168,40 @@ UDiscHollowComponent* UWorld::SpawnDiscHollowActor()
 {
     return SpawnActor<UDiscHollowComponent>();
 }
+
+void UWorld::SaveWorld(const FString& fileName)
+{
+    auto actorListCopy = actorList;  // 복사본 유지
+    DataManager::Instance()->SaveWorldToJson(this, fileName);
+    //DataManager::Instance()->SaveWorldToJson(this, fileName);
+}
+
+void UWorld::LoadWorld(const FString& fileName)
+{
+    TArray<PrimitiveData> primitives = DataManager::Instance()->LoadWorldFromJson(fileName);
+
+    for (const auto& primitive : primitives)
+    {
+        if (primitive.Type == "Cube")
+        {
+            UCubeComponent* cube = SpawnCubeActor();
+            cube->SetRelativeLocation(primitive.Location);
+            cube->SetRelativeRotation(primitive.Rotation);
+            cube->SetRelativeScale3D(primitive.Scale);
+        }
+        else if (primitive.Type == "Sphere")
+        {
+            USphereComponent* sphere = SpawnSphereActor();
+            sphere->SetRelativeLocation(primitive.Location);
+            sphere->SetRelativeRotation(primitive.Rotation);
+            sphere->SetRelativeScale3D(primitive.Scale);
+        }
+        else if (primitive.Type == "Plane")
+        {
+            UPlaneComponent* plane = SpawnPlaneActor();
+            plane->SetRelativeLocation(primitive.Location);
+            plane->SetRelativeRotation(primitive.Rotation);
+            plane->SetRelativeScale3D(primitive.Scale);
+        }
+    }
+}
