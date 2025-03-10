@@ -28,42 +28,56 @@ FVector USceneComponent::Front() {
 
 FVector USceneComponent::GetRelativeLocation() const
 {
+	if (IsOverrideLocation) return OverrideLocation;
 	return RelativeLocation;
 }
 
 FVector4 USceneComponent::GetRelativeLocation4() const
 {
+	if (IsOverrideLocation) return FVector4(OverrideLocation,1);
 	return FVector4(RelativeLocation, 1);
 }
 
 FVector USceneComponent::GetRelativeRotation() const
 {
+	if (IsOverrideRotation) return OverrideRotation;
 	return RelativeRotation;
 }
 
 FVector USceneComponent::GetRelativeScale3D() const
 {
+	if (IsOverrideScale3D) return OverrideScale3D;
 	return RelativeScale3D;
 }
 
 FMatrix USceneComponent::GetRelativeTransform() const
 {
-	if (ISDEBUG)
-	{
-		return DEBUG_TRANSFORMATION_OVERRIDE;
-	}
-	//FMatrix origin = FMatrix(FVector4::Zero, FVector4::Zero, FVector4::Zero, FVector4(0, 0, 0, 1));
-	FMatrix origin = FMatrix::Identity;
+	if (IsOverrideTransform) return OverrideTransform;
 
+	FMatrix origin = FMatrix::Identity;
 	FMatrix scale = FMatrix::Scale(RelativeScale3D);
 	FMatrix rot = FMatrix::RotateX(RelativeRotation.x) * FMatrix::RotateY(RelativeRotation.y) * FMatrix::RotateZ(RelativeRotation.z);
 	FMatrix trans = FMatrix::Translate(RelativeLocation);
+
+	if (IsOverrideLocation) {
+		trans = FMatrix::Translate(OverrideLocation);
+	}
+	if (IsOverrideRotation) {
+		rot = FMatrix::RotateX(OverrideRotation.x) * FMatrix::RotateY(OverrideRotation.y) * FMatrix::RotateZ(OverrideRotation.z);
+	}
+	if (IsOverrideScale3D) {
+		scale = FMatrix::Scale(OverrideScale3D);
+	}
 
 	return origin * scale * rot * trans;
 }
 
 FVector USceneComponent::GetComponentLocation() const
 {
+	if (IsOverrideLocation) {
+		return OverrideLocation;
+	}
+
 	if (AttachParent != nullptr)
 	{
 		FVector4 componentVec = (FVector4(GetRelativeLocation(), 1) * AttachParent->GetComponentTransform());
@@ -100,6 +114,20 @@ FVector USceneComponent::GetComponentLocation() const
 //}
 FMatrix USceneComponent::GetComponentTransform() const
 {
+	if (IsOverrideTransform)
+	{
+		return OverrideTransform;
+	}
+	if (IsOverrideLocation || IsOverrideRotation || IsOverrideScale3D)
+	{
+		return GetRelativeTransform();
+		//FMatrix origin = FMatrix::Identity;
+
+		//FMatrix scale = FMatrix::Scale(OverrideScale3D);
+		//FMatrix rot = FMatrix::RotateX(OverrideRotation.x) * FMatrix::RotateY(OverrideRotation.y) * FMatrix::RotateZ(OverrideRotation.z);
+		//FMatrix trans = FMatrix::Translate(OverrideLocation);
+		//return origin * scale * rot * trans;
+	}
 	if (AttachParent != nullptr)
 	{
 		return GetRelativeTransform() * AttachParent->GetComponentTransform();
@@ -123,6 +151,32 @@ FVector USceneComponent::GetComponentY() const
 FVector USceneComponent::GetComponentZ() const
 {
 	return (FVector4(0, 0, 1, 0) * GetComponentTransform()).xyz();
+}
+
+FVector USceneComponent::GetComponentInverseRotation() const
+{
+	
+	FMatrix inverseRotaion = FMatrix::Identity;
+
+	// �𸮾� �ҽ��ڵ� /Engine/Source/Runtime/Engine/Classes/Components/SceneComponent.h ����
+	USceneComponent* ParentIterator = GetAttachParent();
+	while (ParentIterator != nullptr)
+	{
+		FVector rot = ParentIterator->GetRelativeRotation();
+		FMatrix matRotZ = FMatrix::RotateZ(rot.z);
+		FMatrix matRotY = FMatrix::RotateZ(rot.y);
+		FMatrix matRotX = FMatrix::RotateZ(rot.x);
+		
+		inverseRotaion = inverseRotaion * matRotZ * matRotY * matRotX;
+		ParentIterator = ParentIterator->GetAttachParent();
+	}
+
+	FVector rotAngles;
+	rotAngles.x = atan(-inverseRotaion[2][0] / sqrt(inverseRotaion[0][0] * inverseRotaion[0][0]
+		+ inverseRotaion[1][0] * inverseRotaion[1][0]));
+	rotAngles.y = atan(inverseRotaion[1][0] / inverseRotaion[0][0]);
+	rotAngles.z = atan(inverseRotaion[2][1] / inverseRotaion[2][2]);
+	return rotAngles;
 }
 
 void USceneComponent::SetRelativeLocation(const FVector NewLocation)

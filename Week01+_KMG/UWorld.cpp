@@ -114,8 +114,25 @@ UActorComponent* UWorld::PickingByRay(int mouse_X, int mouse_Y, UArrowComponent*
     UActorComponent* nearestActorComp = nullptr;
 
 
-    SetAxisPicked(AxisXComp, AxisYComp, AxisZComp, static_cast<EAxisColor>(-1));
- 
+    if (AxisXComp->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitDistance)) {
+        UE_LOG(L"X__AXIS \n");
+        SetAxisPicked(AxisXComp, AxisYComp, AxisZComp, EPrimitiveColor::RED_X);
+        return;
+    }
+    if (AxisYComp->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitDistance)) {
+        UE_LOG(L"Y__AXIS \n");
+        SetAxisPicked(AxisXComp, AxisYComp, AxisZComp, EPrimitiveColor::GREEN_Y);
+        return;
+    }
+    if (AxisZComp->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitDistance)) {
+        UE_LOG(L"Z__AXIS \n");
+        SetAxisPicked(AxisXComp, AxisYComp, AxisZComp, EPrimitiveColor::BLUE_Z);
+        return;
+    }
+    SetAxisPicked(AxisXComp, AxisYComp, AxisZComp, static_cast<EPrimitiveColor>(-1));
+    AxisXComp->SetPicked(false);
+    AxisYComp->SetPicked(false);
+    AxisZComp->SetPicked(false);
 	for (const auto& actorComp : actorList) {
         if (!actorComp) continue;
 		bool bRes = actorComp->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitDistance);
@@ -149,11 +166,11 @@ UCameraComponent* UWorld::SpawnCamera()
     return newCamera;
 }
 
-void UWorld::SetAxisPicked(UArrowComponent* axisX, UArrowComponent* axisY, UArrowComponent* axisZ, EAxisColor pickedAxis)
+void UWorld::SetAxisPicked(UArrowComponent* axisX, UArrowComponent* axisY, UArrowComponent* axisZ, EPrimitiveColor pickedAxis)
 {
-    axisX->SetPicked(pickedAxis == EAxisColor::RED_X);
-    axisY->SetPicked(pickedAxis == EAxisColor::GREEN_Y);
-    axisZ->SetPicked(pickedAxis == EAxisColor::BLUE_Z);
+    axisX->SetPicked(pickedAxis == EPrimitiveColor::RED_X);
+    axisY->SetPicked(pickedAxis == EPrimitiveColor::GREEN_Y);
+    axisZ->SetPicked(pickedAxis == EPrimitiveColor::BLUE_Z);
 }
 
 UCubeComponent* UWorld::SpawnCubeActor()
@@ -213,4 +230,14 @@ void UWorld::LoadWorld(const FString& fileName)
             plane->SetRelativeScale3D(primitive.Scale);
         }
     }
+}
+
+UDiscComponent* UWorld::SpawnDiscActor()
+{
+    return SpawnActor<UDiscComponent>();
+}
+
+UDiscHollowComponent* UWorld::SpawnDiscHollowActor()
+{
+    return SpawnActor<UDiscHollowComponent>();
 }

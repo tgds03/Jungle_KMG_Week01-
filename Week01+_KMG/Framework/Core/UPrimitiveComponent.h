@@ -6,6 +6,7 @@
 
 class UPrimitiveComponent: public USceneComponent {
 public:
+	UPrimitiveComponent() {}
 	TArray<FVertexSimple> vertices;
 	TArray<uint32> indices;
 
@@ -14,6 +15,6 @@ public:
 	virtual void GenerateRayForPicking(const FVector& pickPosition, const FMatrix& viewMatrix, FVector* pickRayOrigin, FVector* rayDirection) override;
 	virtual bool PickObjectByRayIntersection(const FVector& pickPosition, const FMatrix& viewMatrix, float* hitDistance) override;
 protected:
-	CVertexBuffer<FVertexSimple>* _vertexBuffer;
-	CIndexBuffer* _indexBuffer;
+	CVertexBuffer<FVertexSimple>* _vertexBuffer = nullptr;
+	CIndexBuffer* _indexBuffer = nullptr;
 };

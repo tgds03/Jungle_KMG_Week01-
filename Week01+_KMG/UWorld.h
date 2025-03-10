@@ -6,6 +6,9 @@
 #include "Framework/Core/UPlaneComponent.h"
 #include "Framework/Core/UArrowComponent.h"
 #include "Framework/Core/UCoordArrowComponent.h"
+#include "Framework/Core/UDiscComponent.h"
+#include "Framework/Core/UDiscHollowComponent.h"
+
 
 class UActorComponent;
 class UCubeComponent;
@@ -48,6 +51,9 @@ public:
 
     void SaveWorld(const FString& fileName);
     void LoadWorld(const FString& fileName);
+    UDiscComponent* SpawnDiscActor();
+    UDiscHollowComponent* SpawnDiscHollowActor();
+
 private:
     TLinkedList<UActorComponent*> actorList = {};
 

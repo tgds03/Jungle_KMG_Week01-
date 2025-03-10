@@ -88,26 +88,18 @@ FVector UCoordArrowComponent::GetDirection()
 
 void UCoordArrowComponent::Render()
 {
-	//if(RelativeLocation)
-	//D3D11_RASTERIZER_DESC RSDesc;
-	//RSDesc.FillMode = D3D11_FILL_WIREFRAME;
-	//RSDesc.CullMode = D3D11_CULL_NONE;
-	//ID3D11RasterizerState *lineMode = nullptr;
-
-	//auto device = CRenderer::Instance()->GetGraphics()->GetDevice();
-	//device->CreateRasterizerState()
-
 	CGraphics* graphics = CRenderer::Instance()->GetGraphics();
 	graphics->GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 
-	CRenderer::Instance()->SetRasterzierState();
-	ID3D11Buffer* vertexBuffer = _vertexBuffer->Get();
-	uint32 stride = _vertexBuffer->GetStride();
-	uint32 offset = _vertexBuffer->GetOffset();
-	graphics->GetDeviceContext()->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
-	graphics->GetDeviceContext()->IASetIndexBuffer(_indexBuffer->Get(), DXGI_FORMAT_R32_UINT, 0);
-	FMatrix m = GetComponentTransform();
-	CRenderer::Instance()->SetConstantBuffer(m);
-	graphics->GetDeviceContext()->DrawIndexed(indices.size(), 0, 0);
+	UPrimitiveComponent::Render();
+	//CRenderer::Instance()->SetRasterzierState();
+	//ID3D11Buffer* vertexBuffer = _vertexBuffer->Get();
+	//uint32 stride = _vertexBuffer->GetStride();
+	//uint32 offset = _vertexBuffer->GetOffset();
+	//graphics->GetDeviceContext()->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
+	//graphics->GetDeviceContext()->IASetIndexBuffer(_indexBuffer->Get(), DXGI_FORMAT_R32_UINT, 0);
+	//FMatrix m = GetComponentTransform();
+	//CRenderer::Instance()->SetConstantBuffer(m);
+	//graphics->GetDeviceContext()->DrawIndexed(indices.size(), 0, 0);
 	graphics->GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }

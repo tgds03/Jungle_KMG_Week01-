@@ -183,7 +183,9 @@
     <ClCompile Include="Math\FMatrix.cpp" />
     <ClCompile Include="Math\FVector.cpp" />
     <ClCompile Include="Framework\Core\UGizmoComponent.cpp" />
-    <ClCompile Include="USphereComponent.cpp" />
+    <ClCompile Include="Framework\Core\USphereComponent.cpp" />
+    <ClCompile Include="Framework\Core\UDiscComponent.cpp" />
+    <ClCompile Include="Framework\Core\UDiscHollowComponent.cpp" />
     <ClCompile Include="UWorld.cpp" />
     <FxCompile Include="Shader.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -233,6 +235,8 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Framework\Core\UGizmoComponent.h" />
     <ClInclude Include="Framework\Core\USphereComponent.h" />
+    <ClInclude Include="Framework\Core\UDiscComponent.h" />
+    <ClInclude Include="Framework\Core\UDiscHollowComponent.h" />
     <ClInclude Include="UWorld.h" />
   </ItemGroup>
   <ItemGroup>

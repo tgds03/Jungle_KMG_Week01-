@@ -8,6 +8,7 @@
 #include "Framework/Core/UCoordArrowComponent.h"
 #include "Framework/Core/UArrowComponent.h"
 #include "Framework/Core/UGizmoComponent.h"
+#include "Framework/Core/UDiscHollowComponent.h"
 extern int SCR_WIDTH;
 extern int SCR_HEIGHT;
 const int TARGET_FPS = 60;
@@ -28,8 +29,14 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
-	case WM_LBUTTONDOWN:
-		break;
+	// case WM_LBUTTONDOWN:
+	// 	if(gMainScene)
+	// 	{
+	// 		gMainScene->PickingByRay(LOWORD(lParam), HIWORD(lParam), gAxisXComp, gAxisYComp, gAxisZComp);
+	// 		auto cam = CRenderer::Instance()->GetMainCamera();
+	// 		Input::Instance()->SpawnMouseRay(cam->View(), cam->PerspectiveProjection());
+	// 	}
+	// 	break;
 	case WM_MOUSEMOVE:
 	{
 		TRACKMOUSEEVENT tme = {};
@@ -94,15 +101,22 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	guiController->world = new UWorld();
 
 
-	UArrowComponent* AxisXComp = new UArrowComponent(EAxisColor::RED_X);
-	UArrowComponent* AxisYComp = new UArrowComponent(EAxisColor::GREEN_Y);
-	UArrowComponent* AxisZComp = new UArrowComponent(EAxisColor::BLUE_Z);
+	UArrowComponent* AxisXComp = new UArrowComponent(RED_X);
+	UArrowComponent* AxisYComp = new UArrowComponent(GREEN_Y);
+	UArrowComponent* AxisZComp = new UArrowComponent(BLUE_Z);
 	UGizmoComponent* Gizmo = new UGizmoComponent(AxisXComp, AxisYComp, AxisZComp);
 
 	//Gizmo->AttachToComponent(sphere);
+	// Gizmo->AttachToComponent(obj2);
 	AxisXComp->SetRelativeRotation({ 0,-M_PI/2,0 });
 	AxisYComp->SetRelativeRotation({ M_PI / 2 ,0,0});
 	AxisZComp->SetRelativeRotation({ 0,0,0 });
+
+	AxisXComp->SetRelativeScale3D({ 0.8, 0.8 ,0.8 });
+	AxisYComp->SetRelativeScale3D({ 0.8, 0.8 ,0.8 });
+	AxisZComp->SetRelativeScale3D({ 0.8, 0.8 ,0.8 });
+
+
 	CRenderer::Instance()->GetMainCamera()->SetRelativeLocation(FVector(0, 0, -5));
 
 	gAxisXComp = AxisXComp;
@@ -110,7 +124,10 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	gAxisZComp = AxisZComp;
 	gGizmo = Gizmo;
 
-	//FString jsonOutput = DataManager::Instance().GenerateWorldJson(mainScene);
+	worldArrow->SetRelativeScale3D({ 100,100,100 });
+	//ground->SetRelativeScale3D({ 10,5,3 });
+	//ground->SetRelativeLocation({ 0,-10,0 });
+	arrow->SetRelativeScale3D({ 3,3,3 });
 
 
 	MSG msg = {};

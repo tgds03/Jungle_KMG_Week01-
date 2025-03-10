@@ -17,12 +17,20 @@ UGizmoComponent::UGizmoComponent(UArrowComponent* axisX, UArrowComponent* axisY,
 
 void UGizmoComponent::Update()
 {
-	// ±âÁî¸ð°¡ ¾Æ¹«°Íµµ ¾ÈºÙ¾îÀÖÀ½
- 	if (GetAttachParent() == nullptr)
-		return;
+	ArrowX->IsOverrideLocation = true;
+	ArrowY->IsOverrideLocation = true;
+	ArrowZ->IsOverrideLocation = true;
+
+	ArrowX->IsOverrideRotation = true;
+	ArrowY->IsOverrideRotation = true;
+	ArrowZ->IsOverrideRotation = true;
+
+	ArrowX->IsOverrideScale3D = true;
+	ArrowY->IsOverrideScale3D = true;
+	ArrowZ->IsOverrideScale3D = true;
 
 	ImGui::Begin("Gizmo");
-	ImGui::Text("Gizmo Rel Pos: %f %f %f", RelativeLocation.x, RelativeLocation.y, RelativeLocation.z);
+	//ImGui::Text("Gizmo Rel Pos: %f %f %f", RelativeLocation.x, RelativeLocation.y, RelativeLocation.z);
 	ImGui::Text("Gizmo Comp Pos: %f %f %f", GetComponentLocation().x, GetComponentLocation().y, GetComponentLocation().z);
 	ImGui::Text("Parent Rel Pos: %f %f %f", GetAttachParent()->GetRelativeLocation().x, GetAttachParent()->GetRelativeLocation().y, GetAttachParent()->GetRelativeLocation().z);
 	ImGui::Text("Parent Comp Pos: %f %f %f", GetAttachParent()->GetComponentLocation().x, GetAttachParent()->GetComponentLocation().y, GetAttachParent()->GetComponentLocation().z);
@@ -32,10 +40,10 @@ void UGizmoComponent::Update()
 	if (ArrowX->IsPicked()) selectedArrow = ArrowX;
 	else if (ArrowY->IsPicked()) selectedArrow = ArrowY;
 	else if (ArrowZ->IsPicked()) selectedArrow = ArrowZ;
-	else return; 	// ±âÁî¸ðÀÇ È­»ìÇ¥°¡ ¼±ÅÃµÇÁö ¾ÊÀ½
+	else return; 	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È­ï¿½ï¿½Ç¥ï¿½ï¿½ ï¿½ï¿½ï¿½Ãµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
 	UArrowComponent* arrow;
-	// ¸¶¿ì½º µ¨Å¸
+	// ï¿½ï¿½ï¿½ì½º ï¿½ï¿½Å¸
 	int dxInt, dyInt;
 	Input::Instance()->GetMouseDelta(dxInt, dyInt);
 	float dx = dxInt / (float)SCR_WIDTH;
