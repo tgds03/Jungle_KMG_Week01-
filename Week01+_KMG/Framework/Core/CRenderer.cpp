@@ -85,7 +85,7 @@ UCameraComponent* CRenderer::GetMainCamera() const
 	return _mainCamera;
 }
 
-void CRenderer::SetCamera(UCameraComponent* camera)
+void CRenderer::SetMainCamera(UCameraComponent* camera)
 {
 	_mainCamera = camera;
 }

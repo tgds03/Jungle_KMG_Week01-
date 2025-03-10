@@ -38,7 +38,7 @@ public:
 	void SetTransformToConstantBuffer(FMatrix matrix);
 	void SetFlagsToConstantBuffer(FPrimitiveFlags flags);
 	UCameraComponent* GetMainCamera() const;
-	void SetCamera(UCameraComponent* camera);
+	void SetMainCamera(UCameraComponent* camera);
 private:
 	CGraphics* _graphics = nullptr;
 	CVertexShader* _vertexShader = nullptr;

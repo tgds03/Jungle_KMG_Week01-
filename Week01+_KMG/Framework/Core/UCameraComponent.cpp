@@ -6,28 +6,28 @@ void UCameraComponent::Update() {
 	const float speed = 2.0f;
 	auto loc = GetRelativeLocation();
 	FVector movement = FVector::Zero;
-	if ( Input::Instance()->IsKeyDown(DIK_A) ) {
-		movement -= Right();
-	}
-	if ( Input::Instance()->IsKeyDown(DIK_D) ) {
-		movement += Right();
-	}
-	if ( Input::Instance()->IsKeyDown(DIK_W) ) {
-		movement += Front();
-	}
-	if ( Input::Instance()->IsKeyDown(DIK_S) ) {
-		movement -= Front();
-	}
-	if ( Input::Instance()->IsKeyDown(DIK_SPACE) ) {
-		movement += Up();
-	}
-	if ( Input::Instance()->IsKeyDown(DIK_LSHIFT) ) {
-		movement -= Up();
+	if (allowKeyboardInput)
+	{
+		if ( Input::Instance()->IsKeyDown(DIK_A) ) {
+			movement -= Right();
+		}
+		if ( Input::Instance()->IsKeyDown(DIK_D) ) {
+			movement += Right();
+		}
+		if ( Input::Instance()->IsKeyDown(DIK_W) ) {
+			movement += Front();
+		}
+		if ( Input::Instance()->IsKeyDown(DIK_S) ) {
+			movement -= Front();
+		}
+		if ( Input::Instance()->IsKeyDown(DIK_E) ) {
+			movement += Up();
+		}
+		if ( Input::Instance()->IsKeyDown(DIK_Q) ) {
+			movement -= Up();
+		}
 	}
 	SetRelativeLocation(loc + movement * Time::GetDeltaTime() * speed);
-	if ( Input::Instance()->IsKeyDown(DIK_Q) ) {
-		UE_LOG(FMatrix::MakeFromZ(Front()).to_wstring().c_str());
-	}
 	if ( Input::Instance()->IsMouseButtonDown(1) ) {
 		int dx, dy;
 		Input::Instance()->GetMouseDelta(dx, dy);

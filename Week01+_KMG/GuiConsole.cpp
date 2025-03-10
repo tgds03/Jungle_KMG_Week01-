@@ -65,8 +65,15 @@ void GuiConsole::Render() {
 		//	continue;
 		ImGui::TextUnformatted(item);
 	}
+
+    if (ImGui::GetScrollY() >= ImGui::GetScrollMaxY()) {
+        ImGui::SetScrollHereY(1.0f);
+    }
+
 	ImGui::EndChild();
-	ImGui::Separator();
+	ImGui::Separator(); 
+    bool keepFocus = false;
+    onFocus = ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows);
 
     ImGuiInputTextFlags input_text_flags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_EscapeClearsAll;
     if ( ImGui::InputText("Input", _inputBuffer, IM_ARRAYSIZE(_inputBuffer), input_text_flags, 0, (void*)this) ) {
@@ -76,7 +83,13 @@ void GuiConsole::Render() {
 		if ( s[0] )
 			ExecCommand(s);
 		strcpy_s(s, 256, "");
+        keepFocus = true;
 	}
+    if (keepFocus && onFocus)
+        ImGui::SetKeyboardFocusHere(-1);
+    else
+        keepFocus = false;
+
 	ImGui::End();
 }
 
@@ -99,6 +112,11 @@ void GuiConsole::ClearLog() {
 		ImGui::MemFree(item);
 	}
 	_items.clear();
+}
+
+bool GuiConsole::OnFocusing()
+{
+    return onFocus;
 }
 
 void GuiConsole::ExecCommand(const char* command_line) {

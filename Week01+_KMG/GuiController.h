@@ -17,6 +17,7 @@ public:
 	void Resize();
 	UWorld* world;
 	UActorComponent* _selected;
+	GuiConsole* GetConcolWindow();
 private:
 	ImGuiContext* _context;
 	ImGuiIO* _io;

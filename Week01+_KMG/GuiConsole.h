@@ -13,6 +13,7 @@ public:
 	void AddLog(const char* fmt, ...);
 	void AddLog(const std::string str);
 	void ClearLog();
+	bool OnFocusing();
 private:
 	char _inputBuffer[256];
 	ImVector<char*> _items;
@@ -20,5 +21,6 @@ private:
 	ImGuiTextFilter _filter;
 	GuiController* _controller;
 	void ExecCommand(const char* command_line);
+	bool onFocus = false;
 };
 
