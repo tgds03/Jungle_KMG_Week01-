@@ -51,7 +51,12 @@ GuiConsole::GuiConsole(GuiController* g): _controller(g) {}
 
 void GuiConsole::Render() {
 	const float footer_height_to_reserve = ImGui::GetStyle().ItemSpacing.y + ImGui::GetFrameHeightWithSpacing();
-
+    float consoleWindowWidth = static_cast<float>(SCR_WIDTH) * 1.f;
+    float consoleWindowHeight = static_cast<float>(SCR_HEIGHT) * 0.2f;
+    float consoleWindowPosX = (static_cast<float>(SCR_WIDTH) - consoleWindowWidth) * 0.5f;
+    float consoleWindowPosY = (static_cast<float>(SCR_HEIGHT) - consoleWindowHeight) * 1.f;
+    ImGui::SetNextWindowPos(ImVec2(consoleWindowPosX, consoleWindowPosY), ImGuiCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(consoleWindowWidth, consoleWindowHeight), ImGuiCond_Always);
 	ImGui::Begin("Console");
 
 	ImGui::BeginChild("ScrollingRegion", ImVec2(0, -footer_height_to_reserve), ImGuiChildFlags_NavFlattened, ImGuiWindowFlags_HorizontalScrollbar);

@@ -3,6 +3,7 @@
 #include "Framework/DirectXWrapper/CGraphics.h"
 #include "Framework/Core/CEngineStatics.h"
 #include "Framework/Core/Time.h"
+#include "Framework/Core/UCubeComponent.h"
 #include "UWorld.h"
 
 extern UArrowComponent* gAxisXComp;
@@ -72,8 +73,18 @@ void GuiController::RenderFrame()
 }
 
 void GuiController::RenderEditor() {
+	float controllWindowWidth = static_cast<float>(SCR_WIDTH) * 0.3f;
+	float controllWindowHeight = static_cast<float>(SCR_HEIGHT) * 0.25f;
+	float controllWindowPosX = (static_cast<float>(SCR_WIDTH) - controllWindowWidth) * 0.f;
+	float controllWindowPosY = (static_cast<float>(SCR_HEIGHT) - controllWindowHeight) * 0.f;
+	ImGui::SetNextWindowPos(ImVec2(controllWindowPosX, controllWindowPosY));
+	ImGui::SetNextWindowSize(ImVec2(controllWindowWidth, 0.0f), ImGuiCond_Once);
+
+	// 창의 크기 제약을 설정하여 너비는 고정하고 높이는 최소 0, 최대 무제한(FLT_MAX)으로 제한합니다.
+	ImGui::SetNextWindowSizeConstraints(ImVec2(300.0f, 0.0f), ImVec2(300.0f, FLT_MAX));
+
 	const char* primitiveItems[] = { "Cube", "Sphere", "Plane" };
-	ImGui::Begin("Control Panel");
+	ImGui::Begin("Control Panel",nullptr, ImGuiWindowFlags_AlwaysAutoResize);
 
 	ImGui::Text("FPS: %.2f (%.2fms)", 1/Time::GetDeltaTime(), 1000.f * Time::GetDeltaTime());
 	ImGui::Text("UObject Count: %d", CEngineStatics::TotalAllocationCount);
@@ -81,7 +92,7 @@ void GuiController::RenderEditor() {
 	ImGui::Separator();
 
 	ImGui::Text("UActorComponent Count: %d", world->GetActorCount());
-	
+
 	ImGui::Combo("Primitive", &_selectedPrimitive, primitiveItems, ARRAYSIZE(primitiveItems));
 	if ( ImGui::Button("Create") ) {
 		for (int i = 0; i < _spawnNumber; i++) {
@@ -120,8 +131,13 @@ void GuiController::RenderEditor() {
 	}
 
 	ImGui::End();
-
-	ImGui::Begin("Property");
+	float propertyWindowWidth = static_cast<float>(SCR_WIDTH) * 0.3f;
+	float propertyWindowHeight = static_cast<float>(SCR_HEIGHT) * 0.25f;
+	float propertyWindowPosX = (static_cast<float>(SCR_WIDTH) - propertyWindowWidth) * 1.f;
+	float propertyWindowPosY = (static_cast<float>(SCR_HEIGHT) - propertyWindowHeight) * 0.f;
+	ImGui::SetNextWindowPos(ImVec2(propertyWindowPosX, propertyWindowPosY));
+	ImGui::SetNextWindowSize(ImVec2(propertyWindowWidth, 0.0f));
+	ImGui::Begin("Property",0);
 	USceneComponent* downcast = nullptr;
 	if (_selected)
 		downcast = dynamic_cast<USceneComponent*>(_selected);
@@ -130,21 +146,21 @@ void GuiController::RenderEditor() {
 		ImGui::SliderFloat3("rotation", &downcast->RelativeRotation.x, -M_PI, M_PI);
 		ImGui::SliderFloat3("scale", &downcast->RelativeScale3D.x, -5.f, 5.f);*/
 		ImGui::Text("UUID: %d", _selected->GetUUID());
-
+		
 		
 		FVector _selectedLocation = downcast->GetRelativeLocation();
+		UE_LOG((std::to_wstring(_selectedLocation.x) + L"\n").c_str());
 		float selectedLocation[3] = { _selectedLocation.x, _selectedLocation.y, _selectedLocation.z };
 		ImGui::DragFloat3("position", selectedLocation, 0.1f);
-		downcast->SetRelativeLocation(FVector(selectedLocation[0], selectedLocation[1], selectedLocation[2]));
-		UE_LOG((std::to_wstring(_selectedLocation.x) + L"\n").c_str());
+		//downcast->SetRelativeLocation(FVector(selectedLocation[0], selectedLocation[1], selectedLocation[2]));
 
 		float seletedRotation[3] = { downcast->GetRelativeRotation().x, downcast->GetRelativeRotation().y, downcast->GetRelativeRotation().z };
 		ImGui::DragFloat3("rotation", seletedRotation, 0.1f);
-		downcast->SetRelativeLocation(FVector(seletedRotation[0], seletedRotation[1], seletedRotation[2]));
+		//downcast->SetRelativeLocation(FVector(seletedRotation[0], seletedRotation[1], seletedRotation[2]));
 
 		float seletedScale[3] = { downcast->GetRelativeScale3D().x, downcast->GetRelativeScale3D().y, downcast->GetRelativeScale3D().z };
 		ImGui::DragFloat3("scale", seletedScale, 0.1f);
-		downcast->SetRelativeLocation(FVector(seletedScale[0], seletedScale[1], seletedScale[2]));
+		//downcast->SetRelativeLocation(FVector(seletedScale[0], seletedScale[1], seletedScale[2]));
 
 		//ImGui::DragFloat3("rotation", &downcast->RelativeRotation.x, 0.1f);
 		//ImGui::DragFloat3("scale", &downcast->RelativeScale3D.x, 0.1f);
@@ -158,4 +174,13 @@ void GuiController::RenderEditor() {
 	_console->Render();
 	//ImGui::ShowDemoWindow();
 	//ImGui::ShowDebugLogWindow();
+}
+
+void GuiController::Resize()
+{
+	
+	
+	_io->DisplaySize = ImVec2(static_cast<float>(SCR_WIDTH), static_cast<float>(SCR_HEIGHT));
+
+
 }

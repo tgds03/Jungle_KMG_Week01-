@@ -14,7 +14,7 @@ public:
 	void Picking();
 	void RenderFrame();
 	void RenderEditor();
-
+	void Resize();
 	UWorld* world;
 	UActorComponent* _selected;
 private:

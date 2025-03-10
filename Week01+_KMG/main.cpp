@@ -19,6 +19,7 @@ UArrowComponent* gAxisXComp;
 UArrowComponent* gAxisYComp;
 UArrowComponent* gAxisZComp;
 UGizmoComponent* gGizmo;
+GuiController* gGuiController;
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -60,7 +61,9 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 				float aspectRatio = static_cast<float>(SCR_WIDTH) / static_cast<float>(SCR_HEIGHT);
 				camera->UpdateRatio(aspectRatio);
 			}
-			Input::Instance()->ResizeScreen(SCR_WIDTH, SCR_WIDTH);
+			if(gGuiController)
+				gGuiController->Resize();
+			Input::Instance()->ResizeScreen(SCR_WIDTH, SCR_HEIGHT);
 
 		}
 		break;
@@ -97,7 +100,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 	GuiController* guiController = new GuiController(hWnd, CRenderer::Instance()->GetGraphics());
 	guiController->world = new UWorld();
-
+	gGuiController = guiController;
 
 	UArrowComponent* AxisXComp = new UArrowComponent(RED_X);
 	UArrowComponent* AxisYComp = new UArrowComponent(GREEN_Y);
@@ -152,19 +155,9 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		//	guiController->world->LoadWorld("TestLevel");
 		//}
 
-
-
-		if (Input::Instance()->IsMouseButtonPressed(0)) {
-			int mx, my;
-			if (gMainScene) {
-				Input::Instance()->GetMouseLocation(mx, my);
-				gMainScene->PickingByRay(mx,my, gAxisXComp, gAxisYComp, gAxisZComp);
-			}
-		}
 		if (Input::Instance()->IsMouseButtonReleased(0)) {
 			if (gMainScene) {
 				gMainScene->SetAxisPicked(gAxisXComp, gAxisYComp, gAxisZComp, EPrimitiveColor::NONE);
-
 			}
 		}
 		//CRenderer::Instance()->GetCamera()->PrintLoc(L"CAM");
