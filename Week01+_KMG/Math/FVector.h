@@ -25,6 +25,13 @@ struct FVector {
 		if ( scalar == 0 ) return FVector();
 		return FVector(x / scalar, y / scalar, z / scalar);
 	}
+	FVector operator^(const FVector& rhs) const {
+		return FVector(
+			y * rhs.z - z * rhs.y,
+			z * rhs.x - x * rhs.z,
+			x * rhs.y - y * rhs.x
+		);
+	}
 	FVector& operator*=(float scalar) {
 		x *= scalar;
 		y *= scalar;
@@ -43,8 +50,30 @@ struct FVector {
 		z -= rhs.z;
 		return *this;
 	}
-	float Dot(const FVector& rhs) {
+	bool operator ==(const FVector& rhs) const {
+		return (x == rhs.x) && (y == rhs.y) && (z == rhs.z);
+	}
+	bool operator !=(const FVector& rhs) const {
+		return !(*this == rhs);
+	}
+	float Dot(const FVector& rhs) const {
 		return x * rhs.x + y * rhs.y + z * rhs.z;
+	}
+
+	float operator[] (int index) {
+		switch (index)
+		{
+		case 0:
+			return x;
+		case 1:
+			return y;
+		case 2:
+			return z;
+		default:
+			OutputDebugString(L"FVector3 Error: Out of range");
+			assert(0);
+			return 0;
+		}
 	}
 	FVector Cross(const FVector& rhs) {
 		return FVector(
@@ -66,6 +95,13 @@ struct FVector {
 			return *this / length;
 
 		return FVector();
+	}
+	operator std::string() const {
+		return "(" + std::to_string(x) + "," + std::to_string(y) + "," + std::to_string(z) + ")";
+	}
+	FVector ProjectOn(FVector vec) const {
+		FVector unit = vec.Normalized();
+		return unit * unit.Dot(*this);
 	}
 };
 
@@ -118,6 +154,12 @@ struct FVector4 {
 		w -= rhs.w;
 		return *this;
 	}
+	bool operator ==(const FVector4& rhs) const {
+		return (x == rhs.x) && (y == rhs.y) && (z == rhs.z) && (w == rhs.w);
+	}
+	bool operator !=(const FVector4& rhs) const {
+		return !(*this == rhs);
+	}
 	float operator[] (int index){
 		switch (index)
 		{
@@ -155,5 +197,14 @@ struct FVector4 {
 			return *this / length;
 
 		return FVector4();
+	}
+	operator std::string() const {
+		return "(" + std::to_string(x) + "," + std::to_string(y) + "," + std::to_string(z) + "," + std::to_string(w) + ")";
+	}
+	FVector xyz() const {
+		return FVector(x, y, z);
+	}
+	FVector GetCoord() const {
+		return xyz() / w;
 	}
 };

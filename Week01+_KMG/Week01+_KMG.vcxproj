@@ -76,6 +76,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -90,6 +91,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -105,6 +107,8 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
+      <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -119,6 +123,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -128,41 +134,112 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DataManager.cpp" />
     <ClCompile Include="Framework\Core\AActor.cpp" />
     <ClCompile Include="Framework\Core\CEngineStatics.cpp" />
     <ClCompile Include="Framework\Core\CObjectMeta.cpp" />
     <ClCompile Include="Framework\Core\CRenderer.cpp" />
+    <ClCompile Include="Framework\Core\Input.cpp" />
+    <ClCompile Include="Framework\Core\Time.cpp" />
     <ClCompile Include="Framework\Core\UActorComponent.cpp" />
+    <ClCompile Include="Framework\Core\UArrowComponent.cpp" />
+    <ClCompile Include="Framework\Core\UCameraComponent.cpp" />
+    <ClCompile Include="Framework\Core\UCoordArrowComponent.cpp" />
+    <ClCompile Include="Framework\Core\UCubeComponent.cpp" />
     <ClCompile Include="Framework\Core\UObject.cpp" />
+    <ClCompile Include="Framework\Core\UPlaneComponent.cpp" />
+    <ClCompile Include="Framework\Core\UPrimitiveComponent.cpp" />
     <ClCompile Include="Framework\Core\USceneComponent.cpp" />
     <ClCompile Include="Framework\DirectXWrapper\CBuffer.cpp" />
     <ClCompile Include="Framework\DirectXWrapper\CGraphics.cpp" />
     <ClCompile Include="Framework\DirectXWrapper\CInputLayout.cpp" />
     <ClCompile Include="Framework\DirectXWrapper\CShader.cpp" />
     <ClCompile Include="Framework\DirectXWrapper\CState.cpp" />
+    <ClCompile Include="GuiConsole.cpp" />
+    <ClCompile Include="GuiController.cpp" />
+    <ClCompile Include="ImGui\imgui.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_demo.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_draw.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_impl_dx11.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_impl_win32.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_tables.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_widgets.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Math\FMatrix.cpp" />
     <ClCompile Include="Math\FVector.cpp" />
+    <ClCompile Include="Framework\Core\UGizmoComponent.cpp" />
+    <ClCompile Include="Framework\Core\USphereComponent.cpp" />
+    <ClCompile Include="Framework\Core\UDiscComponent.cpp" />
+    <ClCompile Include="Framework\Core\UDiscHollowComponent.cpp" />
+    <ClCompile Include="UWorld.cpp" />
+    <FxCompile Include="Shader.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DataManager.h" />
     <ClInclude Include="Framework\Core\AActor.h" />
     <ClInclude Include="Framework\Core\CEngineStatics.h" />
     <ClInclude Include="Framework\Core\CObjectMeta.h" />
     <ClInclude Include="Framework\Core\CRenderer.h" />
+    <ClInclude Include="Framework\Core\Input.h" />
+    <ClInclude Include="Framework\Core\Time.h" />
     <ClInclude Include="Framework\Core\UActorComponent.h" />
+    <ClInclude Include="Framework\Core\UArrowComponent.h" />
+    <ClInclude Include="Framework\Core\UCameraComponent.h" />
+    <ClInclude Include="Framework\Core\UCoordArrowComponent.h" />
+    <ClInclude Include="Framework\Core\UCubeComponent.h" />
     <ClInclude Include="Framework\Core\UObject.h" />
+    <ClInclude Include="Framework\Core\UPlaneComponent.h" />
+    <ClInclude Include="Framework\Core\UPrimitiveComponent.h" />
     <ClInclude Include="Framework\Core\USceneComponent.h" />
     <ClInclude Include="Framework\DirectXWrapper\CBuffer.h" />
     <ClInclude Include="Framework\DirectXWrapper\CGraphics.h" />
     <ClInclude Include="Framework\DirectXWrapper\CInputLayout.h" />
     <ClInclude Include="Framework\DirectXWrapper\CShader.h" />
     <ClInclude Include="Framework\DirectXWrapper\CState.h" />
+    <ClInclude Include="GuiConsole.h" />
+    <ClInclude Include="GuiController.h" />
+    <ClInclude Include="ImGui\imconfig.h" />
+    <ClInclude Include="ImGui\imgui.h" />
+    <ClInclude Include="ImGui\imgui_impl_dx11.h" />
+    <ClInclude Include="ImGui\imgui_impl_win32.h" />
+    <ClInclude Include="ImGui\imgui_internal.h" />
+    <ClInclude Include="ImGui\imstb_rectpack.h" />
+    <ClInclude Include="ImGui\imstb_textedit.h" />
+    <ClInclude Include="ImGui\imstb_truetype.h" />
+    <ClInclude Include="Include\json.hpp" />
+    <ClInclude Include="Include\jsonWrite.hpp" />
     <ClInclude Include="Math\FMatrix.h" />
     <ClInclude Include="Math\FVector.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Framework\Core\UGizmoComponent.h" />
+    <ClInclude Include="Framework\Core\USphereComponent.h" />
+    <ClInclude Include="Framework\Core\UDiscComponent.h" />
+    <ClInclude Include="Framework\Core\UDiscHollowComponent.h" />
+    <ClInclude Include="UWorld.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ImGui\imgui.ini" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

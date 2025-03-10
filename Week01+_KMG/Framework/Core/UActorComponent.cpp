@@ -1,12 +1,4 @@
 #include "stdafx.h"
 #include "UActorComponent.h"
 
-TLinkedList<UActorComponent*> GUActorComponentList;
-
-UActorComponent::UActorComponent() {
-	GUActorComponentList.push_back(this);
-}
-
-UActorComponent::~UActorComponent() {
-	GUActorComponentList.remove(this);
-}
+//inline bool UActorComponent::PickObjectByRayIntersection(const FVector& pickPosition, const FMatrix& viewMatrix, float* hitDistance) { return false; }
