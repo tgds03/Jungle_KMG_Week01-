@@ -29,14 +29,12 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
-	// case WM_LBUTTONDOWN:
-	// 	if(gMainScene)
-	// 	{
-	// 		gMainScene->PickingByRay(LOWORD(lParam), HIWORD(lParam), gAxisXComp, gAxisYComp, gAxisZComp);
-	// 		auto cam = CRenderer::Instance()->GetMainCamera();
-	// 		Input::Instance()->SpawnMouseRay(cam->View(), cam->PerspectiveProjection());
-	// 	}
-	// 	break;
+	case WM_LBUTTONDOWN:
+		if(gMainScene) {
+			auto cam = CRenderer::Instance()->GetMainCamera();
+			Input::Instance()->SpawnMouseRay(cam->View(), cam->PerspectiveProjection());
+		}
+		break;
 	case WM_MOUSEMOVE:
 	{
 		TRACKMOUSEEVENT tme = {};
@@ -49,7 +47,7 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 	}
 	case WM_MOUSELEAVE:
 		if (gMainScene)
-			gMainScene->SetAxisPicked(gAxisXComp, gAxisYComp, gAxisZComp, EAxisColor::NONE);
+			gMainScene->SetAxisPicked(gAxisXComp, gAxisYComp, gAxisZComp, EPrimitiveColor::NONE);
 		break;
 	case WM_SIZE:
 	{
@@ -165,7 +163,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		}
 		if (Input::Instance()->IsMouseButtonReleased(0)) {
 			if (gMainScene) {
-				gMainScene->SetAxisPicked(gAxisXComp, gAxisYComp, gAxisZComp, EAxisColor::NONE);
+				gMainScene->SetAxisPicked(gAxisXComp, gAxisYComp, gAxisZComp, EPrimitiveColor::NONE);
 
 			}
 		}

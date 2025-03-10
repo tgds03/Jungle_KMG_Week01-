@@ -1,12 +1,5 @@
 #pragma once
 #include "Framework/Core/UPrimitiveComponent.h"
-enum EAxisColor
-{
-	RED_X,
-	GREEN_Y,
-	BLUE_Z,
-	NONE
-};
 static const FVector AxisColors[] = {
 	FVector(1.0f, 0.0f, 0.0f),  // X��: ����
 	FVector(0.0f, 1.0f, 0.0f),  // Y��: �ʷ�

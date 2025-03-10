@@ -29,12 +29,17 @@ void UGizmoComponent::Update()
 	ArrowY->IsOverrideScale3D = true;
 	ArrowZ->IsOverrideScale3D = true;
 
+	// ����� �ƹ��͵� �Ⱥپ�����
+ 	if (GetAttachParent() == nullptr)
+		return;
+
 	ImGui::Begin("Gizmo");
 	//ImGui::Text("Gizmo Rel Pos: %f %f %f", RelativeLocation.x, RelativeLocation.y, RelativeLocation.z);
 	ImGui::Text("Gizmo Comp Pos: %f %f %f", GetComponentLocation().x, GetComponentLocation().y, GetComponentLocation().z);
 	ImGui::Text("Parent Rel Pos: %f %f %f", GetAttachParent()->GetRelativeLocation().x, GetAttachParent()->GetRelativeLocation().y, GetAttachParent()->GetRelativeLocation().z);
 	ImGui::Text("Parent Comp Pos: %f %f %f", GetAttachParent()->GetComponentLocation().x, GetAttachParent()->GetComponentLocation().y, GetAttachParent()->GetComponentLocation().z);
 	ImGui::End();
+
 
 	UArrowComponent* selectedArrow = nullptr;
 	if (ArrowX->IsPicked()) selectedArrow = ArrowX;

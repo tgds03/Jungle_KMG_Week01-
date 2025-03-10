@@ -3,37 +3,37 @@
 
 void UCameraComponent::Update() {
 	aspectRatio = SCR_WIDTH / (float)SCR_HEIGHT;
-	const float speed = 2.0f;
+
 	auto loc = GetRelativeLocation();
 	if ( Input::Instance()->IsKeyDown(DIK_A) ) {
 		//RelativeLocation.x -= 1.0f * Time::GetDeltaTime();
-		RelativeLocation -= Right() * Time::GetDeltaTime() * speed;
-		//SetRelativeLocation(loc - Right() * Time::GetDeltaTime() * speed);
+		//RelativeLocation -= Right() * Time::GetDeltaTime();
+		SetRelativeLocation(loc - Right() * Time::GetDeltaTime());
 	}
 	if ( Input::Instance()->IsKeyDown(DIK_D) ) {
 		//RelativeLocation.x += 1.0f * Time::GetDeltaTime();
-		RelativeLocation += Right() * Time::GetDeltaTime() * speed;
-		//SetRelativeLocation(loc + Right() * Time::GetDeltaTime() * speed);
+		//RelativeLocation += Right() * Time::GetDeltaTime();
+		SetRelativeLocation(loc + Right() * Time::GetDeltaTime());
 	}
 	if ( Input::Instance()->IsKeyDown(DIK_W) ) {
 		//RelativeLocation.z -= 1.0f * Time::GetDeltaTime();
-		RelativeLocation += Front() * Time::GetDeltaTime() * speed;
-		//SetRelativeLocation(loc + Front() * Time::GetDeltaTime() * speed);
+		//RelativeLocation += Front() * Time::GetDeltaTime();
+		SetRelativeLocation(loc + Front() * Time::GetDeltaTime());
 	}
 	if ( Input::Instance()->IsKeyDown(DIK_S) ) {
 		//RelativeLocation.z += 1.0f * Time::GetDeltaTime();
-		RelativeLocation -= Front() * Time::GetDeltaTime() * speed;
-		//SetRelativeLocation(loc - Front() * Time::GetDeltaTime() * speed);
+		//RelativeLocation -= Front() * Time::GetDeltaTime();
+		SetRelativeLocation(loc - Front() * Time::GetDeltaTime());
 	}
 	if ( Input::Instance()->IsKeyDown(DIK_SPACE) ) {
 		//RelativeLocation.y += 1.0f * Time::GetDeltaTime();
-		RelativeLocation += Up() * Time::GetDeltaTime() * speed;
-		//SetRelativeLocation(loc + Up() * Time::GetDeltaTime() * speed);
+		//RelativeLocation += Up() * Time::GetDeltaTime();
+		SetRelativeLocation(loc + Up() * Time::GetDeltaTime());
 	}
 	if ( Input::Instance()->IsKeyDown(DIK_LSHIFT) ) {
 		//RelativeLocation.y -= 1.0f * Time::GetDeltaTime();
-		RelativeLocation -= Up() * Time::GetDeltaTime() * speed;
-		//SetRelativeLocation(loc - Up() * Time::GetDeltaTime() * speed);
+		//RelativeLocation -= Up() * Time::GetDeltaTime();
+		SetRelativeLocation(loc - Up() * Time::GetDeltaTime());
 	}
 	if ( Input::Instance()->IsKeyDown(DIK_Q) ) {
 		UE_LOG(FMatrix::MakeFromZ(Front()).to_wstring().c_str());

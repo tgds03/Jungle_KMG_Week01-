@@ -1,4 +1,5 @@
 #pragma once
+#include "stdafx.h"
 #include "Framework/Core/UObject.h"
 #include "Framework/Core/USphereComponent.h"
 //#include "Framework/Core/UActorComponent.h"
@@ -48,7 +49,7 @@ public:
     USphereComponent* SpawnSphereActor();
     UPlaneComponent* SpawnPlaneActor();
     UCoordArrowComponent* SpawnCoordArrowActor();
-
+    
     void SaveWorld(const FString& fileName);
     void LoadWorld(const FString& fileName);
     UDiscComponent* SpawnDiscActor();

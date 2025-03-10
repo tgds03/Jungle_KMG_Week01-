@@ -150,7 +150,6 @@
     <ClCompile Include="Framework\Core\UPlaneComponent.cpp" />
     <ClCompile Include="Framework\Core\UPrimitiveComponent.cpp" />
     <ClCompile Include="Framework\Core\USceneComponent.cpp" />
-    <ClCompile Include="Framework\Core\USphereComponent.cpp" />
     <ClCompile Include="Framework\DirectXWrapper\CBuffer.cpp" />
     <ClCompile Include="Framework\DirectXWrapper\CGraphics.cpp" />
     <ClCompile Include="Framework\DirectXWrapper\CInputLayout.cpp" />
@@ -183,6 +182,7 @@
     <ClCompile Include="Math\FMatrix.cpp" />
     <ClCompile Include="Math\FVector.cpp" />
     <ClCompile Include="Framework\Core\UGizmoComponent.cpp" />
+    <ClCompile Include="Framework\Core\USphereComponent.cpp" />
     <ClCompile Include="Framework\Core\UDiscComponent.cpp" />
     <ClCompile Include="Framework\Core\UDiscHollowComponent.cpp" />
     <ClCompile Include="UWorld.cpp" />

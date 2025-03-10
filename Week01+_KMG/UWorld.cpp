@@ -84,27 +84,27 @@ UActorComponent* UWorld::PickingByRay(int mouse_X, int mouse_Y, UArrowComponent*
     float hitAxisYDistance = FLT_MAX;
     float hitAxisZDistance = FLT_MAX;
     float minDistance = FLT_MAX;
-    EAxisColor pickedAxis = EAxisColor::NONE; 
+    EPrimitiveColor pickedAxis = EPrimitiveColor::NONE; 
 
     if (AxisXComp->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitAxisXDistance)) {
         if (hitAxisXDistance < minDistance) {
             minDistance = hitAxisXDistance;
-            pickedAxis = EAxisColor::RED_X;
+            pickedAxis = EPrimitiveColor::RED_X;
         }
     }
     if (AxisYComp->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitAxisYDistance)) {
         if (hitAxisYDistance < minDistance) {
             minDistance = hitAxisYDistance;
-            pickedAxis = EAxisColor::GREEN_Y;
+            pickedAxis = EPrimitiveColor::GREEN_Y;
         }
     }
     if (AxisZComp->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitAxisZDistance)) {
         if (hitAxisZDistance < minDistance) {
             minDistance = hitAxisZDistance;
-            pickedAxis = EAxisColor::BLUE_Z;
+            pickedAxis = EPrimitiveColor::BLUE_Z;
         }
     }
-    if (pickedAxis != EAxisColor::NONE) {
+    if (pickedAxis != EPrimitiveColor::NONE) {
         SetAxisPicked(AxisXComp, AxisYComp, AxisZComp, pickedAxis);
         return nullptr;
     }
@@ -113,26 +113,6 @@ UActorComponent* UWorld::PickingByRay(int mouse_X, int mouse_Y, UArrowComponent*
     float nearestDistance = FLT_MAX;
     UActorComponent* nearestActorComp = nullptr;
 
-
-    if (AxisXComp->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitDistance)) {
-        UE_LOG(L"X__AXIS \n");
-        SetAxisPicked(AxisXComp, AxisYComp, AxisZComp, EAxisColor::RED_X);
-        return nullptr;
-    }
-    if (AxisYComp->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitDistance)) {
-        UE_LOG(L"Y__AXIS \n");
-        SetAxisPicked(AxisXComp, AxisYComp, AxisZComp, EAxisColor::GREEN_Y);
-        return nullptr;
-    }
-    if (AxisZComp->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitDistance)) {
-        UE_LOG(L"Z__AXIS \n");
-        SetAxisPicked(AxisXComp, AxisYComp, AxisZComp, EAxisColor::BLUE_Z);
-        return nullptr;
-    }
-    SetAxisPicked(AxisXComp, AxisYComp, AxisZComp, static_cast<EAxisColor>(-1));
-    AxisXComp->SetPicked(false);
-    AxisYComp->SetPicked(false);
-    AxisZComp->SetPicked(false);
 	for (const auto& actorComp : actorList) {
         if (!actorComp) continue;
 		bool bRes = actorComp->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitDistance);
@@ -191,6 +171,17 @@ UPlaneComponent* UWorld::SpawnPlaneActor()
 UCoordArrowComponent* UWorld::SpawnCoordArrowActor()
 {
     return SpawnActor<UCoordArrowComponent>(false);
+    // return SpawnActor<UCoordArrowComponent>();
+}
+
+UDiscComponent* UWorld::SpawnDiscActor()
+{
+    return SpawnActor<UDiscComponent>();
+}
+
+UDiscHollowComponent* UWorld::SpawnDiscHollowActor()
+{
+    return SpawnActor<UDiscHollowComponent>();
 }
 
 void UWorld::SaveWorld(const FString& fileName)
@@ -208,7 +199,7 @@ void UWorld::LoadWorld(const FString& fileName)
 
     for (const auto& primitive : primitives)
     {
-        if (primitive.Type == "Cube") 
+        if (primitive.Type == "Cube")
         {
             UCubeComponent* cube = SpawnCubeActor();
             cube->SetRelativeLocation(primitive.Location);
@@ -222,7 +213,7 @@ void UWorld::LoadWorld(const FString& fileName)
             sphere->SetRelativeRotation(primitive.Rotation);
             sphere->SetRelativeScale3D(primitive.Scale);
         }
-        else if (primitive.Type == "Plane") 
+        else if (primitive.Type == "Plane")
         {
             UPlaneComponent* plane = SpawnPlaneActor();
             plane->SetRelativeLocation(primitive.Location);
@@ -230,14 +221,4 @@ void UWorld::LoadWorld(const FString& fileName)
             plane->SetRelativeScale3D(primitive.Scale);
         }
     }
-}
-
-UDiscComponent* UWorld::SpawnDiscActor()
-{
-    return SpawnActor<UDiscComponent>();
-}
-
-UDiscHollowComponent* UWorld::SpawnDiscHollowActor()
-{
-    return SpawnActor<UDiscHollowComponent>();
 }
