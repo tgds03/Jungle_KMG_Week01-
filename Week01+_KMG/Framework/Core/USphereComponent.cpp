@@ -2415,12 +2415,6 @@ USphereComponent::USphereComponent()
 	_indexBuffer->Create(indices);
 }
 
-USphereComponent::~USphereComponent()
-{
-	delete _vertexBuffer;
-	delete _indexBuffer;
-}
-
 void USphereComponent::Update()
 {
 }

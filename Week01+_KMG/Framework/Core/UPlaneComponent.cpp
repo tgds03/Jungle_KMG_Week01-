@@ -37,10 +37,6 @@ UPlaneComponent::UPlaneComponent() {
 	_indexBuffer->Create(indices);
 }
 
-UPlaneComponent::~UPlaneComponent() {
-	delete _vertexBuffer;
-	delete _indexBuffer;
-}
 bool UPlaneComponent::IntersectsRay(const FVector& rayOrigin, const FVector& rayDir, float& Distance)
 {
 	FVector min = { -1.f, 0.f, -1.f };

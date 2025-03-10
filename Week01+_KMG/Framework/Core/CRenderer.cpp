@@ -4,10 +4,6 @@
 CRenderer* CRenderer::_instance = nullptr;
 
 CRenderer::CRenderer() {
-	//_mainCamera = new UCameraComponent();
-	//_mainCamera->SetRelativeLocation({ 0,0,5.f });
-
-	//_mainCamera->GetRelativeLocation().z = 5.f;
 }
 
 void CRenderer::Init(HWND hWnd) {

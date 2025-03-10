@@ -39,7 +39,7 @@ VS_OUTPUT VS(VS_INPUT input)
     }
     else if (Flags & 1 << 1)
     {
-        output.Color = input.Color * 1.5;
+        output.Color = float4(input.Color.rgb + float3(0.1, 0.5, 0.5), 1);
     }
     //output.Color = float4(-output.Position.zzz, 1.0f);
     

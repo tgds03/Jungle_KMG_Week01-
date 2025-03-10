@@ -7,6 +7,7 @@
 class UPrimitiveComponent: public USceneComponent {
 public:
 	UPrimitiveComponent(): renderFlags(0) {}
+	virtual ~UPrimitiveComponent();
 	TArray<FVertexSimple> vertices;
 	TArray<uint32> indices;
 

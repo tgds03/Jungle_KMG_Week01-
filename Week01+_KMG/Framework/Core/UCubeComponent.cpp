@@ -85,11 +85,6 @@ UCubeComponent::UCubeComponent() {
 	_indexBuffer->Create(indices);
 }
 
-UCubeComponent::~UCubeComponent() {
-	delete _vertexBuffer;
-	delete _indexBuffer;
-}
-
 void UCubeComponent::Update() {
 	//RelativeRotation += FVector(1.f, 1.f, 1.f) * Time::GetDeltaTime();
 	//RelativeLocation.x = sin(Time::GetElapsedTime());

@@ -6,7 +6,6 @@ class USphereComponent :
 {
 public:
     USphereComponent();
-    virtual ~USphereComponent();
     virtual void Update();
 
     //debug

@@ -2,6 +2,13 @@
 #include "UPrimitiveComponent.h"
 #include "./Framework/Core/CRenderer.h"
 
+UPrimitiveComponent::~UPrimitiveComponent() {
+	if (_vertexBuffer != nullptr)
+		delete _vertexBuffer;
+	if ( _indexBuffer != nullptr )
+		delete _indexBuffer;
+}
+
 void UPrimitiveComponent::Render() {
 	CGraphics* graphics = CRenderer::Instance()->GetGraphics();
 	ID3D11Buffer* vertexBuffer = _vertexBuffer->Get();
