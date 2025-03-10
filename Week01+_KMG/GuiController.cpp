@@ -132,19 +132,20 @@ void GuiController::RenderEditor() {
 		ImGui::Text("UUID: %d", _selected->GetUUID());
 
 		
-		FVector _selectedLocation = downcast->GetRelativeLocation();
-		float selectedLocation[3] = { _selectedLocation.x, _selectedLocation.y, _selectedLocation.z };
-		ImGui::DragFloat3("position", selectedLocation, 0.1f);
-		downcast->SetRelativeLocation(FVector(selectedLocation[0], selectedLocation[1], selectedLocation[2]));
-		UE_LOG((std::to_wstring(_selectedLocation.x) + L"\n").c_str());
+		FVector vec = downcast->GetRelativeLocation();
+		float downcastLocation[3] = { vec.x, vec.y, vec.z };
+		ImGui::DragFloat3("position", downcastLocation, 0.1f);
+		downcast->SetRelativeLocation(FVector(downcastLocation[0], downcastLocation[1], downcastLocation[2]));
 
-		float seletedRotation[3] = { downcast->GetRelativeRotation().x, downcast->GetRelativeRotation().y, downcast->GetRelativeRotation().z };
-		ImGui::DragFloat3("rotation", seletedRotation, 0.1f);
-		downcast->SetRelativeLocation(FVector(seletedRotation[0], seletedRotation[1], seletedRotation[2]));
+		vec = downcast->GetRelativeRotation();
+		float downcastRotation[3] = { vec.x, vec.y, vec.z };
+		ImGui::DragFloat3("rotation", downcastRotation, 0.1f);
+		downcast->SetRelativeRotation(FVector(downcastRotation[0], downcastRotation[1], downcastRotation[2]));
 
-		float seletedScale[3] = { downcast->GetRelativeScale3D().x, downcast->GetRelativeScale3D().y, downcast->GetRelativeScale3D().z };
-		ImGui::DragFloat3("scale", seletedScale, 0.1f);
-		downcast->SetRelativeLocation(FVector(seletedScale[0], seletedScale[1], seletedScale[2]));
+		vec = downcast->GetRelativeScale3D();
+		float downcastScale[3] = { vec.x, vec.y, vec.z };
+		ImGui::DragFloat3("scale", downcastScale, 0.1f);
+		downcast->SetRelativeScale3D(FVector(downcastScale[0], downcastScale[1], downcastScale[2]));
 
 		//ImGui::DragFloat3("rotation", &downcast->RelativeRotation.x, 0.1f);
 		//ImGui::DragFloat3("scale", &downcast->RelativeScale3D.x, 0.1f);
