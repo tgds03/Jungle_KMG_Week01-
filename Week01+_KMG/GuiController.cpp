@@ -57,7 +57,10 @@ void GuiController::NewFrame()
 
 		if (neareastActorComp == nullptr && neareastAxis == EPrimitiveColor::NONE) { //선택 암것도 안됨
 			gGizmo->Detach();
-
+			UPrimitiveComponent* downcast = dynamic_cast<UPrimitiveComponent*>(_selected);
+			if (downcast)
+				downcast->renderFlags &= ~PRIMITIVE_FLAG_SELECTED;
+			_selected = nullptr;
 		}
 		else {
 			if (nearestActorDistance < nearestGizmoDistance) { // actor 선택
@@ -179,26 +182,26 @@ void GuiController::RenderEditor() {
 	ImGui::Combo("Primitive", &_selectedPrimitive, primitiveItems, ARRAYSIZE(primitiveItems));
 	if ( ImGui::Button("Create") ) {
 
-		UPrimitiveComponent* downcast = dynamic_cast<UPrimitiveComponent*>(_selected);
+		/*UPrimitiveComponent* downcast = dynamic_cast<UPrimitiveComponent*>(_selected);
 		if ( downcast )
-			downcast->renderFlags &= ~PRIMITIVE_FLAG_SELECTED;
+			downcast->renderFlags &= ~PRIMITIVE_FLAG_SELECTED;*/
 
 		for (int i = 0; i < _spawnNumber; i++) {
 			switch ( _selectedPrimitive ) {
 			case 0:
-				_selected = world->SpawnCubeActor();
+				world->SpawnCubeActor();
 				break;
 			case 1:
-				_selected = world->SpawnSphereActor();
+				world->SpawnSphereActor();
 				break;
 			case 2:
-				_selected = world->SpawnPlaneActor();
+				world->SpawnPlaneActor();
 				break;
 			}
-			UPrimitiveComponent* downcast = dynamic_cast<UPrimitiveComponent*>(_selected);
+		/*	UPrimitiveComponent* downcast = dynamic_cast<UPrimitiveComponent*>(_selected);
 			if (downcast)
 				downcast->renderFlags |= PRIMITIVE_FLAG_SELECTED;
-			//world->AddActor(_selected);
+		*/	//world->AddActor(_selected);
 		}
 	}
 	ImGui::SameLine(0.f, 5.f);
