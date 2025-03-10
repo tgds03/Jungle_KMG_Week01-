@@ -4,7 +4,8 @@ enum EAxisColor
 {
 	RED_X,
 	GREEN_Y,
-	BLUE_Z
+	BLUE_Z,
+	NONE
 };
 static const FVector AxisColors[] = {
 	FVector(1.0f, 0.0f, 0.0f),  // X��: ����

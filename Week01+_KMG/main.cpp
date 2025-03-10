@@ -32,14 +32,26 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 		if(gMainScene)
 			gMainScene->PickingByRay(LOWORD(lParam), HIWORD(lParam), gAxisXComp, gAxisYComp, gAxisZComp);
 		break;
-	//case WM_SIZE:
-	//{
-	//	//if (CRenderer::Instance()->GetGraphics() && CRenderer::Instance()->GetGraphics()->GetDevice() && CRenderer::Instance()->GetGraphics()->GetDeviceContext()) {
-	//		//SCR_WIDTH = LOWORD(lParam);
-	//		//SCR_HEIGHT = HIWORD(lParam);
-	//		//CRenderer::Instance()->GetGraphics()->ResizeBuffers(SCR_WIDTH, SCR_HEIGHT);
-	//	}
-	//}
+	case WM_LBUTTONUP:
+		if (gMainScene)
+			gMainScene->SetAxisPicked(gAxisXComp, gAxisYComp, gAxisZComp, EAxisColor::NONE);
+		break;
+	case WM_SIZE:
+	{
+		if (CRenderer::Instance()->GetGraphics() && CRenderer::Instance()->GetGraphics()->GetDevice() && CRenderer::Instance()->GetGraphics()->GetDeviceContext()) {
+			SCR_WIDTH = LOWORD(lParam);
+			SCR_HEIGHT = HIWORD(lParam);
+			CRenderer::Instance()->GetGraphics()->ResizeBuffers(SCR_WIDTH, SCR_HEIGHT);
+			UCameraComponent* camera = CRenderer::Instance()->GetMainCamera();
+			if(camera){
+				float aspectRatio = static_cast<float>(SCR_WIDTH) / static_cast<float>(SCR_HEIGHT);
+				camera->UpdateRatio(aspectRatio);
+			}
+			Input::Instance()->ResizeScreen(SCR_WIDTH, SCR_WIDTH);
+
+		}
+		break;
+	}
 	default:
 		return DefWindowProc(hWnd, message, wParam, lParam);
 	}
@@ -103,12 +115,15 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 		////////////////////////////////
 		// CUBE - ARROW 따라가는지 
+		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_B))
+		{
+			mainScene->ClearWorld();
+		}
 		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_N))
 		{
 			guiController->world->SaveWorld("TestLevel");
 			//mainScene->RemoveActor(sphere);
 		}
-
 		if (Input::Instance()->IsKeyPressed(DIKEYBOARD_M))
 		{
 			guiController->world->LoadWorld("TestLevel");

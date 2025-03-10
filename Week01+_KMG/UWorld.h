@@ -52,13 +52,13 @@ private:
     TLinkedList<UActorComponent*> actorList = {};
 
     template <typename T>
-    T* SpawnActor(); 
+    T* SpawnActor(bool addActorList = true);
     template <typename T>
     T* SpawnActor(FVector position, FVector rotation = FVector::Zero, FVector scal = FVector::One);
 };
 
 template<typename T>
-inline T* UWorld::SpawnActor()
+inline T* UWorld::SpawnActor(bool addActorList)
 {
     static_assert(std::is_base_of<UActorComponent, T>::value, "T must be derived from UActorComponent");
 
@@ -67,7 +67,9 @@ inline T* UWorld::SpawnActor()
     if (!newActor)
         return nullptr;
 
-    AddActor(newActor);
+    if (addActorList)
+        AddActor(newActor);
+
     return newActor;
 }
 

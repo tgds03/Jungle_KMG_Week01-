@@ -4,10 +4,12 @@
 
 class UWorld;
 struct PrimitiveData;
+namespace jsonWrite {
+	class JSON;
+}
 namespace json {
 	class JSON;
 }
-
 
 class DataManager
 {
@@ -31,8 +33,8 @@ public:
 	FString GenerateWorldJson(UWorld* world); 
 	
 
-	json::JSON SerializeFVector(const FVector& vec);
-	FVector DeserializeFVector(const json::JSON& jsonArray) {};
+	jsonWrite::JSON SerializeFVector(const FVector& vec);
+	FVector DeserializeFVector(json::JSON& jsonArray);
 
 private:
 	DataManager() = default;

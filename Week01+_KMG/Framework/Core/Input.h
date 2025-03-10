@@ -26,6 +26,7 @@ public:
 	}
 	bool Init(HINSTANCE hInstance, HWND hWnd, int screenWidth, int screenHeight);
 	void Shutdown();
+	void ResizeScreen(int sWidth, int sHeight);
 	bool Frame();
 
 	bool IsKeyDown(char keycode);

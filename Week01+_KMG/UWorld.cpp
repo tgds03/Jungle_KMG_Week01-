@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include "UWorld.h"
+#include "Framework/Core/UGizmoComponent.h"
+
+extern UGizmoComponent* gGizmo;
 
 UWorld::UWorld()
 {
@@ -43,7 +46,8 @@ void UWorld::RemoveActor(UActorComponent* comp)
 
 void UWorld::ClearWorld()
 {
-    while (!actorList.empty()) // ¸®½ºÆ®°¡ ºô ¶§±îÁö ¹Ýº¹
+    gGizmo->Detach();
+    while (!actorList.empty()) // ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ýºï¿½
     {
         delete actorList.front();
         actorList.pop_front();
@@ -52,12 +56,11 @@ void UWorld::ClearWorld()
 
 UActorComponent* UWorld::PickingByRay(int mouse_X, int mouse_Y, UArrowComponent* AxisXComp, UArrowComponent* AxisYComp, UArrowComponent* AxisZComp)
 {
-	UCameraComponent* mainCamera = CRenderer::Instance()->GetMainCamera();
-	
-	FMatrix viewMatrix = mainCamera->GetComponentTransform().Inverse();
-	FMatrix projectionMatrix = mainCamera->Projection();
-	D3D11_VIEWPORT viewport = CRenderer::Instance()->GetGraphics()->GetViewport();
-
+    UCameraComponent* mainCamera = CRenderer::Instance()->GetMainCamera();
+    if (!mainCamera) return;
+    FMatrix viewMatrix = mainCamera->GetComponentTransform().Inverse();
+    FMatrix projectionMatrix = mainCamera->PerspectiveProjection();
+    D3D11_VIEWPORT viewport = CRenderer::Instance()->GetGraphics()->GetViewport();
 
     //Input::Instance()->GetMouseLocation(mouse_X, mouse_Y);
 
@@ -65,31 +68,44 @@ UActorComponent* UWorld::PickingByRay(int mouse_X, int mouse_Y, UArrowComponent*
     pickPosition.x = ((2.0f * mouse_X / viewport.Width) - 1) / projectionMatrix[0][0];
     pickPosition.y = -((2.0f * mouse_Y / viewport.Height) - 1) / projectionMatrix[1][1];
     pickPosition.z = 1.0f; // Near Plane
+    float hitAxisXDistance = FLT_MAX;
+    float hitAxisYDistance = FLT_MAX;
+    float hitAxisZDistance = FLT_MAX;
+    float minDistance = FLT_MAX;
+    EAxisColor pickedAxis = EAxisColor::NONE; 
+
+    if (AxisXComp->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitAxisXDistance)) {
+        if (hitAxisXDistance < minDistance) {
+            minDistance = hitAxisXDistance;
+            pickedAxis = EAxisColor::RED_X;
+        }
+    }
+    if (AxisYComp->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitAxisYDistance)) {
+        if (hitAxisYDistance < minDistance) {
+            minDistance = hitAxisYDistance;
+            pickedAxis = EAxisColor::GREEN_Y;
+        }
+    }
+    if (AxisZComp->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitAxisZDistance)) {
+        if (hitAxisZDistance < minDistance) {
+            minDistance = hitAxisZDistance;
+            pickedAxis = EAxisColor::BLUE_Z;
+        }
+    }
+    if (pickedAxis != EAxisColor::NONE) {
+        SetAxisPicked(AxisXComp, AxisYComp, AxisZComp, pickedAxis);
+        return;
+    }
+
     float hitDistance = FLT_MAX;
     float nearestDistance = FLT_MAX;
     UActorComponent* nearestActorComp = nullptr;
 
-    if (AxisXComp->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitDistance)) {
 
-        UE_LOG(L"X__AXIS \n");
-        SetAxisPicked(AxisXComp, AxisYComp, AxisZComp, EAxisColor::RED_X);
-        return nullptr;
-    }
-    if (AxisYComp->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitDistance)) {
-        UE_LOG(L"Y__AXIS \n");
-        SetAxisPicked(AxisXComp, AxisYComp, AxisZComp, EAxisColor::GREEN_Y);
-        return nullptr;
-    }
-    if (AxisZComp->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitDistance)) {
-        UE_LOG(L"Z__AXIS \n");
-        SetAxisPicked(AxisXComp, AxisYComp, AxisZComp, EAxisColor::BLUE_Z);
-        return nullptr;
-    }
     SetAxisPicked(AxisXComp, AxisYComp, AxisZComp, static_cast<EAxisColor>(-1));
-    AxisXComp->SetPicked(false);
-    AxisYComp->SetPicked(false);
-    AxisZComp->SetPicked(false);
+ 
 	for (const auto& actorComp : actorList) {
+        if (!actorComp) continue;
 		bool bRes = actorComp->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitDistance);
        if (bRes && hitDistance < nearestDistance) {
             nearestActorComp = actorComp;
@@ -116,7 +132,7 @@ const TLinkedList<UActorComponent*>& UWorld::GetActors() const
 
 UCameraComponent* UWorld::SpawnCamera()
 {
-    UCameraComponent* newCamera = SpawnActor<UCameraComponent>();
+    UCameraComponent* newCamera = SpawnActor<UCameraComponent>(false);
     newCamera->SetRelativeLocation({ 0, 0, -5.0f });
     return newCamera;
 }
@@ -145,12 +161,12 @@ UPlaneComponent* UWorld::SpawnPlaneActor()
 
 UCoordArrowComponent* UWorld::SpawnCoordArrowActor()
 {
-    return SpawnActor<UCoordArrowComponent>();
+    return SpawnActor<UCoordArrowComponent>(false);
 }
 
 void UWorld::SaveWorld(const FString& fileName)
 {
-    auto actorListCopy = actorList;  // º¹»çº» À¯Áö
+    auto actorListCopy = actorList;  // ï¿½ï¿½ï¿½çº» ï¿½ï¿½ï¿½ï¿½
     DataManager::Instance()->SaveWorldToJson(this, fileName);
     //DataManager::Instance()->SaveWorldToJson(this, fileName);
 }
