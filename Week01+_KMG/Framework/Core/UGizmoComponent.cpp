@@ -16,9 +16,9 @@ UGizmoComponent::UGizmoComponent()
 	ArrowY->AttachToComponent(this);
 	ArrowZ->AttachToComponent(this);
 
-	ArrowX->SetRelativeRotation({ 0,-M_PI / 2,0 });
-	ArrowY->SetRelativeRotation({ M_PI / 2 ,0,0 });
-	ArrowZ->SetRelativeRotation({ 0,0,0 });
+	ArrowX->SetRelativeRotation({ FLT_EPSILON,-M_PI / 2 + FLT_EPSILON ,FLT_EPSILON });
+	ArrowY->SetRelativeRotation({ M_PI / 2 - FLT_EPSILON ,FLT_EPSILON,FLT_EPSILON });
+	ArrowZ->SetRelativeRotation({ FLT_EPSILON,FLT_EPSILON,FLT_EPSILON });
 
 	DiscX = new UDiscHollowComponent(EPrimitiveColor::RED_X, 0.95);
 	DiscY = new UDiscHollowComponent(EPrimitiveColor::GREEN_Y, 0.95);
@@ -28,9 +28,9 @@ UGizmoComponent::UGizmoComponent()
 	DiscY->AttachToComponent(this);
 	DiscZ->AttachToComponent(this);
 
-	DiscX->SetRelativeRotation({ 0, 0 , - M_PI/2 + 0.00001});
-	DiscY->SetRelativeRotation({ 0,0,0 });
-	DiscZ->SetRelativeRotation({ M_PI / 2 ,0,0 });
+	DiscX->SetRelativeRotation({ FLT_EPSILON, 0.5 , -M_PI / 2 - FLT_EPSILON });
+	DiscY->SetRelativeRotation({ FLT_EPSILON,FLT_EPSILON,FLT_EPSILON });
+	DiscZ->SetRelativeRotation({ M_PI / 2 - FLT_EPSILON,FLT_EPSILON,FLT_EPSILON });
 
 	DiscX->SetRelativeScale3D({ 2.5, 2.5, 2.5 });
 	DiscY->SetRelativeScale3D({ 2.5, 2.5, 2.5 });
@@ -56,10 +56,11 @@ void UGizmoComponent::Update()
 
 	// gizmo의 방향과 크기만 따라감
 	this->SetRelativeLocation(AttachedParent->GetRelativeLocation());
-	float scaleMax = 1.f;
+	float scaleMax = 0.3f;
 	scaleMax = max(scaleMax, abs(AttachedParent->GetRelativeScale3D().x)/2);
 	scaleMax = max(scaleMax, abs(AttachedParent->GetRelativeScale3D().y)/2);
 	scaleMax = max(scaleMax, abs(AttachedParent->GetRelativeScale3D().z)/2);
+	scaleMax *= 2.0;
 	this->SetRelativeScale3D({ scaleMax ,scaleMax ,scaleMax });
 
 
