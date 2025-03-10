@@ -7,8 +7,9 @@ extern UGizmoComponent* gGizmo;
 UWorld::UWorld()
 {
     UCameraComponent* camera = SpawnCamera();
-    CRenderer::Instance()->SetCamera(camera);
-    AddActor(camera);
+    camera->SetRelativeLocation({ 0, 4.0f, -5.0f });
+    camera->SetRelativeRotation({ -0.7f, 0, 0 });
+    CRenderer::Instance()->SetMainCamera(camera);
     SpawnCoordArrowActor();
 }
 
@@ -50,7 +51,7 @@ void UWorld::ClearWorld()
 {
     gGizmo->Detach();
     UCameraComponent* cam = nullptr;
-    while (!actorList.empty()) // ����Ʈ�� �� ������ �ݺ�
+    while (!actorList.empty())
     {
         UActorComponent* actor = actorList.front();
         UCameraComponent* downcast = dynamic_cast<UCameraComponent*>(actor);
@@ -142,7 +143,6 @@ const TLinkedList<UActorComponent*>& UWorld::GetActors() const
 UCameraComponent* UWorld::SpawnCamera()
 {
     UCameraComponent* newCamera = SpawnActor<UCameraComponent>(false);
-    newCamera->SetRelativeLocation({ 0, 0, -5.0f });
     return newCamera;
 }
 

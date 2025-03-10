@@ -16,6 +16,7 @@ public:
 	float mouseSensitive = 0.5f;
 	void UpdateRatio(float aratio) { aspectRatio = aratio; }
 
+	bool allowKeyboardInput = true;
 private:
 	//FMatrix CalculateLookAtLHS(FVector front, FVector up, FVector pos);
 };

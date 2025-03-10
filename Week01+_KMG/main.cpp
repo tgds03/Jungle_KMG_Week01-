@@ -117,9 +117,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	AxisYComp->SetRelativeScale3D({ 0.8, 0.8 ,0.8 });
 	AxisZComp->SetRelativeScale3D({ 0.8, 0.8 ,0.8 });
 
-
-	CRenderer::Instance()->GetMainCamera()->SetRelativeLocation(FVector(0, 0, -5));
-
 	gAxisXComp = AxisXComp;
 	gAxisYComp = AxisYComp;
 	gAxisZComp = AxisZComp;
@@ -129,7 +126,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	//ground->SetRelativeScale3D({ 10,5,3 });
 	//ground->SetRelativeLocation({ 0,-10,0 });
 	//arrow->SetRelativeScale3D({ 3,3,3 });
-
 
 	MSG msg = {};
 	while (msg.message != WM_QUIT) {
@@ -170,6 +166,9 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		//Input::Instance()->Unacquire();
 		guiController->NewFrame();
 		guiController->world->Update();
+		CRenderer::Instance()->GetMainCamera()->allowKeyboardInput = !guiController->GetConcolWindow()->OnFocusing();
+		CRenderer::Instance()->GetMainCamera()->Update();
+		CRenderer::Instance()->GetMainCamera()->Render();
 		CRenderer::Instance()->GetGraphics()->RenderBegin();
 		guiController->world->Render();
 		AxisXComp->Render();

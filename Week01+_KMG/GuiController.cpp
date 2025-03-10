@@ -185,3 +185,8 @@ void GuiController::Resize()
 
 
 }
+
+GuiConsole* GuiController::GetConcolWindow()
+{
+	return _console;
+}
