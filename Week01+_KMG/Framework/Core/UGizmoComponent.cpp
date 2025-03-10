@@ -37,17 +37,17 @@ UGizmoComponent::~UGizmoComponent()
 
 void UGizmoComponent::Update()
 {
-	ArrowX->IsOverrideLocation = true;
-	ArrowY->IsOverrideLocation = true;
-	ArrowZ->IsOverrideLocation = true;
+	//ArrowX->IsOverrideLocation = true;
+	//ArrowY->IsOverrideLocation = true;
+	//ArrowZ->IsOverrideLocation = true;
 
-	ArrowX->IsOverrideRotation = true;
-	ArrowY->IsOverrideRotation = true;
-	ArrowZ->IsOverrideRotation = true;
+	//ArrowX->IsOverrideRotation = true;
+	//ArrowY->IsOverrideRotation = true;
+	//ArrowZ->IsOverrideRotation = true;
 
-	ArrowX->IsOverrideScale3D = true;
-	ArrowY->IsOverrideScale3D = true;
-	ArrowZ->IsOverrideScale3D = true;
+	//ArrowX->IsOverrideScale3D = true;
+	//ArrowY->IsOverrideScale3D = true;
+	//ArrowZ->IsOverrideScale3D = true;
 
 	// ����� �ƹ��͵� �Ⱥپ�����
  	if (GetAttachParent() == nullptr)
@@ -120,6 +120,6 @@ void UGizmoComponent::Detach()
 {
 	isGizmoActivated = false;
 	selectedAxis = EPrimitiveColor::NONE;
-	UE_LOG(L"Detach!!!!!!!\n");
+	//UE_LOG(L"Detach!!!!!!!\n");
 	this->AttachToComponent(nullptr);
 }

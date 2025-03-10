@@ -64,10 +64,11 @@ void GuiController::NewFrame()
 				_selected = neareastActorComp;
 				//gizmo 붙이기
 				gGizmo->AttachTo(dynamic_cast<UPrimitiveComponent*>(_selected));
+				gGizmo->selectedAxis = EPrimitiveColor::NONE;
 			}
 			else  { // gizmo 선택
-				EPrimitiveColor neareastAxis;
-				gGizmo;
+				gGizmo->selectedAxis = neareastAxis;
+				//gGizmo
 			}
 		}
 		
@@ -79,6 +80,9 @@ void GuiController::NewFrame()
 		// 3. DISTANCE 둘다 NULLPTR
 		// GIZMO떼고 SELECTED = NULL 
 		
+	}
+	if (Input::Instance()->IsMouseButtonReleased(0) && !_io->WantCaptureMouse) {
+		gGizmo->selectedAxis = EPrimitiveColor::NONE;
 	}
 
 	// 마우스 DXDY얻어서
@@ -98,6 +102,11 @@ UActorComponent* GuiController::GetNearestActorComponents(float& distance) {
 
 EPrimitiveColor GuiController::GetNearestGizmo(float& distance)
 {
+	if (!gGizmo->isGizmoActivated)
+	{
+		distance = FLT_MAX;
+		return EPrimitiveColor::NONE;
+	}
 	int x, y;
 	Input::Instance()->GetMouseLocation(x, y);
 	FMatrix viewMatrix = FMatrix::Identity;

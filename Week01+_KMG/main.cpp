@@ -151,7 +151,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		guiController->world->Update();
 		CRenderer::Instance()->GetGraphics()->RenderBegin();
 		guiController->world->Render();
-	
+		gGizmo->Update();
 		guiController->RenderEditor();
 		gGizmo->Render();
 
