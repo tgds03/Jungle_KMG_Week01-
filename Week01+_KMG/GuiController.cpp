@@ -123,7 +123,7 @@ EPrimitiveColor GuiController::GetNearestGizmo(float& distance)
 	FMatrix viewMatrix = FMatrix::Identity;
 	FVector pickPosition;
 	world->ConvertNDC_VIEW(x, y, pickPosition, viewMatrix);
-	float hitDistance[4]{ FLT_MAX,FLT_MAX,FLT_MAX,FLT_MAX };
+	float hitDistance[7]{ FLT_MAX,FLT_MAX,FLT_MAX,FLT_MAX,FLT_MAX,FLT_MAX ,FLT_MAX };
 	float minDistance = FLT_MAX;
 	EPrimitiveColor pickedAxis = EPrimitiveColor::NONE;
 
@@ -146,10 +146,27 @@ EPrimitiveColor GuiController::GetNearestGizmo(float& distance)
 		}
 	}
 
+	if (gGizmo->DiscX->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitDistance[EPrimitiveColor::RED_X_ROT])) {
+		if (hitDistance[EPrimitiveColor::RED_X_ROT] < minDistance) {
+			minDistance = hitDistance[EPrimitiveColor::RED_X_ROT];
+			pickedAxis = EPrimitiveColor::RED_X_ROT;
+		}
+	}
+	if (gGizmo->DiscY->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitDistance[EPrimitiveColor::GREEN_Y_ROT])) {
+		if (hitDistance[EPrimitiveColor::GREEN_Y_ROT] < minDistance) {
+			minDistance = hitDistance[EPrimitiveColor::GREEN_Y_ROT];
+			pickedAxis = EPrimitiveColor::GREEN_Y_ROT;
+		}
+	}
+	if (gGizmo->DiscZ->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitDistance[EPrimitiveColor::BLUE_Z_ROT])) {
+		if (hitDistance[EPrimitiveColor::BLUE_Z_ROT] < minDistance) {
+			minDistance = hitDistance[EPrimitiveColor::BLUE_Z_ROT];
+			pickedAxis = EPrimitiveColor::BLUE_Z_ROT;
+		}
+	}
+
 	distance = hitDistance[pickedAxis];
 	return pickedAxis;
-
-
 }
 
 void GuiController::RenderFrame()

@@ -28,56 +28,37 @@ FVector USceneComponent::Front() {
 
 FVector USceneComponent::GetRelativeLocation() const
 {
-	if (IsOverrideLocation) return OverrideLocation;
 	return RelativeLocation;
 }
 
 FVector4 USceneComponent::GetRelativeLocation4() const
 {
-	if (IsOverrideLocation) return FVector4(OverrideLocation,1);
 	return FVector4(RelativeLocation, 1);
 }
 
 FVector USceneComponent::GetRelativeRotation() const
 {
-	if (IsOverrideRotation) return OverrideRotation;
 	return RelativeRotation;
 }
 
 FVector USceneComponent::GetRelativeScale3D() const
 {
-	if (IsOverrideScale3D) return OverrideScale3D;
 	return RelativeScale3D;
 }
 
 FMatrix USceneComponent::GetRelativeTransform() const
 {
-	if (IsOverrideTransform) return OverrideTransform;
 
 	FMatrix origin = FMatrix::Identity;
 	FMatrix scale = FMatrix::Scale(RelativeScale3D);
 	FMatrix rot = FMatrix::RotateX(RelativeRotation.x) * FMatrix::RotateY(RelativeRotation.y) * FMatrix::RotateZ(RelativeRotation.z);
 	FMatrix trans = FMatrix::Translate(RelativeLocation);
 
-	if (IsOverrideLocation) {
-		trans = FMatrix::Translate(OverrideLocation);
-	}
-	if (IsOverrideRotation) {
-		rot = FMatrix::RotateX(OverrideRotation.x) * FMatrix::RotateY(OverrideRotation.y) * FMatrix::RotateZ(OverrideRotation.z);
-	}
-	if (IsOverrideScale3D) {
-		scale = FMatrix::Scale(OverrideScale3D);
-	}
-
 	return origin * scale * rot * trans;
 }
 
 FVector USceneComponent::GetComponentLocation() const
 {
-	if (IsOverrideLocation) {
-		return OverrideLocation;
-	}
-
 	if (AttachParent != nullptr)
 	{
 		FVector4 componentVec = (FVector4(GetRelativeLocation(), 1) * AttachParent->GetComponentTransform());
@@ -89,45 +70,31 @@ FVector USceneComponent::GetComponentLocation() const
 	}
 }
 
-//FVector USceneComponent::GetComponentRotation() const
-//{
-//	if (AttachParent != nullptr)
-//	{
-//		return FVector((FVector4(GetRelativeRotation(), 0) * AttachParent->GetComponentTransform()).xyz());
-//	}
-//	else
-//	{
-//		return GetRelativeRotation();
-//	}
-//}
-//
-//FVector USceneComponent::GetComponentScale() const
-//{
-//	if (AttachParent != nullptr)
-//	{
-//		return FVector((FVector4(GetRelativeScale3D(), 0) * AttachParent->GetComponentTransform()).xyz());
-//	}
-//	else
-//	{
-//		return GetRelativeScale3D();
-//	}
-//}
+FVector USceneComponent::GetComponentRotation() const
+{
+	if (AttachParent != nullptr)
+	{
+		return FVector((FVector4(GetRelativeRotation(), 0) * AttachParent->GetComponentTransform()).xyz());
+	}
+	else
+	{
+		return GetRelativeRotation();
+	}
+}
+
+FVector USceneComponent::GetComponentScale() const
+{
+	if (AttachParent != nullptr)
+	{
+		return FVector((FVector4(GetRelativeScale3D(), 0) * AttachParent->GetComponentTransform()).xyz());
+	}
+	else
+	{
+		return GetRelativeScale3D();
+	}
+}
 FMatrix USceneComponent::GetComponentTransform() const
 {
-	if (IsOverrideTransform)
-	{
-		return OverrideTransform;
-	}
-	if (IsOverrideLocation || IsOverrideRotation || IsOverrideScale3D)
-	{
-		return GetRelativeTransform() * AttachParent->GetComponentTransform();
-		//FMatrix origin = FMatrix::Identity;
-
-		//FMatrix scale = FMatrix::Scale(OverrideScale3D);
-		//FMatrix rot = FMatrix::RotateX(OverrideRotation.x) * FMatrix::RotateY(OverrideRotation.y) * FMatrix::RotateZ(OverrideRotation.z);
-		//FMatrix trans = FMatrix::Translate(OverrideLocation);
-		//return origin * scale * rot * trans;
-	}
 	if (AttachParent != nullptr)
 	{
 		return GetRelativeTransform() * AttachParent->GetComponentTransform();
@@ -393,7 +360,14 @@ void USceneComponent::SetupAttachment(TArray<USceneComponent*>& Children)
 
 bool USceneComponent::AttachToComponent(USceneComponent* Parent)
 {
-	// 새로운 parent가 나인지 확ㅇㄴ
+	if (Parent == nullptr)
+	{
+		AttachParent = nullptr;
+
+		return true;
+	}
+
+	// 새로운 parent가 나인지 확인
 	if (Parent == this)
 	{
 		UE_LOG(L"USceneComponent::AttachToComponent::�ڱ� �ڽ��� Parent�� �� �� �����ϴ�.");
@@ -429,38 +403,18 @@ bool USceneComponent::AttachToComponent(USceneComponent* Parent)
 
 	}
 
-	// parent를 새로 설정
-
-	if (Parent == nullptr)
-	{
-		AttachParent = nullptr;
-
-		return true;
-	}
-
 
 	// parent 갱신
 	AttachParent = Parent;
 	Parent->AttachChildern.push_back(this);
 	return true;
 
-	//TArray<USceneComponent*> children;
-	//GetChildrenComponents(children);
-	//if (children.end() != std::find(children.begin(), children.end(), this))
-	//{
 
-	//}
-	//return true;
 }
 
 void USceneComponent::PrintLoc(std::wstring msg) const
 {
 	FVector loc = GetRelativeLocation();
-	//UE_LOG((std::wstring(L"\n") + msg + std::wstring(L"*************************\n")).c_str());
-	//UE_LOG((std::wstring(L"Relative Location\nx :") + std::to_wstring(loc.x) + std::wstring(L" y :")
-		//+ std::to_wstring(loc.y) + std::wstring(L" z :") + std::to_wstring(loc.z) + std::wstring(L"\n")).c_str());
 	loc = GetComponentLocation();
-	//UE_LOG((std::wstring(L"Component Location\nx :") + std::to_wstring(loc.x) + std::wstring(L" y :")
-		//+ std::to_wstring(loc.y) + std::wstring(L" z :") + std::to_wstring(loc.z) + std::wstring(L"\n")).c_str());
 }
 

@@ -1,14 +1,13 @@
 #pragma once
-#include "UPrimitiveComponent.h"
-#include "UArrowComponent.h"
+#include "Framework/Core/UPrimitiveComponent.h"
 
-class UDiscHollowComponent :
+class UDiscHollowHalfComponent :
     public UPrimitiveComponent
 {
 public:
-    UDiscHollowComponent(EPrimitiveColor color, float innerRadius);
-    UDiscHollowComponent();
-    ~UDiscHollowComponent();
+    UDiscHollowHalfComponent(EPrimitiveColor color, float innerRadius);
+    UDiscHollowHalfComponent();
+    ~UDiscHollowHalfComponent();
     //virtual void Update();
     //virtual bool Intersects(const FVector& rayOrigin, const FVector& rayDir, float& dist);
     //virtual bool PickObjectByRayIntersection(const FVector& pickPosition, const FMatrix& viewMatrix, float* hitDistance) override;
@@ -17,4 +16,3 @@ public:
     float inner;
 
 };
-
