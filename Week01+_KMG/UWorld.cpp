@@ -182,6 +182,10 @@ UDiscHollowComponent* UWorld::SpawnDiscHollowActor()
 {
     return SpawnActor<UDiscHollowComponent>();
 }
+UDiscHollowHalfComponent* UWorld::SpawnDiscHollowHalfActor()
+{
+    return SpawnActor<UDiscHollowHalfComponent>();
+}
 
 void UWorld::SaveWorld(const FString& fileName)
 {

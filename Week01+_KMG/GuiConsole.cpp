@@ -151,7 +151,9 @@ void GuiConsole::ExecCommand(const char* command_line) {
                 world->SpawnPlaneActor();
             } else if (commands[1] == "disc") {
                 world->SpawnDiscActor();
-            } else if (commands[1] == "dischollow") {
+            } else if (commands[1] == "discHollow") {
+                world->SpawnDiscHollowActor();
+            } else if (commands[1] == "DisHollowHalf") {
                 world->SpawnDiscHollowActor();
             } else {
                 AddLog("Invalid argument.");

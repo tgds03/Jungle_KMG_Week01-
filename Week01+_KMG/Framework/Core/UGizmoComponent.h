@@ -1,8 +1,10 @@
 #pragma once
 #include "USceneComponent.h"
+#include "UDiscHollowHalfComponent.h"
 
 class UPrimitiveComponent;
 class UArrowComponent;
+class UDiscHollowComponent;
 
 class UGizmoComponent :
     public USceneComponent
@@ -19,12 +21,17 @@ public:
 
     EPrimitiveColor selectedAxis = EPrimitiveColor::NONE;
     bool isGizmoActivated = false;
+    //int Mode = 0; // 0 for translation, 1 for rotation, 2 for scaling
     
     // world좌표계 기준으로 할 경우에는 실제 scenecomponent의 parent는 nullptr로함
-    UPrimitiveComponent* AttachedComponent;
+    UPrimitiveComponent* AttachedParent;
 
     UArrowComponent* ArrowX;
     UArrowComponent* ArrowY;
     UArrowComponent* ArrowZ;
+
+    UDiscHollowComponent* DiscX;
+    UDiscHollowComponent* DiscY;
+    UDiscHollowComponent* DiscZ;
 };
 

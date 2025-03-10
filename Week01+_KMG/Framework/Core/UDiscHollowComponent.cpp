@@ -40,8 +40,18 @@ UDiscHollowComponent::UDiscHollowComponent(EPrimitiveColor color, float innerRad
             indices.push_back(pivot);      // 중심점
             indices.push_back(pivot + 1);      // 현재 점
             indices.push_back(pivot+3);  // 다음 점 (마지막 점 예외 처리)
-
         }
+        for (int i = 0; i <= DISC_RESOLUTION + 1; ++i) {
+            int pivot = 2 * i;
+            indices.push_back(pivot);      // 중심점
+            indices.push_back(pivot + 2);      // 현재 점
+            indices.push_back(pivot + 3);  // 다음 점 (마지막 점 예외 처리)
+
+            indices.push_back(pivot);      // 중심점
+            indices.push_back(pivot + 3);      // 현재 점
+            indices.push_back(pivot + 1);  // 다음 점 (마지막 점 예외 처리)
+        }
+
     }
 
     CGraphics* graphics = CRenderer::Instance()->GetGraphics();
@@ -97,7 +107,7 @@ UDiscHollowComponent::~UDiscHollowComponent()
 
 bool UDiscHollowComponent::IntersectsRay(const FVector& rayOrigin, const FVector& rayDir, float& dist)
 {
-    if (rayOrigin.y == 0) return false; // normal to normal vector of plane
+    if (rayDir.y == 0) return false; // normal to normal vector of plane
 
     dist = -rayOrigin.y / rayDir.y;
 

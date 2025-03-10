@@ -16,6 +16,7 @@ class UCubeComponent;
 class USphereComponent;
 class UPlaneComponent;
 class UCoordArrowComponent;
+class UDiscHollowHalfComponent;
 
 struct PrimitiveData {
     FVector Location;
@@ -56,7 +57,8 @@ public:
     UCoordArrowComponent* SpawnCoordArrowActor();
     UDiscComponent* SpawnDiscActor();
     UDiscHollowComponent* SpawnDiscHollowActor();
-    
+    UDiscHollowHalfComponent* SpawnDiscHollowHalfActor();
+
     void SaveWorld(const FString& fileName);
     void LoadWorld(const FString& fileName);
 

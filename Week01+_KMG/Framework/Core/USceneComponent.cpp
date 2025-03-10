@@ -417,6 +417,14 @@ bool USceneComponent::AttachToComponent(USceneComponent* Parent)
 		return false;
 	}
 	
+	// parent를 새로 설정
+	if (Parent == nullptr)
+	{
+		AttachParent = nullptr;
+
+		return true;
+	}
+
 	// parent�� �Ϸ��� ������Ʈ�� ���� *this�� �ִ��� Ȯ��
 	// paren중에 내가 있는지 확인
 	if (Parent != nullptr) {
@@ -444,17 +452,8 @@ bool USceneComponent::AttachToComponent(USceneComponent* Parent)
 		GetAttachParent()->SetupAttachment(currentChildrenOfParent);
 		//}
 
+
 	}
-
-	// parent를 새로 설정
-
-	if (Parent == nullptr)
-	{
-		AttachParent = nullptr;
-
-		return true;
-	}
-
 
 	// parent 갱신
 	AttachParent = Parent;

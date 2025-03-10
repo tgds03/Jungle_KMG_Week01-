@@ -53,7 +53,7 @@ void GuiController::NewFrame()
 		float nearestActorDistance;
 		float nearestGizmoDistance;
 		UActorComponent* neareastActorComp = GetNearestActorComponents(nearestActorDistance);
-		EPrimitiveColor neareastAxis = GetNearestGizmo(nearestGizmoDistance);
+    	EPrimitiveColor neareastAxis = GetNearestGizmo(nearestGizmoDistance);
 
 		if (neareastActorComp == nullptr && neareastAxis == EPrimitiveColor::NONE) { //선택 암것도 안됨
 			gGizmo->Detach();
@@ -120,7 +120,7 @@ EPrimitiveColor GuiController::GetNearestGizmo(float& distance)
 	FMatrix viewMatrix = FMatrix::Identity;
 	FVector pickPosition;
 	world->ConvertNDC_VIEW(x, y, pickPosition, viewMatrix);
-	float hitDistance[4]{ FLT_MAX,FLT_MAX,FLT_MAX,FLT_MAX };
+	float hitDistance[7]{ FLT_MAX,FLT_MAX,FLT_MAX,FLT_MAX,FLT_MAX,FLT_MAX,FLT_MAX };
 	float minDistance = FLT_MAX;
 	EPrimitiveColor pickedAxis = EPrimitiveColor::NONE;
 
@@ -140,6 +140,26 @@ EPrimitiveColor GuiController::GetNearestGizmo(float& distance)
 		if (hitDistance[EPrimitiveColor::BLUE_Z] < minDistance) {
 			minDistance = hitDistance[EPrimitiveColor::BLUE_Z];
 			pickedAxis = EPrimitiveColor::BLUE_Z;
+		}
+	}
+
+
+	if (gGizmo->DiscX->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitDistance[EPrimitiveColor::RED_X_ROT])) {
+		if (hitDistance[EPrimitiveColor::RED_X_ROT] < minDistance) {
+			minDistance = hitDistance[EPrimitiveColor::RED_X_ROT];
+			pickedAxis = EPrimitiveColor::RED_X_ROT;
+		}
+	}
+	if (gGizmo->DiscY->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitDistance[EPrimitiveColor::GREEN_Y_ROT])) {
+		if (hitDistance[EPrimitiveColor::GREEN_Y_ROT] < minDistance) {
+			minDistance = hitDistance[EPrimitiveColor::GREEN_Y_ROT];
+			pickedAxis = EPrimitiveColor::GREEN_Y_ROT;
+		}
+	}
+	if (gGizmo->DiscZ->PickObjectByRayIntersection(pickPosition, viewMatrix, &hitDistance[EPrimitiveColor::BLUE_Z_ROT])) {
+		if (hitDistance[EPrimitiveColor::BLUE_Z_ROT] < minDistance) {
+			minDistance = hitDistance[EPrimitiveColor::BLUE_Z_ROT];
+			pickedAxis = EPrimitiveColor::BLUE_Z_ROT;
 		}
 	}
 
@@ -166,7 +186,7 @@ void GuiController::RenderEditor() {
 	// â�� ũ�� ������ �����Ͽ� �ʺ�� �����ϰ� ���̴� �ּ� 0, �ִ� ������(FLT_MAX)���� �����մϴ�.
 	ImGui::SetNextWindowSizeConstraints(ImVec2(300.0f, 0.0f), ImVec2(300.0f, FLT_MAX));
 
-	const char* primitiveItems[] = { "Cube", "Sphere", "Plane", "Disc", "DiscHollow"};
+	const char* primitiveItems[] = { "Cube", "Sphere", "Plane", "Disc", "DiscHollow", "DisHollowHalf"};
 	ImGui::Begin("Control Panel",nullptr, ImGuiWindowFlags_AlwaysAutoResize);
 
 	ImGui::Text("FPS: %.2f (%.2fms)", 1/Time::GetDeltaTime(), 1000.f * Time::GetDeltaTime());
@@ -199,6 +219,9 @@ void GuiController::RenderEditor() {
 				break;
 			case 4:
 				_selected = world->SpawnDiscHollowActor();
+				break;
+			case 5:
+				_selected = world->SpawnDiscHollowHalfActor();
 				break;
 			}
 			UPrimitiveComponent* downcast = dynamic_cast<UPrimitiveComponent*>(_selected);

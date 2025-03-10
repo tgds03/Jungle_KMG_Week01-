@@ -120,6 +120,7 @@ bool UDiscComponent::IntersectsRay(const FVector& rayOrigin, const FVector& rayD
     if (rayOrigin.y == 0) return false; // normal to normal vector of plane
 
     dist = -rayOrigin.y / rayDir.y;
+    dist = dist > 0 ? dist : -dist;
 
     FVector intersectionPoint = rayOrigin + rayDir * dist;
     float intersectionToDiscCenterSquared = intersectionPoint.MagnitudeSquared();
