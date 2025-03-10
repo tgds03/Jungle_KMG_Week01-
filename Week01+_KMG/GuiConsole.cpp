@@ -105,13 +105,13 @@ void GuiConsole::ExecCommand(const char* command_line) {
         if (commands.size() < 2) {
             AddLog("Invalid argument.");
         } else if (commands[1] == "cube") {
-            world->AddActor(world->SpawnCubeActor());
+            world->SpawnCubeActor();
             AddLog("Successed");
         } else if (commands[1] == "sphere") {
-            world->AddActor(world->SpawnSphereActor());
+            world->SpawnSphereActor();
             AddLog("Successed");
         } else if (commands[1] == "plane") {
-            world->AddActor(world->SpawnPlaneActor());
+            world->SpawnPlaneActor();
             AddLog("Successed");
         } else {
             AddLog("Invalid argument.");
