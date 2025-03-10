@@ -146,6 +146,7 @@
     <ClCompile Include="Framework\Core\UCameraComponent.cpp" />
     <ClCompile Include="Framework\Core\UCoordArrowComponent.cpp" />
     <ClCompile Include="Framework\Core\UCubeComponent.cpp" />
+    <ClCompile Include="Framework\Core\UDiscHollowHalfComponent.cpp" />
     <ClCompile Include="Framework\Core\UObject.cpp" />
     <ClCompile Include="Framework\Core\UPlaneComponent.cpp" />
     <ClCompile Include="Framework\Core\UPrimitiveComponent.cpp" />
@@ -208,6 +209,7 @@
     <ClInclude Include="Framework\Core\UCameraComponent.h" />
     <ClInclude Include="Framework\Core\UCoordArrowComponent.h" />
     <ClInclude Include="Framework\Core\UCubeComponent.h" />
+    <ClInclude Include="Framework\Core\UDiscHollowHalfComponent.h" />
     <ClInclude Include="Framework\Core\UObject.h" />
     <ClInclude Include="Framework\Core\UPlaneComponent.h" />
     <ClInclude Include="Framework\Core\UPrimitiveComponent.h" />

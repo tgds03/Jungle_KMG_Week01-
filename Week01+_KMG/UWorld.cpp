@@ -74,7 +74,7 @@ void UWorld::ConvertNDC_VIEW(int mouse_X, int mouse_Y, FVector& pickPosition, FM
 
     D3D11_VIEWPORT viewport = CRenderer::Instance()->GetGraphics()->GetViewport();
     viewMatrix = mainCamera->GetComponentTransform().Inverse();
-    FMatrix projectionMatrix = mainCamera->PerspectiveProjection();
+    FMatrix projectionMatrix = mainCamera->Projection();
     pickPosition.x = ((2.0f * mouse_X / viewport.Width) - 1) / projectionMatrix[0][0];
     pickPosition.y = -((2.0f * mouse_Y / viewport.Height) - 1) / projectionMatrix[1][1];
     pickPosition.z = 1.0f; // Near Plane
