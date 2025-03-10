@@ -116,6 +116,7 @@ void GuiController::RenderEditor() {
 	}
 	if (ImGui::Button("Load Scene")) {
 		world->LoadWorld(_sceneNameBuffer);
+		_selected = nullptr;
 	}
 
 	ImGui::End();
@@ -132,6 +133,10 @@ void GuiController::RenderEditor() {
 		ImGui::DragFloat3("position", &downcast->RelativeLocation.x, 0.1f);
 		ImGui::DragFloat3("rotation", &downcast->RelativeRotation.x, 0.1f);
 		ImGui::DragFloat3("scale", &downcast->RelativeScale3D.x, 0.1f);
+		if ( ImGui::Button("Delete") ) {
+			world->RemoveActor(_selected);
+			_selected = nullptr;
+		}
 	}
 	ImGui::End();
 
