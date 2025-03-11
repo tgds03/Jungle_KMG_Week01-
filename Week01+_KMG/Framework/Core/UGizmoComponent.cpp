@@ -63,6 +63,28 @@ void UGizmoComponent::Update()
 	scaleMax *= 2.0;
 	this->SetRelativeScale3D({ scaleMax ,scaleMax ,scaleMax });
 
+	//isTranslationAbolute = 1;
+	if (isTranslationAbolute)
+	{
+		this->SetRelativeRotation({ 0,0,0 });
+		ArrowX->SetRelativeRotation({ FLT_EPSILON,-M_PI / 2 + FLT_EPSILON ,FLT_EPSILON });
+		ArrowY->SetRelativeRotation({ M_PI / 2 - FLT_EPSILON ,FLT_EPSILON,FLT_EPSILON });
+		ArrowZ->SetRelativeRotation({ FLT_EPSILON,FLT_EPSILON,FLT_EPSILON });
+	}
+	else
+	{
+		auto rot = AttachedParent->GetComponentRotation();
+		this->SetRelativeRotation(rot);
+		//ArrowX->SetRelativeRotation(rot);
+		//ArrowY->SetRelativeRotation(rot);
+		//ArrowZ->SetRelativeRotation(rot);
+
+		//ArrowX->SetRelativeRotation(rot * -1 + FVector{ FLT_EPSILON, -M_PI / 2 + FLT_EPSILON, FLT_EPSILON });
+		//ArrowY->SetRelativeRotation(rot * -1 + FVector{ M_PI / 2 - FLT_EPSILON, FLT_EPSILON, FLT_EPSILON });
+		//ArrowZ->SetRelativeRotation(rot * -1 + FVector{ FLT_EPSILON, FLT_EPSILON, FLT_EPSILON });
+		
+	}
+	
 
 	UArrowComponent* selectedArrow = nullptr;
 	UDiscHollowComponent* selectedDisc = nullptr;
@@ -114,6 +136,7 @@ void UGizmoComponent::Update()
 
 		float effectiveMovement = mouseDirOnScreen.Dot(arrowDirOnScreen);
 		effectiveMovement *= GIZMO_SELECT_MOUSE_SPEED_TRANSLATION;
+		effectiveMovement *= scaleMax;
 
  		auto newPos = selectedArrow->Front() * effectiveMovement + AttachedParent->GetRelativeLocation();
 		AttachedParent->SetRelativeLocation(newPos);
@@ -185,22 +208,10 @@ void UGizmoComponent::Render()
 	}
 }
 
-//FMatrix UGizmoComponent::GetComponentTransform() const
-//{
-//	FVector scale3D = AttachedParent->GetComponentScale();
-//	return FMatrix::Scale(scale3D)*FMatrix::Translate(AttachedParent->GetComponentLocation());
-//}
-
 void UGizmoComponent::AttachTo(UPrimitiveComponent* Parent)
 {
 	isGizmoActivated = true;
 	AttachedParent = Parent;
-
-	//DiscX->AttachToComponent(Parent);
-	//DiscY->AttachToComponent(Parent);
-	//DiscZ->AttachToComponent(Parent);
-
-	//this->AttachToComponent(Parent);
 }
 
 void UGizmoComponent::Detach()
@@ -208,12 +219,4 @@ void UGizmoComponent::Detach()
 	isGizmoActivated = false;
 	selectedAxis = EPrimitiveColor::NONE;
 	AttachedParent = nullptr;
-	//UE_LOG(L"Detach!!!!!!!\n");
-
-	//DiscX->AttachToComponent(nullptr);
-	//DiscY->AttachToComponent(nullptr);
-	//DiscZ->AttachToComponent(nullptr);
-
-
-	//this->AttachToComponent(nullptr);
 }

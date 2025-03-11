@@ -304,6 +304,10 @@ void GuiController::RenderEditor() {
 			world->RemoveActor(_selected);
 			_selected = nullptr;
 		}
+		if (ImGui::Button("Toggle Gizmo Mode"))
+		{
+			gGizmo->isTranslationAbolute = !gGizmo->isTranslationAbolute;
+		}
 	}
 	ImGui::End();
 
