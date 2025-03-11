@@ -1,8 +1,10 @@
 #include "stdafx.h"
 #include "UGizmoComponent.h"
 #include "UArrowComponent.h"
+#include "UDiscHollowComponent.h"
 
-#define GIZMO_SELECT_MOUSE_SPEED 10.0f;
+#define GIZMO_SELECT_MOUSE_SPEED_TRANSLATION 10.0f;
+#define GIZMO_SELECT_MOUSE_SPEED_ROTATION 30.0f;
 
 UGizmoComponent::UGizmoComponent()
 {
@@ -14,17 +16,25 @@ UGizmoComponent::UGizmoComponent()
 	ArrowY->AttachToComponent(this);
 	ArrowZ->AttachToComponent(this);
 
-	ArrowX->IsOverrideScale3D = true;
-	ArrowY->IsOverrideScale3D = true;
-	ArrowZ->IsOverrideScale3D = true;
-	ArrowX->OverrideScale3D = { 2,2,2 };
-	ArrowY->OverrideScale3D = { 2,2,2 };
-	ArrowZ->OverrideScale3D = { 2,2,2 };
+	ArrowX->SetRelativeRotation({ FLT_EPSILON,-M_PI / 2 + FLT_EPSILON ,FLT_EPSILON });
+	ArrowY->SetRelativeRotation({ M_PI / 2 - FLT_EPSILON ,FLT_EPSILON,FLT_EPSILON });
+	ArrowZ->SetRelativeRotation({ FLT_EPSILON,FLT_EPSILON,FLT_EPSILON });
 
-	ArrowX->SetRelativeRotation({ 0,-M_PI / 2,0 });
-	ArrowY->SetRelativeRotation({ M_PI / 2 ,0,0 });
-	ArrowZ->SetRelativeRotation({ 0,0,0 });
+	DiscX = new UDiscHollowComponent(EPrimitiveColor::RED_X, 0.95);
+	DiscY = new UDiscHollowComponent(EPrimitiveColor::GREEN_Y, 0.95);
+	DiscZ = new UDiscHollowComponent(EPrimitiveColor::BLUE_Z, 0.95);
 
+	DiscX->AttachToComponent(this);
+	DiscY->AttachToComponent(this);
+	DiscZ->AttachToComponent(this);
+
+	DiscX->SetRelativeRotation({ FLT_EPSILON, 0.5 , -M_PI / 2 - FLT_EPSILON });
+	DiscY->SetRelativeRotation({ FLT_EPSILON,FLT_EPSILON,FLT_EPSILON });
+	DiscZ->SetRelativeRotation({ M_PI / 2 - FLT_EPSILON,FLT_EPSILON,FLT_EPSILON });
+
+	DiscX->SetRelativeScale3D({ 2.5, 2.5, 2.5 });
+	DiscY->SetRelativeScale3D({ 2.5, 2.5, 2.5 });
+	DiscZ->SetRelativeScale3D({ 2.5, 2.5, 2.5 });
 }
 
 UGizmoComponent::~UGizmoComponent()
@@ -32,51 +42,82 @@ UGizmoComponent::~UGizmoComponent()
 	ArrowX->AttachToComponent(nullptr);
 	ArrowY->AttachToComponent(nullptr);
 	ArrowZ->AttachToComponent(nullptr);
+	DiscX->AttachToComponent(nullptr);
+	DiscY->AttachToComponent(nullptr);
+	DiscZ->AttachToComponent(nullptr);
 	ArrowX = ArrowY = ArrowZ = nullptr;
+	DiscX = DiscY = DiscZ = nullptr;
 }
 
 void UGizmoComponent::Update()
 {
-	//ArrowX->IsOverrideLocation = true;
-	//ArrowY->IsOverrideLocation = true;
-	//ArrowZ->IsOverrideLocation = true;
-
-	//ArrowX->IsOverrideRotation = true;
-	//ArrowY->IsOverrideRotation = true;
-	//ArrowZ->IsOverrideRotation = true;
-
-	//ArrowX->IsOverrideScale3D = true;
-	//ArrowY->IsOverrideScale3D = true;
-	//ArrowZ->IsOverrideScale3D = true;
-
-	// ����� �ƹ��͵� �Ⱥپ�����
- 	if (GetAttachParent() == nullptr)
+ 	if (AttachedParent == nullptr)
 		return;
 
-	ImGui::Begin("Gizmo");
-	//ImGui::Text("Gizmo Rel Pos: %f %f %f", RelativeLocation.x, RelativeLocation.y, RelativeLocation.z);
-	ImGui::Text("Gizmo Comp Pos: %f %f %f", GetComponentLocation().x, GetComponentLocation().y, GetComponentLocation().z);
-	ImGui::Text("Parent Rel Pos: %f %f %f", GetAttachParent()->GetRelativeLocation().x, GetAttachParent()->GetRelativeLocation().y, GetAttachParent()->GetRelativeLocation().z);
-	ImGui::Text("Parent Comp Pos: %f %f %f", GetAttachParent()->GetComponentLocation().x, GetAttachParent()->GetComponentLocation().y, GetAttachParent()->GetComponentLocation().z);
-	ImGui::End();
+	// gizmo의 방향과 크기만 따라감
+	this->SetRelativeLocation(AttachedParent->GetRelativeLocation());
+	float scaleMax = 0.3f;
+	scaleMax = max(scaleMax, abs(AttachedParent->GetRelativeScale3D().x)/2);
+	scaleMax = max(scaleMax, abs(AttachedParent->GetRelativeScale3D().y)/2);
+	scaleMax = max(scaleMax, abs(AttachedParent->GetRelativeScale3D().z)/2);
+	scaleMax *= 2.0;
+	this->SetRelativeScale3D({ scaleMax ,scaleMax ,scaleMax });
 
+	//isTranslationAbolute = 1;
+	if (isTranslationAbolute)
+	{
+		this->SetRelativeRotation({ 0,0,0 });
+		ArrowX->SetRelativeRotation({ FLT_EPSILON,-M_PI / 2 + FLT_EPSILON ,FLT_EPSILON });
+		ArrowY->SetRelativeRotation({ M_PI / 2 - FLT_EPSILON ,FLT_EPSILON,FLT_EPSILON });
+		ArrowZ->SetRelativeRotation({ FLT_EPSILON,FLT_EPSILON,FLT_EPSILON });
+	}
+	else
+	{
+		auto rot = AttachedParent->GetComponentRotation();
+		this->SetRelativeRotation(rot);
+		//ArrowX->SetRelativeRotation(rot);
+		//ArrowY->SetRelativeRotation(rot);
+		//ArrowZ->SetRelativeRotation(rot);
+
+		//ArrowX->SetRelativeRotation(rot * -1 + FVector{ FLT_EPSILON, -M_PI / 2 + FLT_EPSILON, FLT_EPSILON });
+		//ArrowY->SetRelativeRotation(rot * -1 + FVector{ M_PI / 2 - FLT_EPSILON, FLT_EPSILON, FLT_EPSILON });
+		//ArrowZ->SetRelativeRotation(rot * -1 + FVector{ FLT_EPSILON, FLT_EPSILON, FLT_EPSILON });
+		
+	}
+	
 
 	UArrowComponent* selectedArrow = nullptr;
+	UDiscHollowComponent* selectedDisc = nullptr;
 	if (selectedAxis == EPrimitiveColor::RED_X) selectedArrow = ArrowX;
 	else if (selectedAxis == EPrimitiveColor::GREEN_Y) selectedArrow = ArrowY;
 	else if (selectedAxis == EPrimitiveColor::BLUE_Z) selectedArrow = ArrowZ;
+	else if (selectedAxis == EPrimitiveColor::RED_X_ROT) 
+		selectedDisc = DiscX;
+	else if (selectedAxis == EPrimitiveColor::GREEN_Y_ROT) 
+		selectedDisc = DiscY;
+	else if (selectedAxis == EPrimitiveColor::BLUE_Z_ROT) selectedDisc = DiscZ;
 	else {
-		if (temp) {
+		if (temp)
+		{
 			temp->renderFlags &= ~PRIMITIVE_FLAG_SELECTED;
 			temp = nullptr;
 		}
-		return;
+		if (temp1) {
+			temp1->renderFlags &= ~PRIMITIVE_FLAG_SELECTED;
+			temp1 = nullptr;
+		}
+		return; 	// ������� ȭ��ǥ�� ���õ��� ����
 	}
-	if (selectedArrow) {
+	if (selectedArrow)
+	{
 		temp = selectedArrow;
 		temp->renderFlags |= PRIMITIVE_FLAG_SELECTED;
 	}
-
+	else if (selectedDisc)
+	{
+		temp1 = selectedDisc;
+		temp1->renderFlags |= PRIMITIVE_FLAG_SELECTED;
+	}
 
 	// ���콺 ��Ÿ
 	int dxInt, dyInt;
@@ -86,54 +127,96 @@ void UGizmoComponent::Update()
 		
  	FVector mouseDirOnScreen = { dx,dy,0 };
 	if (abs(dx) < FLT_EPSILON && abs(dy) < FLT_EPSILON) return;
-	ImGui::Begin("MouseDelta");
-	ImGui::Text("MouseDelta: %f %f", dx, dy);
-	ImGui::End();
 
-	auto cam = CRenderer::Instance()->GetMainCamera();
-	FVector arrowDirOnScreen = (FVector4(selectedArrow->Front(), 0) * cam->View() * cam->PerspectiveProjection()).xyz();
-	// normalize?
+	if (selectedArrow)
+	{
+		auto cam = CRenderer::Instance()->GetMainCamera();
+		FVector arrowDirOnScreen = (FVector4(selectedArrow->Front(), 0) * cam->View() * cam->PerspectiveProjection()).xyz();
+		// normalize?
 
-	float effectiveMovement = mouseDirOnScreen.Dot(arrowDirOnScreen);
-	effectiveMovement *= GIZMO_SELECT_MOUSE_SPEED;
+		float effectiveMovement = mouseDirOnScreen.Dot(arrowDirOnScreen);
+		effectiveMovement *= GIZMO_SELECT_MOUSE_SPEED_TRANSLATION;
+		effectiveMovement *= scaleMax;
 
-	// @@@@@@@@@@@@@@@@@@@@@@@@
-	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-	// 포지션 오버라이드해서 RELATIVE기준으로 안움직이게
- 	auto newPos = selectedArrow->Front() * effectiveMovement + GetAttachParent()->GetRelativeLocation();
-	GetAttachParent()->SetRelativeLocation(newPos);
-	ImGui::Begin("Gizmo Attached");
-	auto l =GetAttachParent()->GetRelativeLocation();
-	ImGui::Text("Gizmo Attached Rel Pos: %f %f %f", l.x, l.y, l.z);
-	ImGui::End();
+ 		auto newPos = selectedArrow->Front() * effectiveMovement + AttachedParent->GetRelativeLocation();
+		AttachedParent->SetRelativeLocation(newPos);
 
+		return;
+	}
+	else if (selectedDisc)
+	{
+		int xInt, yInt;
+		Input::Instance()->GetMouseLocation(xInt, yInt);
+		float x = xInt / (float)SCR_WIDTH;
+		float y = -yInt / (float)SCR_HEIGHT;
 
+		FVector cursorPosOnScreen = { x,y,0 };
+
+		int dxInt, dyInt;
+		Input::Instance()->GetMouseDelta(dxInt, dyInt);
+
+		float dx = dxInt / (float)SCR_WIDTH;
+		float dy = -dyInt / (float)SCR_HEIGHT;
+
+		FVector cursorDeltaOnScreen = { dx,dy,0 };
+
+		auto cam = CRenderer::Instance()->GetMainCamera();
+		FVector gizmoCenterOnScreen = (FVector4(GetComponentLocation(), 1.f) * cam->View() * cam->PerspectiveProjection()).GetCoord();
+		gizmoCenterOnScreen = FVector(gizmoCenterOnScreen.x, gizmoCenterOnScreen.y, 0);
+		FVector cursorToGizmo = gizmoCenterOnScreen - cursorPosOnScreen;
+
+		FVector effectiveMovementVector = cursorToGizmo.Cross(cursorDeltaOnScreen);
+		float effectiveMovementClockwise = effectiveMovementVector.z;
+
+		//FVector discClockWiseOnScreen = (FVector4(selectedDisc->Right() * -1, 0) * cam->View() * cam->PerspectiveProjection()).xyz();
+		// normalize?
+
+		//float effectiveMovement = mouseDirOnScreen.Dot(discClockWiseOnScreen);
+		effectiveMovementClockwise *= -GIZMO_SELECT_MOUSE_SPEED_ROTATION;
+		FVector rotDirection = { 0,0,0 };
+		if (selectedAxis == EPrimitiveColor::RED_X_ROT)
+		{
+			rotDirection = FVector(1, 0, 0);
+		}
+		else if (selectedAxis == EPrimitiveColor::GREEN_Y_ROT)
+		{
+			rotDirection = FVector(0, 1, 0);
+		}
+		else if (selectedAxis == EPrimitiveColor::BLUE_Z_ROT)
+		{
+			rotDirection = FVector(0, 0, -1);
+		}
+		//FVector rotationDirection = { selectedDisc->GetRelativeRotation().x , selectedDisc->GetRelativeRotation().y, selectedDisc->GetRelativeRotation().z };
+		auto newRot = rotDirection * effectiveMovementClockwise + AttachedParent->GetRelativeRotation();
+		AttachedParent->SetRelativeRotation(newRot);
+
+		return;
+	}
 }
 
 void UGizmoComponent::Render()
 {
 	if (isGizmoActivated) {
-		ArrowX->Render();
-		ArrowY->Render();
-		ArrowZ->Render();
+		{
+			ArrowX->Render();
+			ArrowY->Render();
+			ArrowZ->Render();
+			DiscX->Render();
+			DiscY->Render();
+			DiscZ->Render();
+		}
 	}
 }
 
 void UGizmoComponent::AttachTo(UPrimitiveComponent* Parent)
 {
 	isGizmoActivated = true;
-	this->AttachToComponent(Parent);
+	AttachedParent = Parent;
 }
 
 void UGizmoComponent::Detach()
 {
 	isGizmoActivated = false;
 	selectedAxis = EPrimitiveColor::NONE;
-	//UE_LOG(L"Detach!!!!!!!\n");
-	this->AttachToComponent(nullptr);
-	if (temp) {
-		temp->renderFlags &= ~PRIMITIVE_FLAG_SELECTED;
-		
-		temp = nullptr;
-	}
+	AttachedParent = nullptr;
 }

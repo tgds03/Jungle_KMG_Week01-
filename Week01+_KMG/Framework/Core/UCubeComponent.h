@@ -6,5 +6,5 @@ public:
 	virtual void Update();
 
 	//bool Intersects(FVector rayOrigin, FVector rayDirection);
-	virtual bool IntersectsRay(const FVector& rayOrigin, const FVector& rayDir, float& dist);
+	//virtual bool IntersectsRay(const FVector& rayOrigin, const FVector& rayDir, float& dist);
 };

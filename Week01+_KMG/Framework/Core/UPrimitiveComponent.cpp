@@ -88,7 +88,9 @@ bool UPrimitiveComponent::IntersectRayTriangle(const FVector& rayOrigin, const F
         {
             FVector localIntersection = rayOrigin + rayDirection * t;
             FVector worldIntersection = GetComponentTransform().TransformCoord(localIntersection);
-            hitDistance = (worldIntersection).MagnitudeSquared();
+            //hitDistance = (worldIntersection).MagnitudeSquared();
+
+            hitDistance = t;
             return true;
         }
 

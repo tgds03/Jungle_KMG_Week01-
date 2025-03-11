@@ -29,8 +29,8 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 		break;
 	case WM_LBUTTONDOWN:
 		if(gMainScene) {
-			auto cam = CRenderer::Instance()->GetMainCamera();
-			Input::Instance()->SpawnMouseRay(cam->View(), cam->PerspectiveProjection());
+			//auto cam = CRenderer::Instance()->GetMainCamera();
+			//Input::Instance()->SpawnMouseRay(cam->View(), cam->PerspectiveProjection());
 		}
 		break;
 	case WM_MOUSEMOVE:
